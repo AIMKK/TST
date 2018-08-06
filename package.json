@@ -19,6 +19,7 @@
   "homepage": "https://github.com/AIMKK/TST#readme",
   "dependencies": {
     "q": "^1.5.1",
-    "tedious": "^2.6.4"
+    "tedious": "^2.6.4",
+    "tedious-connection-pool": "^1.0.5"
   }
 }
