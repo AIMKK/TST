@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/AIMKK/TST/issues"
   },
-  "homepage": "https://github.com/AIMKK/TST#readme"
+  "homepage": "https://github.com/AIMKK/TST#readme",
+  "dependencies": {
+    "q": "^1.5.1",
+    "tedious": "^2.6.4"
+  }
 }
