@@ -2,7 +2,7 @@ const config = {
     user: 'sa',
     password: '123',
     server: '127.0.0.1', // You can use 'localhost\\instance' to connect to named instance
-    database: 'tediousTest',
+    database: 'tediousTestDB',
 
     options: {
         encrypt: true // Use this if you're on Windows Azure
@@ -15,8 +15,8 @@ sql.connect(config).then(pool => {
         // Query
 
         return pool.request()
-            .input('userName', sql.VarChar, '010009')
-            .query('select * from sh_user where user_name = @userName')
+            .input('UserCode', sql.VarChar, '0000001')
+            .query('select * from Users where UserCode = @UserCode')
     })
     // .then(result => {
     //     console.dir(result)
