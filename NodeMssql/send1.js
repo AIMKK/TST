@@ -9,8 +9,9 @@ open.then(function(conn) {
         return ch.assertQueue(q, { durable: false }).then(function() {
             ch.sendToQueue(q, Buffer.from('something to do'));
             console.log('ok');
-            conn.close();
-            process.exit(0)
+
+            //conn.close();
+            //process.exit(0)
         });
     });
 }).catch(console.warn);

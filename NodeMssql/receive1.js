@@ -22,9 +22,11 @@ open.then(function(conn) {
 }).then(function(ch) {
     ch.assertQueue(q, { durable: false }).then(function() {
         console.log('here')
+        ch.prefetch(1);
         return ch.consume(q, function(msg) {
             console.log("[x] Received '%s'", msg.content.toString());
             //execute();
+            ch.ack(msg);
             return sqlConn.then(pool => {
                 // Query
 
@@ -33,11 +35,13 @@ open.then(function(conn) {
                     .query('select * from Users where UserCode = @UserCode');
 
             }).then(result => {
+
                 console.log(result)
             }).catch(err => {
+                //ch.ack(msg);
                 console.log(err)
             })
-        }, { noAck: true });
+        }, { noAck: false });
     }).then(function() {
         console.log('[*] Waiting for message. To exit press CRTL+C');
     });
