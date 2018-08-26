@@ -26,7 +26,7 @@ open.then(function(conn) {
         return ch.consume(q, function(msg) {
             console.log("[x] Received '%s'", msg.content.toString());
             //execute();
-            ch.ack(msg);
+
             return sqlConn.then(pool => {
                 // Query
 
@@ -36,9 +36,10 @@ open.then(function(conn) {
 
             }).then(result => {
 
+                ch.ack(msg);
                 console.log(result)
             }).catch(err => {
-                //ch.ack(msg);
+                ch.ack(msg);
                 console.log(err)
             })
         }, { noAck: false });
