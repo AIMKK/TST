@@ -20,18 +20,19 @@ open.then(function(conn) {
     return conn.createChannel();
 }).then(function(ch) {
     var exchangeName = 'publsh';
-    return ch.assertExchange(exchangeName, 'fanout', { durable: false })
+    var exType = 'direct'; //'fanout';
+    var routerKey = 'test';
+    return ch.assertExchange(exchangeName, exType, { durable: false })
         .then(function() {
             return ch.assertQueue('', { exclusive: true })
                 .then(function(q) {
-                    return ch.bindQueue(q.queue, exchangeName, '')
+                    return ch.bindQueue(q.queue, exchangeName, routerKey)
                         .then(function() {
                             //console.log('here')
                             //ch.prefetch(1);
                             return ch.consume(q.queue, function(msg) {
                                 console.log("[x] Received '%s'", msg.content.toString());
                                 msg = msg.content.toString();
-
                                 //ch.ack(msg);
                                 return sqlConn.then(pool => {
                                     // Query
@@ -41,7 +42,6 @@ open.then(function(conn) {
                                         .execute('InsertMsg');
 
                                 }).then(result => {
-
                                     //ch.ack(msg);
                                     //console.log(result)
                                 }).catch(err => {
