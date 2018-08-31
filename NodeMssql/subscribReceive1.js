@@ -20,8 +20,8 @@ open.then(function(conn) {
     return conn.createChannel();
 }).then(function(ch) {
     var exchangeName = 'publsh';
-    var exType = 'direct'; //'fanout';
-    var routerKey = 'test';
+    var exType = 'topic'; //'direct'; //'fanout';
+    var routerKey = '*.test';
     return ch.assertExchange(exchangeName, exType, { durable: false })
         .then(function() {
             return ch.assertQueue('', { exclusive: true })

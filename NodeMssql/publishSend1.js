@@ -5,8 +5,8 @@ var open = require('amqplib').connect(connOPtions);
 open.then(function(conn) {
     return conn.createChannel().then(function(ch) {
         var exchangeName = 'publsh';
-        var exType = 'direct'; //'fanout';
-        var routerKey = 'test';
+        var exType = 'topic'; //'direct'; //'fanout';
+        var routerKey = 'a.test';
         return ch.assertExchange(exchangeName, exType, { durable: false }).then(function() {
             for (i = 0; i < 105; i++) {
                 ch.publish(exchangeName, routerKey, Buffer.from('something to do'));
