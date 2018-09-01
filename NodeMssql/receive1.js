@@ -1,4 +1,5 @@
 var q = 'task';
+var callbackQ = 'callbackQ'
 
 var connOPtions = require('../rabitmqConnConfig.js');
 // var execute = require('./dbWorker1.js');
@@ -25,22 +26,27 @@ open.then(function(conn) {
         ch.prefetch(1);
         return ch.consume(q, function(msg) {
             console.log("[x] Received '%s'", msg.content.toString());
-            //execute();
 
             return sqlConn.then(pool => {
-                // Query
 
                 return pool.request()
                     .input('UserCode', sql.VarChar, '0000001')
                     .query('select * from Users where UserCode = @UserCode');
 
             }).then(result => {
+                ch.assertQueue(callbackQ, { durable: false }).then(function() {
+                    ch.sendToQueue(callbackQ, new Buffer('dealok'), { correlationId: msg.properties.correlationId });
+                    ch.ack(msg);
+                    console.log(result)
+                })
 
-                ch.ack(msg);
-                console.log(result)
+
             }).catch(err => {
-                ch.ack(msg);
-                console.log(err)
+                ch.assertQueue(callbackQ, { durable: false }).then(function() {
+                    ch.sendToQueue(callbackQ, new Buffer('wrong'), { correlationId: msg.properties.correlationId });
+                    ch.ack(msg);
+                    console.log(err)
+                })
             })
         }, { noAck: false });
     }).then(function() {
