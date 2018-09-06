@@ -9,22 +9,22 @@
     <style>
         .box1 {
             border: 10px red solid;
-            zoom: 1;
-            overflow: hidden;
+            /* zoom: 1;
+            overflow: hidden; */
         }
         
         .box2 {
             width: 100px;
             height: 100px;
             background-color: blue;
-            /* float: left; */
+            float: left;
         }
         
         .box2-2 {
             width: 50px;
             height: 50px;
             background-color: green;
-            float: left;
+            float: right;
         }
         
         .box3 {
@@ -39,8 +39,8 @@
     <div class="box1">
         <div class="box2"></div>
         <div class="box2-2"></div>
-        <!-- <img src="http://pic.chinasspp.com/quan/News/ZoneOtherPic/467986-20120810021543.jpg" alt="" width=100px height=100px style="float:left" /> -->
-        但是，这样使用确实是对float的一种误解和“误用”，因为float被设计出来的初衷是用于——文字环绕效果。 即，一个图片一段文字，图片float:left之后，文字会环绕图片。但是，当时的多列布局和横向排版主要是依靠table实现，后来人们见见的发现，使用table将导致代码量大、混乱、不利于SEO，然后发现float+div是一个很不错的排版解决方案，于是乎——过去几年“css+div”页面排版一直是一个热门话题，也是各种高大上的面试题必考的一项。
+        <div style="border:1px red solid">fdsfsdf</div>
+        <img src="http://pic.chinasspp.com/quan/News/ZoneOtherPic/467986-20120810021543.jpg" alt="" width=100px height=100px style="border:1px red solid ;float: left;" /> 但是，这样使用确实是对float的一种误解和“误用”，因为float被设计出来的初衷是用于——文字环绕效果。 即，一个图片一段文字，图片float:left之后，文字会环绕图片。但是，当时的多列布局和横向排版主要是依靠table实现，后来人们见见的发现，使用table将导致代码量大、混乱、不利于SEO，然后发现float+div是一个很不错的排版解决方案，于是乎——过去几年“css+div”页面排版一直是一个热门话题，也是各种高大上的面试题必考的一项。
     </div>
     <div class="box3"></div>
 </body>

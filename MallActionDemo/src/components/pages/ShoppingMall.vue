@@ -18,6 +18,13 @@
                 </van-swipe-item>
             </van-swipe>
         </div>
+        <!--type bar-->
+        <div class="type-bar">
+            <div v-for="(cate,index) in category" :key="index">
+                <img v-lazy="cate.image" alt="" width="90%"/>
+                <span>{{cate.mallCategoryName}}</span>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -31,8 +38,11 @@
                 bannerPicArr:
                 [{imageUrl:'http://7xjyw1.com1.z0.glb.clouddn.com/simleVueDemoPic001.jpg'},
                 {imageUrl:'http://7xjyw1.com1.z0.glb.clouddn.com/simleVueDemoPic002.jpg'},
-                {imageUrl:'http://7xjyw1.com1.z0.glb.clouddn.com/simleVueDemoPic003.jpg'}]
+                {imageUrl:'http://7xjyw1.com1.z0.glb.clouddn.com/simleVueDemoPic003.jpg'}
+                ],
+                 category:[],
             }
+           
         },
         created(){
             axios({
@@ -40,6 +50,9 @@
                 method:'get'
             }).then(Response=>{
                 console.log(Response)
+                if (Response.status==200){
+                    this.category=Response.data.data.category;
+                }
             }).catch(error=>{
                 console.log(error)
             })
@@ -74,5 +87,19 @@
     clear:both;
     max-height: 12rem;
     overflow: hidden;
+}
+.type-bar{
+    background-color: #fff;
+    margin: 0.3rem .3rem .3rem;
+    border-radius:.3rem;
+    font-size: 14px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+.type-bar div{
+    padding: .3rem;
+    font-size: 12px;
+    text-align: center;
 }
 </style>
