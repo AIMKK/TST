@@ -14,7 +14,7 @@
         <div class="swiper-area">   
             <van-swipe :autoplay="1000">
                 <van-swipe-item v-for="(banner,index) in bannerPicArr" :key="index">
-                    <img v-lazy="banner.imageUrl" alt="" width="100%">
+                    <img v-lazy="banner.image" alt="" width="100%">
                 </van-swipe-item>
             </van-swipe>
         </div>
@@ -25,24 +25,52 @@
                 <span>{{cate.mallCategoryName}}</span>
             </div>
         </div>
+        <!--adbanner area-->
+        <div>
+            <img v-lazy="adBanner" width="100%"/>
+        </div>
+        <!--recommend area-->
+        <div class="recommend-area">   
+            <div class="recommend-title">   
+                商品推荐
+            </div>
+            <div class="recommend-body">
+                <swiper :options="swiperOption">
+                    <swiper-slide v-for="(item,index) in recommendGoods" :key="index">
+                        <div class="recommend-item">
+                            <img :src="item.image" width="80%"/>
+                            <div>{{item.goodsName}}</div>
+                            <div>￥{{item.price}}(￥{{item.mallPrice}})</div>
+                        </div>
+                    </swiper-slide>
+                </swiper>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
     import axios from 'axios';
+    import 'swiper/dist/css/swiper.css'
+    import {swiper,swiperSlide}from 'vue-awesome-swiper'
     export default {
         data() {
             return {
                 msg: 'shopping mall',
                 locationIcon:require('../../assets/images/location.png'),
                 bannerPicArr:
-                [{imageUrl:'http://7xjyw1.com1.z0.glb.clouddn.com/simleVueDemoPic001.jpg'},
-                {imageUrl:'http://7xjyw1.com1.z0.glb.clouddn.com/simleVueDemoPic002.jpg'},
-                {imageUrl:'http://7xjyw1.com1.z0.glb.clouddn.com/simleVueDemoPic003.jpg'}
-                ],
+                [],
                  category:[],
+                 adBanner:'',
+                 recommendGoods:[],
+                 swiperOption:{
+                     slidesPerView:3,
+                 },
             }
            
+        },
+        components:{
+            swiper,swiperSlide
         },
         created(){
             axios({
@@ -52,6 +80,9 @@
                 console.log(Response)
                 if (Response.status==200){
                     this.category=Response.data.data.category;
+                    this.adBanner=Response.data.data.advertesPicture.PICTURE_ADDRESS;
+                    this.bannerPicArr=Response.data.data.slides;
+                    this.recommendGoods=Response.data.data.recommend;
                 }
             }).catch(error=>{
                 console.log(error)
@@ -90,7 +121,7 @@
 }
 .type-bar{
     background-color: #fff;
-    margin: 0.3rem .3rem .3rem;
+    margin: 0 .3rem .3rem .3rem;
     border-radius:.3rem;
     font-size: 14px;
     display: flex;
@@ -99,6 +130,25 @@
 }
 .type-bar div{
     padding: .3rem;
+    font-size: 12px;
+    text-align: center;
+}
+.recommend-area{
+    background-color: #fff;
+    margin-top: .3rem;
+}
+.recommend-title{
+    border-bottom: 1px solid #eee;
+    font-size:14px;
+    padding: .2rem;
+    color: #e5017d;
+}
+.recommend-body {
+    border-bottom: 1px solid #eee;
+}
+.recommend-item{
+    width: 99%;
+    border-right:1px solid #eee;
     font-size: 12px;
     text-align: center;
 }
