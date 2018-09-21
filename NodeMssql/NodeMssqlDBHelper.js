@@ -81,6 +81,29 @@ function executeNonQuery(cmd, cmdType, sqlParas, transaction) {
     })
 }
 
+
+DBHelper.getDBConn = getDBConn;
+
+function getDBConn() {
+    var dbConn = new sqlDB.Connection(connConfig);
+    return dbconn;
+}
+
+DBHelper.createTransaction = createTransaction;
+
+function createTransaction(dbConn) {
+    var trans = new sqlDB.Transaction(dbConn);
+    return trans;
+}
+
+DBHelper.createTransaction = createTransaction;
+
+function createRequestByTrans(trans) {
+    var request = new sqlDB.Request(trans);
+    return request;
+}
+
+
 function dealResult(result) {
     console.dir(result)
         // if (sqlParas != null) {

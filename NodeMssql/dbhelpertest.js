@@ -15,4 +15,25 @@ var paras = [];
 dbhelper.setConnConfig(config);
 var param = dbhelper.createSqlParam('UserCode', '0000001', dbhelper.sqlDB.VarChar, dbhelper.commandType.Input);
 paras.push(param);
-dbhelper.executeNonQuery(sql, dbhelper.commandType.Sql, paras)
+dbhelper.executeNonQuery(sql, dbhelper.commandType.Sql, paras);
+
+//zhixing,zbc
+
+
+//
+dbhelper.setConnConfig(config);
+var dbconn = dbhelper.getDBConn();
+dbconn.connect()
+    .then(() => {
+        var trans = dbhelper.createTransaction(dbconn);
+        var request = dbhelper.createRequestByTrans(trans);
+        trans.begin().then(() => {
+            request.exec(sql, dbhelper.commandType.Sql, paras)
+                .then(() => {
+
+                }).then();
+        }).catch(() => {})
+    }).catch(() => {
+
+    });
+//
