@@ -15,7 +15,7 @@ var paras = [];
 dbhelper.setConnConfig(config);
 var param = dbhelper.createSqlParam('UserCode', '0000001', dbhelper.sqlDB.VarChar, dbhelper.commandType.Input);
 paras.push(param);
-dbhelper.executeNonQuery(sql, dbhelper.commandType.Sql, paras);
+//dbhelper.executeNonQuery(sql, dbhelper.commandType.Sql, paras);
 
 //zhixing,zbc
 
@@ -23,17 +23,26 @@ dbhelper.executeNonQuery(sql, dbhelper.commandType.Sql, paras);
 //
 dbhelper.setConnConfig(config);
 var dbconn = dbhelper.getDBConn();
-dbconn.connect()
-    .then(() => {
-        var trans = dbhelper.createTransaction(dbconn);
-        var request = dbhelper.createRequestByTrans(trans);
-        trans.begin().then(() => {
-            request.exec(sql, dbhelper.commandType.Sql, paras)
-                .then(() => {
+dbconn.then(pool => {
+    var trans = dbhelper.createTransaction(pool);
+    var request = dbhelper.createRequestByTrans(trans);
 
-                }).then();
-        }).catch(() => {})
-    }).catch(() => {
+    trans.begin().then(() => {
+        request(sql, dbhelper.commandType.Sql, paras).then(
+            () => {
+                trans.commit(err => {
+                    // ... error checks
+                })
+            }
+        )
 
-    });
+    }).catch((error) => {
+        console.log(error);
+        trans.rollback(err => {
+            // ... error checks
+        })
+    })
+}).catch((error) => {
+    console.log(error);
+});
 //

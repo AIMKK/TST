@@ -85,8 +85,8 @@ function executeNonQuery(cmd, cmdType, sqlParas, transaction) {
 DBHelper.getDBConn = getDBConn;
 
 function getDBConn() {
-    var dbConn = new sqlDB.Connection(connConfig);
-    return dbconn;
+    var dbConn = sqlDB.connect(connConfig);
+    return dbConn;
 }
 
 DBHelper.createTransaction = createTransaction;
@@ -96,13 +96,36 @@ function createTransaction(dbConn) {
     return trans;
 }
 
-DBHelper.createTransaction = createTransaction;
+DBHelper.createRequestByTrans = createRequestByTrans;
 
 function createRequestByTrans(trans) {
     var request = new sqlDB.Request(trans);
-    return request;
-}
 
+    function dbRequest(cmd, cmdType, sqlParas) {
+        if (sqlParas != null) {
+            for (var index in sqlParas) {
+                if (sqlParas[index].direction == DBHelper.paramDirection.Output) {
+                    request.output(sqlParas[index].paramName, sqlParas[index].sqlType, sqlParas[index].paramValue);
+                } else {
+                    request.input(sqlParas[index].paramName, sqlParas[index].sqlType, sqlParas[index].paramValue);
+                }
+            }
+        }
+        //
+        if (DBHelper.commandType.Proc == cmdType) {
+            return request.execute(cmd).then(result => {
+
+                console.dir(result)
+            });
+        } else {
+            return request.query(cmd).then(result => {
+
+                console.dir(result)
+            });;
+        }
+    }
+    return dbRequest;
+}
 
 function dealResult(result) {
     console.dir(result)
