@@ -10,18 +10,13 @@ const config = {
         }
     }
     //to test  1,query get recs 2,query get stream  3,in/updat serial 4,trans
+
 var sql = 'select * from Users where UserCode = @UserCode';
 var paras = [];
-dbhelper.setConnConfig(config);
 var param = dbhelper.createSqlParam('UserCode', '0000001', dbhelper.sqlDB.VarChar, dbhelper.commandType.Input);
 paras.push(param);
-//dbhelper.executeNonQuery(sql, dbhelper.commandType.Sql, paras);
-
-//zhixing,zbc
-
-
-//
 dbhelper.setConnConfig(config);
+//
 var dbconn = dbhelper.getDBConn();
 dbconn.then(pool => {
     var trans = dbhelper.createTransaction(pool);
