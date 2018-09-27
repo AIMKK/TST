@@ -19,12 +19,6 @@ DBHelper.commandType = {
 //
 DBHelper.sqlDB = sqlDB;
 //
-DBHelper.setConnConfig = setConnConfig;
-
-function setConnConfig(config) {
-    connConfig = config;
-}
-//
 DBHelper.createSqlParam = createSqlParam;
 
 function createSqlParam(paramName, paramValue, sqlType, direction) {
@@ -41,24 +35,17 @@ function createSqlParam(paramName, paramValue, sqlType, direction) {
 //还要考虑事务怎么处理
 //还要写log日志，并且往外发出去
 
-DBHelper.getDBConn = getDBConn;
+DBHelper.getDBConnPool = getDBConnPool;
 
-function getDBConn() {
-    var dbConn = sqlDB.connect(connConfig);
-    return dbConn;
+function getDBConnPool(config) {
+    var dbConnPool = sqlDB.connect(config);
+    return dbConnPool;
 }
 
-DBHelper.createTransaction = createTransaction;
+DBHelper.createDBRequest = createDBRequest;
 
-function createTransaction(dbConn) {
-    var trans = new sqlDB.Transaction(dbConn);
-    return trans;
-}
-
-DBHelper.createRequestByTrans = createRequestByTrans;
-
-function createRequestByTrans(trans) {
-    var request = new sqlDB.Request(trans);
+function createDBRequest(param /* [pool or transaction] */ ) {
+    var request = new sqlDB.Request(param); //param.request();
 
     function dbRequest(cmd, cmdType, sqlParas) {
         if (sqlParas != null) {
@@ -72,15 +59,9 @@ function createRequestByTrans(trans) {
         }
         //
         if (DBHelper.commandType.Proc == cmdType) {
-            return request.execute(cmd).then(result => {
-
-                console.dir(result)
-            });
+            return request.execute(cmd);
         } else {
-            return request.query(cmd).then(result => {
-
-                console.dir(result)
-            });;
+            return request.query(cmd);
         }
     }
     return dbRequest;

@@ -1,4 +1,8 @@
 const dbhelper = require('./NodeMssqlDBHelper.js')
+const sqlDB = dbhelper.sqlDB;
+const commandType = dbhelper.commandType;
+const cmdParamDirection = dbhelper.paramDirection;
+
 const config = {
         user: 'sa',
         password: '123',
@@ -13,30 +17,32 @@ const config = {
 
 var sql = 'select * from Users where UserCode = @UserCode';
 var paras = [];
-var param = dbhelper.createSqlParam('UserCode', '0000001', dbhelper.sqlDB.VarChar, dbhelper.commandType.Input);
+var param = dbhelper.createSqlParam('UserCode', '0000001', sqlDB.VarChar, cmdParamDirection.Input);
 paras.push(param);
-dbhelper.setConnConfig(config);
 //
-var dbconn = dbhelper.getDBConn();
-dbconn.then(pool => {
-    var trans = dbhelper.createTransaction(pool);
-    var request = dbhelper.createRequestByTrans(trans);
-
-    trans.begin().then(() => {
-        request(sql, dbhelper.commandType.Sql, paras).then(
-            () => {
-                trans.commit(err => {
-                    // ... error checks
-                })
-            }
-        )
-
-    }).catch((error) => {
-        console.log(error);
-        trans.rollback(err => {
-            // ... error checks
+var dbconnPool = dbhelper.getDBConnPool(config);
+dbconnPool.then(pool => {
+    var trans = pool.transaction();
+    var request = dbhelper.createDBRequest(trans);
+    trans.begin()
+        .then(() => {
+            request(sql, commandType.Sql, paras).then(
+                (result) => {
+                    console.dir(result);
+                }
+            )
         })
-    })
+        .then(() => {
+            trans.commit(err => {
+                // ... error checks
+            })
+        })
+        .catch((error) => {
+            console.log(error);
+            trans.rollback(err => {
+                // ... error checks
+            })
+        })
 }).catch((error) => {
     console.log(error);
 });
