@@ -24,13 +24,26 @@ var dbconnPool = dbhelper.getDBConnPool(config);
 dbconnPool.then(pool => {
     var trans = pool.transaction();
     var request = dbhelper.createDBRequest(trans);
+
     trans.begin()
         .then(() => {
-            request(sql, commandType.Sql, paras).then(
-                (result) => {
+            return request(sql, commandType.Sql, paras)
+                .then((result) => {
                     console.dir(result);
-                }
-            )
+                    var sql = 'select * from Users where UserCode = @UserCode';
+                    var paras = [];
+                    var param = dbhelper.createSqlParam('UserCode', '0000002', sqlDB.VarChar, cmdParamDirection.Input);
+                    paras.push(param);
+                    return request(sql, commandType.Sql, paras)
+                })
+                .then((result) => {
+                    console.dir(result);
+                    // var sql = 'select * from Users where UserCode = @UserCode';
+                    // var paras = [];
+                    // var param = dbhelper.createSqlParam('UserCode', '0000002', sqlDB.VarChar, cmdParamDirection.Input);
+                    // paras.push(param);
+                    // return request(sql, commandType.Sql, paras)
+                })
         })
         .then(() => {
             trans.commit(err => {

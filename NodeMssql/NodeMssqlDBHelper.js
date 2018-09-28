@@ -54,6 +54,7 @@ function createDBRequest(param /* [pool or transaction] */ ) {
                     request.output(sqlParas[index].paramName, sqlParas[index].sqlType, sqlParas[index].paramValue);
                 } else {
                     request.input(sqlParas[index].paramName, sqlParas[index].sqlType, sqlParas[index].paramValue);
+
                 }
             }
         }
@@ -61,6 +62,7 @@ function createDBRequest(param /* [pool or transaction] */ ) {
         if (DBHelper.commandType.Proc == cmdType) {
             return request.execute(cmd);
         } else {
+
             return request.query(cmd);
         }
     }

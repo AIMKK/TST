@@ -11,14 +11,13 @@ const config = {
     }
 }
 
-//
 var dbconnPool = dbAccess.getDBConnPool(config);
 dbconnPool.then(pool => {
     var trans = pool.transaction();
     var dbCommand = dbAccess.getDBCommand(trans);
     trans.begin()
         .then(() => {
-            dbCommand.UserInfoGet('0000001')
+            return dbCommand.UserInfoGet('0000001')
                 .then((result) => {
                     console.dir(result);
                 })
