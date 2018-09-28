@@ -11,23 +11,28 @@ const config = {
     }
 }
 
+//
 var dbconnPool = dbAccess.getDBConnPool(config);
 dbconnPool.then(pool => {
     var trans = pool.transaction();
     var dbCommand = dbAccess.getDBCommand(trans);
     trans.begin()
         .then(() => {
-            return dbCommand.UserInfoGet('0000001')
+            userInfoGetParam = {}
+            userInfoGetParam.UserCode = '0000001';
+            return dbCommand.userInfoGet(userInfoGetParam)
                 .then((result) => {
                     console.dir(result);
+                    insertMsgParam = {}
+                    insertMsgParam.Msg = 'some thing to do'
+                    insertMsgParam.CreateDate = new Date();
+                    return dbCommand.InsertMsg(insertMsgParam)
                 })
-        })
-        .then(() => {
+        }).then(() => {
             trans.commit(err => {
-                // ... error checks
+                // ... errorchecks 
             })
-        })
-        .catch((error) => {
+        }).catch((error) => {
             console.log(error);
             trans.rollback(err => {
                 // ... error checks
@@ -37,3 +42,21 @@ dbconnPool.then(pool => {
     console.log(error);
 });
 //
+
+// var dbconnPool2 = dbAccess.getDBConnPool(config);
+// dbconnPool2.then(pool => {
+//     var dbCommand = dbAccess.getDBCommand(pool);
+//     userInfoGetParam = {}
+//     userInfoGetParam.UserCode = '0000001';
+//     dbCommand.userInfoGet(userInfoGetParam)
+//         .then((result) => {
+//             console.dir(result);
+//             insertMsgParam = {}
+//             insertMsgParam.Msg = 'some thing to do'
+//             insertMsgParam.CreateDate = new Date();
+//             return dbCommand.InsertMsg(insertMsgParam)
+//         })
+// }).catch((error) => {
+//     console.log(error);
+// });
+// //
