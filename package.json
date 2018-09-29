@@ -19,6 +19,7 @@
   "homepage": "https://github.com/AIMKK/TST#readme",
   "dependencies": {
     "amqplib": "^0.5.2",
+    "koa": "^2.5.3",
     "mssql": "^4.1.0",
     "q": "^1.5.1",
     "tedious": "^2.6.4",
