@@ -20,20 +20,21 @@ const router = new Router({
 const irms = new Router();
 irms.get('/hello', async(ctx) => {
     //
-    rabConnP.then((rabconn) => {
+    await rabConnP.then((rabconn) => {
         return rabconn.createChannel();
     }).then((ch) => {
         ch.prefetch(1);
         ch.assertQueue(queue, { durable: false })
             .then(() => {
-                ch.sendToQueue(queue, Buffer.from('something to do'));
-                ctx.body = 'sned ok';
-                console.log('sned ok');
+                return ch.sendToQueue(queue, Buffer.from('something to do'));
+
             })
             .then(function() {
-                console.log('[*] Waiting for message. To exit press CRTL+C');
+                console.log('sned ok');
+
             });
     })
+    ctx.body = 'sned ok';
 
 }).get('/todo', async(ctx) => {
     ctx.body = ctx.query;
