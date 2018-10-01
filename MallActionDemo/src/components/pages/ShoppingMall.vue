@@ -40,10 +40,34 @@
                         <div class="recommend-item">
                             <img :src="item.image" width="80%"/>
                             <div>{{item.goodsName}}</div>
-                            <div>￥{{item.price}}(￥{{item.mallPrice}})</div>
+                            <div>￥{{item.price | moneyFilter}}(￥{{item.mallPrice|moneyFilter}})</div>
                         </div>
                     </swiper-slide>
                 </swiper>
+            </div>
+        </div>
+        <floor-component :floorData="floor1" :floorTitle="floorName.floor1">
+
+        </floor-component>
+        <floor-component :floorData="floor2" :floorTitle="floorName.floor2">
+
+        </floor-component>
+        <floor-component :floorData="floor3" :floorTitle="floorName.floor3">
+
+        </floor-component>
+        
+        <div class="hot-area">
+            <div class="hot-title">热卖商品</div>
+            <div class="hot-goods">
+                <van-list>
+                    <van-row gutter="20">
+                        <van-col span="12" v-for="(item,index) in hotGoods" :key="index">
+                          <goods-info :goodsImage="item.image" :goodsName="item.name" :goodsPrice="item.price">
+
+                          </goods-info>
+                        </van-col>
+                    </van-row>
+                </van-list>
             </div>
         </div>
     </div>
@@ -53,6 +77,9 @@
     import axios from 'axios';
     import 'swiper/dist/css/swiper.css'
     import {swiper,swiperSlide}from 'vue-awesome-swiper'
+    import floorComponent from '../component/floorComponent'
+    import {toMoney} from '@/filter/moneyFilter.js'
+    import goodsInfo from '../component/goodsInfoComponent'
     export default {
         data() {
             return {
@@ -66,11 +93,21 @@
                  swiperOption:{
                      slidesPerView:3,
                  },
+                 floor1:[],
+                 floor2:[],
+                 floor3:[],
+                 floorName:{},
+                 hotGoods:[],
             }
            
         },
+        filters:{
+            moneyFilter(money){
+                return toMoney(money);
+            }
+        },
         components:{
-            swiper,swiperSlide
+            swiper,swiperSlide,floorComponent,goodsInfo
         },
         created(){
             axios({
@@ -83,7 +120,12 @@
                     this.adBanner=Response.data.data.advertesPicture.PICTURE_ADDRESS;
                     this.bannerPicArr=Response.data.data.slides;
                     this.recommendGoods=Response.data.data.recommend;
-                }
+                    this.floor1=Response.data.data.floor1;
+                    this.floor2=Response.data.data.floor2;
+                    this.floor3=Response.data.data.floor3;
+                    this.floorName=Response.data.data.floorName;
+                    this.hotGoods=Response.data.data.hotGoods;
+               }
             }).catch(error=>{
                 console.log(error)
             })
@@ -152,4 +194,11 @@
     font-size: 12px;
     text-align: center;
 }
+.hot-area{
+    text-align: center;
+    font-size: 14px;
+    height: 1.8rem;
+    line-height: 1.8rem;
+}
+
 </style>
