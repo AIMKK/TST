@@ -80,6 +80,8 @@
     import floorComponent from '../component/floorComponent'
     import {toMoney} from '@/filter/moneyFilter.js'
     import goodsInfo from '../component/goodsInfoComponent'
+    import url from '@/serviceAPI.config.js'
+    
     export default {
         data() {
             return {
@@ -111,7 +113,7 @@
         },
         created(){
             axios({
-                url:'https://easy-mock.com/mock/5b8bf81fba0d0467e7762af9/malltestdata/',
+                url:url.getShopMallInfo,
                 method:'get'
             }).then(Response=>{
                 console.log(Response)
