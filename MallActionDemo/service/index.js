@@ -8,10 +8,16 @@ const Router = require('koa-router');
 //
 app.use(bodyParser()).use(koaCors());
 //
-let userRouter = require('./appApi/user.js')
-    //load sub router
+let userRouter = require('./appApi/user.js');
+let goodsRouter = require('./appApi/goods.js');
+let categoryRouter = require('./appApi/category.js');
+let categorySubRouter = require('./appApi/categorySub.js');
+//load sub router
 let router = new Router();
 router.use('/user', userRouter.routes());
+router.use('/goods', goodsRouter.routes());
+router.use('/category', categoryRouter.routes());
+router.use('/categorySub', categorySubRouter.routes());
 //load router mid soft
 app.use(router.routes());
 app.use(router.allowedMethods())
