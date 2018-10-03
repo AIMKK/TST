@@ -1,12 +1,12 @@
 <template>
     <div>
        <van-nav-bar
-        title="用户注册"
+        title="用户登陆"
         left-text="返回"
         left-arrow
         @click-left="goBack"
         />
-        <div class="register-panel">
+        <div class="login-panel">
             <van-field
                 v-model="username"
                 label="用户名"
@@ -24,10 +24,10 @@
                 required
                 :error-message="passwordErrMsg"
             />
-            <div class="register-button">
-                <van-button type="primary" @click ="registerAct"
+            <div class="login-button">
+                <van-button type="primary" @click ="loginAct"
                  size="large" :loading="openLoading">
-                    马上注册
+                    登陆
                 </van-button>
             </div>
         </div>
@@ -48,20 +48,24 @@
                 passwordErrMsg:'',
             }
         },
+        created(){
+            if(localStorage.userInfo){
+                Toast.success('user is login');
+                this.$router.push('/');
+            }
+        },
      methods:{
          goBack(){
              this.$router.go(-1);
          },
-         registerAct(){
-            //  if(this.checkForm()){
-            //      this.axiosRegisterUser();
-            //  }
-            this.checkForm()&&this.axiosRegisterUser();
+         loginAct(){
+            
+            this.checkForm()&&this.axiosLoginUser();
          },
-         axiosRegisterUser(){
+         axiosLoginUser(){
              this.openLoading=true;
              axios({
-                 url:url.registerUser,
+                 url:url.login,
                  method:'post',
                  data:{
                      userName:this.username,
@@ -69,23 +73,32 @@
                  }
              })
              .then((response)=>{
-                 console.log(response)
-                 if(response.data.code==200){
-                     Toast.success(response.data.message)
-                     localStorage.userInfo=null;
-                    this.$router.push('/login');
-                 }else{                     
-                     console.log(response.data.message)
-                     this.openLoading=false;
-                     Toast.fail('register fail')
+                 
+                 console.log(response);
+                 if(response.data.code==200&&response.data.message){
+                     
+                    new Promise((resolve,reject)=>{
+                    localStorage.userInfo={userName:this.username}
+                    setTimeout(()=>{resolve()},500);
+                    }).then(()=>{
+                        Toast.success('login success');
+                        this.$router.push('/');
+                    }).catch((error)=>{
+                        Toast.fail('login status store fail')
+                        console.log(error)
+                    })
+                 }else{
+                    Toast.fail('login fail') 
+                    this.openLoading=false;
                  }
+
              }).catch((error)=>{
-                 console.log(error)
+                Toast.fail('login fail')
                  this.openLoading=false;
-                 Toast.fail('register fail')
+                
              })
          },
-         //check register vaild
+         //check login vaild
          checkForm(){
              let isOk=true;
              if(this.username.length<5){
@@ -107,13 +120,13 @@
 </script>
 
 <style scoped>
-.register-panel{
+.login-panel{
     width: 96%;
     border-radius: 5px;
     margin: 20px auto;
     padding-bottom: 80px;
 }
-.register-button{
+.login-button{
     padding-top: 10px;
 }
 </style>

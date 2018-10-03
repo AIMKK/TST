@@ -11,7 +11,10 @@ const userSchema = new Schema({
     password: String,
     createDate: { type: Date, default: Date.now() },
     lastLoginDate: { type: Date, default: Date.now() }
-})
+});
+// , {
+//     collection: 'User'
+// }
 
 userSchema.pre('save', function(next) {
     bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
@@ -22,7 +25,19 @@ userSchema.pre('save', function(next) {
             next();
         });
     });
-})
+});
+
+userSchema.methods = {
+    comparePassword: (uipwssword, dbpassword) => {
+        return new Promise((resolve, reject) => {
+            bcrypt.compare(uipwssword, dbpassword, (err, isMatch) => {
+                if (!err) resolve(isMatch);
+                else reject(err);
+            });
+        })
+    }
+}
+
 
 
 // publish 

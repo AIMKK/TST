@@ -4,6 +4,7 @@ const URL = {
     getShopMallInfo: BASEURL + 'malltestdata',
     getGoodsInfo: BASEURL + 'getGoodsInfo',
     registerUser: LOCALURL + 'user/register',
+    login: LOCALURL + 'user/login',
 }
 
 module.exports = URL;
