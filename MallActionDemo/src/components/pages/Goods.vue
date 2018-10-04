@@ -92,9 +92,6 @@
 </script>
 
 <style scoped>
-.navbar-div{
-
-}
 .goods-name{
     background-color:#fff;
 }
