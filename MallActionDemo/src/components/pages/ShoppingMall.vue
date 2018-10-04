@@ -176,6 +176,7 @@
     padding: .3rem;
     font-size: 12px;
     text-align: center;
+    flex:1;
 }
 .recommend-area{
     background-color: #fff;

@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router';
 import {
+    PullRefresh,
     Tab,
     Tabs,
     Button,
@@ -21,7 +22,8 @@ import {
 Vue.use(Button).use(Row).use(Col)
     .use(Swipe).use(SwipeItem)
     .use(Lazyload).use(List).use(Field)
-    .use(NavBar).use(Tab).use(Tabs);
+    .use(NavBar).use(Tab).use(Tabs)
+    .use(PullRefresh);
 //
 Vue.config.productionTip = false
 

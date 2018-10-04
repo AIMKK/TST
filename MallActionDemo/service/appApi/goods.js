@@ -64,7 +64,6 @@ router.get('/insertAllcategorySub', async(ctx) => {
 })
 
 //get goods detail info
-
 router.post('/getDetailGoodsInfo', async(ctx) => {
     let goodsId = ctx.request.body.goodsId;
     const Goods = mongoose.model('Goods');
@@ -82,5 +81,47 @@ router.post('/getDetailGoodsInfo', async(ctx) => {
             }
         })
 })
+
+//get goods category data
+router.get('/getCategoryList', async(ctx) => {
+    try {
+        const Category = mongoose.model('Category')
+        let result = await Category.find().exec();
+        ctx.body = { code: 200, message: result }
+    } catch (error) {
+        ctx.body = { code: 500, message: error }
+    }
+});
+//get category sub data
+router.post('/getCategorySubList', async(ctx) => {
+    try {
+        let categoryId = ctx.request.body.categoryId;
+        const CategorySub = mongoose.model('CategorySub')
+        let result = await CategorySub.find({
+            MALL_CATEGORY_ID: categoryId
+        }).exec();
+        ctx.body = { code: 200, message: result }
+    } catch (error) {
+        ctx.body = { code: 500, message: error }
+    }
+});
+//get goodslist by categorysubid
+router.post('/getGoodsListByCategorySubId', async(ctx) => {
+    try {
+        let categorySubId = ctx.request.body.categorySubId;
+        let page = ctx.request.body.page; //当前页数
+        let num = 10; //每页显示数量
+        let start = num * (page - 1);
+
+        const Goods = mongoose.model('Goods')
+        let result = await Goods.find({
+            SUB_ID: categorySubId
+        }).skip(start).limit(num).exec();
+        ctx.body = { code: 200, message: result }
+    } catch (error) {
+        ctx.body = { code: 500, message: error }
+    }
+})
+
 
 module.exports = router;
