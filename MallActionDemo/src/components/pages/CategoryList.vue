@@ -79,8 +79,8 @@
         },
         mounted(){
             let wHeight=document.documentElement.clientHeight;
-            document.getElementById('leftNav').style.height=wHeight-46+'px';
-            document.getElementById('list-div').style.height=wHeight-90+'px';
+            document.getElementById('leftNav').style.height=wHeight-46-50+'px';
+            document.getElementById('list-div').style.height=wHeight-90-50+'px';
         },
         methods: {
             getCategory() {

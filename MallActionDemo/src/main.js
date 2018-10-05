@@ -16,12 +16,14 @@ import {
     Lazyload,
     List,
     Field,
-    NavBar
+    NavBar,
+    Tabbar,
+    TabbarItem
 } from 'vant';
 
 
-Vue.use(Button).use(Row).use(Col)
-    .use(Swipe).use(SwipeItem)
+Vue.use(Tabbar).use(TabbarItem).use(Button)
+    .use(Row).use(Col).use(Swipe).use(SwipeItem)
     .use(Lazyload).use(List).use(Field)
     .use(NavBar).use(Tab).use(Tabs)
     .use(PullRefresh).use(Stepper);
