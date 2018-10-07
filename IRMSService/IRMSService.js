@@ -10,7 +10,7 @@ var rabConnP = require('amqplib').connect(rabConnOPtions);
 // 
 const queue = 'task'
 
-const staticPath = './static';
+const staticPath = './static/';
 //
 const app = new Koa();
 const router = new Router({
