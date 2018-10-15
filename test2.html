@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- https://www.cnblogs.com/linxiong945/p/4041841.html -->
+    <!-- float and relative co op -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        
+        #container {
+            width: 1200px;
+            border: 1px solid;
+            margin: 0 auto;
+        }
+        
+        #main {
+            margin-left: 100px;
+            margin-right: 150px;
+        }
+        
+        #top {
+            background: #666;
+            height: 50px;
+        }
+        
+        #left {
+            background: #e79f6d;
+            float: left;
+            width: 100px;
+            position: relative;
+            left: -100px;
+        }
+        
+        #content {
+            background: #d6d6d6;
+            float: left;
+            width: 100%;
+            margin-left: -100px;
+        }
+        
+        #right {
+            background: #77bbdd;
+            float: left;
+            width: 150px;
+            margin-left: -150px;
+            position: relative;
+            left: 150px;
+        }
+        
+        #foot {
+            background: #666;
+            clear: both;
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="top">this is top</div>
+        <div id="main">
+            <div id="left"> this is left</div>
+            <div id="content"> this is content</div>
+            <div id="right"> this is right</div>
+        </div>
+        <div id="foot">this is foot</div>
+    </div>
+</body>
+
+</html>
