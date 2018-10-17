@@ -9,13 +9,128 @@
 <body>
     <div id="app">
         {{ message }}
+        <p :title="titleTip">
+            title test
+        </p>
+        <span v-if="seen">conditional see</span>
+        <ol>
+            <li v-for="todo in todos">
+                {{todo.text}}
+            </li>
+        </ol>
+        <button @click="reverseMessage">reverse message</button>
+        <input v-model="message">
+        <ol>
+            <todo-item v-for=" item in groceryList" :todo="item" :key="item.id">
+
+            </todo-item>
+        </ol>
+        <textarea v-model="message" placeholder="add multiple lines"></textarea>
+        <input type="checkbox" id="checkbox" v-model="checked" />
+        <label for="checkbox">{{checked}}</label>
+
+        <div>
+            <input type="checkbox" id="jack" value="Jack" v-model="checkedNames" />
+            <label for="jack">Jack</label>
+            <input type="checkbox" id="john" value="John" v-model="checkedNames" />
+            <label for="john">John</label>
+            <input type="checkbox" id="mike" value="Mike" v-model="checkedNames" />
+            <label for="mike">Mike</label>
+            <br>
+            <span>Checked names: {{ checkedNames }}</span>
+        </div>
+        <div>
+            <input type="radio" id="one" value="one" v-model="picked " />
+            <label for="one">one</label>
+            <input type="radio" id="two" value="two" v-model="picked " />
+            <label for="two">two</label>
+            <br>
+            <span>Picked: {{ picked }}</span>
+        </div>
+        <div>
+            <input type="radio" value="a" v-model="picked " />
+
+        </div>
+        <div>
+            <select v-model="selectedSingle">
+               <option disabled value="">please selected one</option>  
+               <option>A</option>  
+               <option>B</option>    
+               <option>C</option>  
+            </select>
+            <br>
+            <span>Selected: {{ selectedSingle }}</span>
+        </div>
+        <div>
+            <select v-model="selected" multiple>              
+               <option>A</option>  
+               <option>B</option>    
+               <option>C</option>  
+            </select>
+            <br>
+            <span>Selected: {{ selected }}</span>
+        </div>
+        <div>
+            <select v-model="selectedvfor">              
+               <option v-for =" option in options" :value ="option.value" >
+                   {{option.text}}                   
+               </option> 
+            </select>
+            <br>
+            <span>Selected: {{ selectedvfor }}</span>
+        </div>
     </div>
 
     <script>
+        Vue.component('todo-item', {
+            props: ['todo'],
+            template: ' <li> <p> this is component</p>  {{todo.text}}  </li>'
+        });
+        //
         var app = new Vue({
             el: '#app',
             data: {
-                message: 'Hello Vue!'
+                message: 'Hello Vue!',
+                titleTip: 'this is title',
+                seen: false,
+                checked: false,
+                checkedNames: [1, 2, 3],
+                picked: 'two',
+                selectedSingle: 'A',
+                selected: ['A'],
+                options: [{
+                    text: 'One',
+                    value: 'A'
+                }, {
+                    text: 'Two',
+                    value: 'B'
+                }, {
+                    text: 'Three',
+                    value: 'C'
+                }],
+                selectedvfor: 'B',
+                todos: [{
+                    text: 'learn vue'
+                }, {
+                    text: 'learn vue2'
+                }, {
+                    text: 'learn vue3'
+                }],
+                groceryList: [{
+                    id: 0,
+                    text: 'Vegetables'
+                }, {
+                    id: 1,
+                    text: 'Cheese'
+                }, {
+                    id: 2,
+                    text: 'Whatever else humans are supposed to eat'
+                }]
+            },
+            methods: {
+                reverseMessage: function() {
+                    this.message = this.message.split('').reverse().join('');
+                }
             }
         })
     </script>
