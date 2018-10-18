@@ -6,7 +6,7 @@
                 <span class="tip-icon-bottom"></span>
             </div>
             <p class="tip-text">{{alertText}}</p>
-            <div class="confirm" @click="closeTip">confirm</div>
+            <div class="confirm" @click="closeTip">确认</div>
         </section>
     </div>    
 </template>
@@ -14,7 +14,8 @@
     export default {
         data() {
             return {
-                key: "value"
+                positionY: 0,
+                timer: null
             }
         },
         props: ['alertText'],
@@ -26,6 +27,21 @@
     }
 </script>
 <style scoped>
+    @keyframes tipMove {
+        0% {
+            transform: scale(1)
+        }
+        35% {
+            transform: scale(.8)
+        }
+        70% {
+            transform: scale(1.1)
+        }
+        100% {
+            transform: scale(1)
+        }
+    }
+    
     .alert-container {
         position: fixed;
         top: 0;
@@ -42,7 +58,7 @@
         margin-top: -6rem;
         margin-left: -6rem;
         width: 12rem;
-        animation: tipmove .4s;
+        animation: tipMove .4s;
         background-color: rgba(255, 255, 255, 1);
         border: 1px solid #f5f5f5;
         padding-top: 0.6rem;
