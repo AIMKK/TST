@@ -46,20 +46,21 @@
 </script>
 <style scoped>
     #head-top {
-        position: fixed;
+        position: absolute;
         z-index: 100;
         left: 0;
         top: 0;
         width: 100%;
         padding: 0;
-    }
-    
-    #head-top .header {
         background-color: #3190e8;
         height: 1.95rem;
         padding: .2rem 0;
-        /* max-width: 600px;
-        margin: 0 auto; */
+    }
+    
+    #head-top .header {
+        /* background-color: #3190e8;
+        height: 1.95rem;
+        padding: .2rem 0; */
     }
     
     .head-goback {

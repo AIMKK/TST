@@ -1,6 +1,6 @@
 <template>
     <div class="login-container clear">
-        <head-top headTitle="IRMS">       
+        <head-top headTitle="Login">       
         </head-top>
         <div class="login-form">
             <section class="input-container">
@@ -106,6 +106,10 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
     .login-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
         padding-top: 1.95rem;
         /* max-width: 600px;
         margin: 0 auto;

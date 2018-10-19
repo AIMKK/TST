@@ -60,7 +60,7 @@
         width: 12rem;
         animation: tipMove .4s;
         background-color: rgba(255, 255, 255, 1);
-        border: 1px solid #f5f5f5;
+        border: 1px;
         padding-top: 0.6rem;
         border-radius: 0.25rem;
         display: flex;
