@@ -22,9 +22,8 @@ rabConnP.then((rabconn) => {
                 console.log("[x] Received '%s'", msg.content.toString());
                 //todo by msg type
 
-                irmsDBBusiness.irmsAtestTableDataAdd(newVipQuickJoinParam).then((abc) => {
-                    console.log('1111--')
-                    console.log(abc)
+                irmsDBBusiness.irmsAtestTableDataAdd(newVipQuickJoinParam).then((result) => {
+                    console.log(result)
                     ch.ack(msg);
                 }).catch(error => {
                     console.log('affdsfds--' + error)
