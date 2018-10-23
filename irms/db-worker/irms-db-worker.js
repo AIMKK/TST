@@ -7,6 +7,7 @@ var rabConnP = require('amqplib').connect(rabConnOPtions);
 
 var newVipQuickJoinParam = {
     CompanyCode: '',
+    vipcode: 'tester',
     LocationCode: 'HK992',
     ChineseName: 'tesaaa',
     EnglishName: 'tesaaa',
@@ -21,7 +22,7 @@ rabConnP.then((rabconn) => {
                 console.log("[x] Received '%s'", msg.content.toString());
                 //todo by msg type
 
-                irmsDBBusiness.irmsNewVipQuickJoin(newVipQuickJoinParam).then((abc) => {
+                irmsDBBusiness.irmsAtestTableDataAdd(newVipQuickJoinParam).then((abc) => {
                     console.log('1111--')
                     console.log(abc)
                     ch.ack(msg);

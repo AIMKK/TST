@@ -4,6 +4,7 @@ var dbconnPool;
 //223
 module.exports = {
     createCustomerContactUpdateCmd,
+    createTestsqlCmd,
     createDBConnPool
 }
 
@@ -11,16 +12,12 @@ function createDBConnPool() {
     if (dbconnPool) {
         return dbconnPool;
     }
-    dbconnPool = msDB.connect(contactCustomerConnConfig);
+    dbconnPool = new msDB.ConnectionPool(contactCustomerConnConfig).connect(); //msDB.connect(contactCustomerConnConfig);
     return dbconnPool;
 };
 
 //create request command
 function createCustomerContactUpdateCmd(iniReqParam /* [pool or transaction] */ ) {
-
-    if (!iniReqParam) {
-        return null;
-    }
 
     //customerContactUpdate
     var customerContactUpdate = function(customerContactUpdateParam) {
@@ -39,4 +36,18 @@ function createCustomerContactUpdateCmd(iniReqParam /* [pool or transaction] */ 
     };
     //
     return customerContactUpdate;
+}
+
+
+//create request command
+function createTestsqlCmd(iniReqParam /* [pool or transaction] */ ) {
+
+
+    //customerContactUpdate
+    var testsql = function(customerContactUpdateParam) {
+        var request = new msDB.Request(iniReqParam);
+        return request.query('select top 1 * from CustomerContact');
+    };
+    //
+    return testsql;
 }

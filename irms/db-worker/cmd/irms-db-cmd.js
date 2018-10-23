@@ -5,6 +5,10 @@ var dbconnPool;
 //216
 module.exports = {
     createNewVipQuickJoinCmd,
+    createGetVIPPointsCmd,
+    createATestTableInsertCmd,
+    createATestTableSelectCmd,
+    createATestTableUpdateCmd,
     createDBConnPool
 }
 
@@ -12,16 +16,12 @@ function createDBConnPool() {
     if (dbconnPool) {
         return dbconnPool;
     }
-    dbconnPool = msDB.connect(irmsConnConfig);
+    dbconnPool = new msDB.ConnectionPool(irmsConnConfig).connect(); //msDB.connect(irmsConnConfig);
     return dbconnPool;
 };
 //
 //create request command
 function createNewVipQuickJoinCmd(iniReqParam /* [pool or transaction] */ ) {
-
-    if (!iniReqParam) {
-        return null;
-    }
 
     //用最少信息创建一个会员
     var newVipQuickJoin = function(newVipQuickJoinParam) {
@@ -40,4 +40,66 @@ function createNewVipQuickJoinCmd(iniReqParam /* [pool or transaction] */ ) {
 
 
     return newVipQuickJoin;
+}
+
+//create request command
+function createGetVIPPointsCmd(iniReqParam /* [pool or transaction] */ ) {
+
+    //用最少信息创建一个会员
+    var getVIPPoints = function(getVIPPointsParam) {
+        var request = new msDB.Request(iniReqParam);
+        request.input('VIPCode', msDB.VarChar, getVIPPointsParam.VIPCode);
+        return request.execute('SP_VIPPoints_Get');
+    };
+
+
+    return getVIPPoints;
+}
+
+//create request command
+function createATestTableInsertCmd(iniReqParam /* [pool or transaction] */ ) {
+
+
+    //用最少信息创建一个会员
+    var ATestTableInsert = function(id) {
+        var request = new msDB.Request(iniReqParam);
+        request.output('ID', msDB.Int, id);
+        return request.execute('ATestTableInsert');
+    };
+
+
+    return ATestTableInsert;
+}
+
+
+//create request command
+function createATestTableSelectCmd(iniReqParam /* [pool or transaction] */ ) {
+
+
+    //用最少信息创建一个会员
+    var ATestTableSelect = function(id) {
+        var request = new msDB.Request(iniReqParam);
+        request.input('ID', msDB.Int, id);
+        return request.execute('ATestTableSelect');
+    };
+
+
+    return ATestTableSelect;
+}
+
+
+//create request command
+function createATestTableUpdateCmd(iniReqParam /* [pool or transaction] */ ) {
+
+    //用最少信息创建一个会员
+    var ATestTableUpdate = function(AtestTableData) {
+        var request = new msDB.Request(iniReqParam);
+        request.input('ID', msDB.Int, AtestTableData.ID);
+        request.input('Name', msDB.NVarChar(100), AtestTableData.Name);
+        request.input('City', msDB.NVarChar(100), AtestTableData.City);
+        return request.execute('ATestTableupdate');
+    };
+
+
+    return ATestTableUpdate;
 }

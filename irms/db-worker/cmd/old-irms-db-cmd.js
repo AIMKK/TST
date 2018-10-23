@@ -12,16 +12,13 @@ function createDBConnPool() {
     if (dbconnPool) {
         return dbconnPool;
     }
-    dbconnPool = msDB.connect(oldIrmsConnConfig);
+    dbconnPool = new msDB.ConnectionPool(oldIrmsConnConfig).connect(); //msDB.connect(oldIrmsConnConfig);
 
     return dbconnPool;
 };
 //create request command
 function createNewVipQuickJoinCmd(iniReqParam /* [pool or transaction] */ ) {
 
-    if (!iniReqParam) {
-        return null;
-    }
 
     //用最少信息创建一个会员
     var newVipQuickJoin = function(newVipQuickJoinParam) {
@@ -44,9 +41,7 @@ function createNewVipQuickJoinCmd(iniReqParam /* [pool or transaction] */ ) {
 
 //create request command
 function createGtNewVipCodeCmd(iniReqParam /* [pool or transaction] */ ) {
-    if (!iniReqParam) {
-        return null;
-    }
+
     //
     var getNewVipCode = function(getNewVipCodeParam) {
         var request = new msDB.Request(iniReqParam);
