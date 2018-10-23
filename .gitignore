@@ -1,4 +1,5 @@
 **/node_modules/
+**/dist
 **/rabitmqConnConfig.js
 **/dbConnConfig.js
 **/db-conn-config.js
