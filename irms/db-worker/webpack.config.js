@@ -3,8 +3,8 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 module.exports = {
     entry: './irms-db-worker.js',
     output: {
-        filename: '[name].bundle.js',
-        // chunkFilename: '[name].bundle.js',
+        //filename: '[name].bundle.js',
+        filename: 'irms-db-worker.js',
         path: path.resolve(__dirname, 'dist-temp'),
 
     },
