@@ -70,47 +70,6 @@ function irmsNewVipQuickJoin(newVipQuickJoinParam) {
 
 };
 
-function execTransCmd(trans, cmd, cmdParam) {
-    var resultMsg = {
-        successed: false,
-        msg: ''
-    };
-    if (!trans || !cmd) {
-        resultMsg.successed = false;
-        resultMsg.msg = 'trans or cmd not vaild';
-        return resultMsg;
-    }
-    //
-    resultMsg.successed = false;
-    return trans.begin().then(() => {
-        return cmd(cmdParam);
-    }).then(result => {
-        return trans.commit().then((error) => {
-            if (error) {
-                console.log(error)
-                resultMsg.successed = false;
-                resultMsg.msg = error;
-                return resultMsg;
-            }
-            resultMsg.successed = true;
-            resultMsg.msg = result;
-            return resultMsg;
-        })
-
-    }).catch((error) => {
-        resultMsg.successed = false;
-        return trans.rollback().then(err => {
-            if (err) {
-                console.log('rollback error:' + err);
-                resultMsg.msg = error + err;
-                return resultMsg;
-            }
-            resultMsg.msg = error;
-            return resultMsg;
-        })
-    })
-}
-
 function execCmd(cmd, cmdParam) {
     var resultMsg = {
         successed: false,
@@ -142,20 +101,59 @@ function irmsAtestTableDataAdd() {
     //
     return oldIrmsconnPool.then(pool => {
         var trans = pool.transaction();
-        var cmd = irmsDB.createATestTableInsertCmd(trans);
-        //
-        return execTransCmd(trans, cmd, 0).then(result => {
-            var id = result.msg.output.ID;
-            var cmdSelect = irmsDB.createATestTableSelectCmd(pool);
-            //
-            return execCmd(cmdSelect, id).then(result => {
-                if (result && result.successed) {
-                    return result.msg.recordset[0]
+        var cmdInsert = irmsDB.createATestTableInsertCmd(trans);
+        return trans.begin().then(() => {
+            return cmdInsert(0); //这里只有一个要处理的
+        }).then(result => {
+            console.log('1')
+            return trans.commit().then((error) => {
+                if (error) {
+                    console.log(error)
+                    resultMsg.successed = false;
+                    resultMsg.msg = error;
+                    return resultMsg;
                 }
-            });
+                resultMsg.successed = true;
+                resultMsg.msg = result;
+                return resultMsg;
+            })
+        }).catch((error) => {
+            console.log('2')
+            resultMsg.successed = false;
+            return trans.rollback().then(err => {
+                if (err) {
+                    console.log('rollback error:' + err);
+                    resultMsg.msg = error + err;
+                    return resultMsg;
+                }
+                resultMsg.msg = error;
+                return resultMsg;
+            })
+        }).then(result => {
+            //这里要判断是否成功，如果成功就继续，不成功，就不做任何事情
+            if (result && result.successed) {
+                var id = result.msg.output.ID;
+                var cmdSelect = irmsDB.createATestTableSelectCmd(pool);
+                //
+                return execCmd(cmdSelect, id).then(result => {
+                    if (result && result.successed) {
+                        resultMsg.successed = true;
+                        resultMsg.msg = result.msg.recordset[0]
+                        return resultMsg;
+                    } else {
+                        resultMsg.successed = false;
+                        resultMsg.msg = result.msg;
+                        return resultMsg;
+                    }
+                });
+            } else {
+                resultMsg.successed = false;
+                resultMsg.msg = result.msg;
+                return resultMsg;
+            }
         });
     }).then(result => { //local db de 处理
-        if (result == null) {
+        if (result == null || !resultMsg.successed) {
             resultMsg.successed = false;
             resultMsg.msg = "first failed";
             return resultMsg;
@@ -163,17 +161,47 @@ function irmsAtestTableDataAdd() {
         var localconnPool = localTestDB.createDBConnPool();
         return localconnPool.then(pool => {
             var trans = pool.transaction();
-            var cmd = localTestDB.createATestTableUpdateCmd(trans);
+            var cmdupdate = localTestDB.createATestTableUpdateCmd(trans);
+            var param = resultMsg.msg;
             //
-            return execTransCmd(trans, cmd, result).then(result => {
-                resultMsg.successed = false;
-                resultMsg.msg = "local failed";
-                if (result && result.successed) {
+            return trans.begin().then(() => {
+                return cmdupdate(param); //这里只有一个要处理的
+            }).then(result => {
+                console.log('3')
+                return trans.commit().then((error) => {
+                    if (error) {
+                        console.log(error)
+                        resultMsg.successed = false;
+                        resultMsg.msg = error;
+                        return resultMsg;
+                    }
                     resultMsg.successed = true;
-                    resultMsg.msg = "both ok";
-                }
-                return resultMsg
+                    resultMsg.msg = 'both ok';
+                    return resultMsg;
+                }).then(result => {
+                    if (result && result.successed) {
+                        resultMsg.successed = true;
+                        resultMsg.msg = "111both ok";
+                    } else {
+                        resultMsg.successed = false;
+                        resultMsg.msg = "local failed";
+                    }
+                    return resultMsg
+                })
+            }).catch((error) => {
+                console.log('4')
+                resultMsg.successed = false;
+                return trans.rollback().then(err => {
+                    if (err) {
+                        console.log('rollback error:' + err);
+                        resultMsg.msg = error + err;
+                        return resultMsg;
+                    }
+                    resultMsg.msg = error;
+                    return resultMsg;
+                })
             });
+
         })
     }).catch(error => {
         resultMsg.successed = false;

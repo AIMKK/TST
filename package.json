@@ -1,28 +1,28 @@
 {
-  "name": "TST",
-  "version": "1.0.0",
-  "description": "TMP",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AIMKK/TST.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/AIMKK/TST/issues"
-  },
-  "homepage": "https://github.com/AIMKK/TST#readme",
-  "dependencies": {
-    "amqplib": "^0.5.2",
-    "koa": "^2.5.3",
-    "mssql": "^4.1.0",
-    "q": "^1.5.1",
-    "tedious": "^2.6.4",
-    "tedious-connection-pool": "^1.0.5"
-  }
+    "name": "TST",
+    "version": "1.0.0",
+    "description": "TMP",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/AIMKK/TST.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/AIMKK/TST/issues"
+    },
+    "homepage": "https://github.com/AIMKK/TST#readme",
+    "dependencies": {
+        "amqplib": "^0.5.2",
+        "koa": "^2.5.3",
+        "mssql": "^4.1.0",
+        "q": "^1.5.1",
+        "tedious": "^2.6.4",
+        "tedious-connection-pool": "^1.0.5"
+    }
 }
