@@ -9,10 +9,14 @@ open.then(function(conn) {
         ch.prefetch(1);
         return ch.assertQueue(q, { durable: false }).then(function() {
             //
-            ch.sendToQueue(q, Buffer.from('something to do'));
+            var instruct = {
+                businessKey: 'multiReturnValueTest',
+                businessParam: ''
+            }
+            var data = JSON.stringify(instruct);
+            ch.sendToQueue(q, Buffer.from(data));
             console.log('sned ok');
-        })
-
+        });
 
     }).then(function() {
         console.log('over')

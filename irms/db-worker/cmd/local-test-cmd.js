@@ -9,6 +9,7 @@ module.exports = {
     createATestTableInsertCmd,
     createATestTableSelectCmd,
     createATestTableUpdateCmd,
+    createMultiReturnSetCmd,
     createDBConnPool
 }
 
@@ -95,4 +96,16 @@ function createATestTableUpdateCmd(iniReqParam /* [pool or transaction] */ ) {
     };
 
     return ATestTableUpdate;
+}
+
+
+//create request command
+function createMultiReturnSetCmd(iniReqParam /* [pool or transaction] */ ) {
+
+    var multiReturnSet = function(id) {
+        var request = new msDB.Request(iniReqParam);
+        return request.execute('getMultiReturnSetTest');
+    };
+
+    return multiReturnSet;
 }
