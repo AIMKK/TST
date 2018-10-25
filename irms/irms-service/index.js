@@ -4,11 +4,6 @@ const bodyParser = require('koa-bodyparser');
 const Router = require('koa-router');
 const static = require('koa-static');
 
-var rabConnOPtions = require('../../rabitmqConnConfig.js');
-//
-var rabConnP = require('amqplib').connect(rabConnOPtions);
-// 
-const queue = 'task'
 
 //
 const app = new Koa();
