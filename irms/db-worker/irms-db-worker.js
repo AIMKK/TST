@@ -11,11 +11,10 @@ rabConnP.then((rabconn) => {
     ch.prefetch(1);
     return ch.assertQueue(queue, { durable: false }).then(() => {
         return ch.consume(queue, (msg) => {
+            console.log("[irms-dbworker] Received '%s'", msg.content.toString());
             var instructContent = JSON.parse(msg.content.toString());
-
-            console.log("[x] Received '%s'", instructContent);
+            //
             var businessKey = instructContent.businessKey;
-
             var businessParam = instructContent.businessParam;
             var businessPro = irmsBusinessSet.getBusinessByKey(businessKey);
             //还要继续判断是不是函数
