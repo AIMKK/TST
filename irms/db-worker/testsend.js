@@ -10,8 +10,8 @@ open.then(function(conn) {
         return ch.assertQueue(q, { durable: false }).then(function() {
             //
             var instruct = {
-                businessKey: 'multiReturnValueTest',
-                businessParam: ''
+                businessKey: 'irmsUserLogin',
+                businessParam: {UserCode:'1',Password:'abcd'}
             }
             var data = JSON.stringify(instruct);
             ch.sendToQueue(q, Buffer.from(data));

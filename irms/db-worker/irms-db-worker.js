@@ -17,16 +17,18 @@ rabConnP.then((rabconn) => {
             var businessKey = instructContent.businessKey;
 
             var businessParam = instructContent.businessParam;
-            var businessPro = irmsBusinessSet.getBusiness(businessKey);
+            var businessPro = irmsBusinessSet.getBusinessByKey(businessKey);
             //还要继续判断是不是函数
-            if (businessPro) {
+            if (businessPro && typeof businessPro === "function") {
                 businessPro(businessParam).then((result) => {
-                    //多个值的获取
-                    if (result.msg.recordset.length > 0) {
-                        console.log(result.msg.recordsets[0]);
-                        console.log(result.msg.recordsets[1]);
-                    }
+                  //db worker ,只是根据key 找到数据，然后 返回，数据，复杂的事情交给business
                     ch.ack(msg);
+                    //
+                    console.log(result)//目前先打印出来
+                    if(result){
+                        //如果存在值，就返回给调用者
+                        console.log('sendback')//目前先打印出来
+                    }
                     //并且还要向通知队列发送数据，说明已经执行成功，
                     //并且把result 返回过去
                 }).catch(error => {
@@ -41,7 +43,7 @@ rabConnP.then((rabconn) => {
                 //并且还要向通知队列发送数据，说明 businessKey 无效
             }
         }, { noAck: false });
-    }).then(function() {
+    }).then(function () {
         console.log('irms-db-Worker start. To exit press CRTL+C');
     });
 });

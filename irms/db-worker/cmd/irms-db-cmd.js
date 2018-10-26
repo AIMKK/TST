@@ -4,6 +4,8 @@ const { irmsConnConfig } = require('../config/db-conn-config.js');
 var dbconnPool;
 //216
 module.exports = {
+    createUserLoginCmd,
+    //test
     createNewVipQuickJoinCmd,
     createGetVIPPointsCmd,
     createATestTableInsertCmd,
@@ -16,10 +18,24 @@ function createDBConnPool() {
     if (dbconnPool) {
         return dbconnPool;
     }
-    dbconnPool = new msDB.ConnectionPool(irmsConnConfig).connect(); //msDB.connect(irmsConnConfig);
+    dbconnPool = new msDB.ConnectionPool(irmsConnConfig).connect(); ////////msDB.connect(irmsConnConfig);
     return dbconnPool;
 };
 //
+//UserLogin
+function createUserLoginCmd(iniReqParam /* [pool or transaction] */ ) {
+
+    //UserLogin
+    var userLogin = function(userLoginParam) {
+        var request = new msDB.Request(iniReqParam);
+        request.input('UserCode', msDB.VarChar(10), userLoginParam.UserCode);
+        request.input('Password', msDB.VarChar(100), userLoginParam.Password);
+        return request.execute('SP_UserMasterLogin');
+    };
+
+    return userLogin;
+}
+
 //create request command
 function createNewVipQuickJoinCmd(iniReqParam /* [pool or transaction] */ ) {
 
