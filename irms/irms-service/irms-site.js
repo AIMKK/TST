@@ -16,6 +16,9 @@ const app = new Koa();
 const router = new Router({
     prefix: ''
 });
+//conn异常 反馈 client
+//publisher confirms
+//conn 公用
 
 const irms = new Router();
 irms.get('/hello', async(ctx) => {

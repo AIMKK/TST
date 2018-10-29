@@ -4,7 +4,7 @@ const irmsBusinessSet = require('./business/business-set.js');
 const queue = 'task';
 //
 var rabConnP = require('amqplib').connect(rabConnOPtions);
-//
+//还要考虑如果连接断掉了，就要，重新去建立连接，
 rabConnP.then((rabconn) => {
     return rabconn.createChannel();
 }).then((ch) => {
