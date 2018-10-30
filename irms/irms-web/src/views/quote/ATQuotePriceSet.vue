@@ -8,7 +8,7 @@
                 <div>
                     <b>Quote Price Set</b>
                 </div>
-                <div class="content text-left">
+                <!-- <div class="content text-left">
                     <div class="form-group">
                         <label for="skuNo">SKU:</label>
                         <input type="text" class="form-control" id="skuNo" disabled v-model="skuNo" />
@@ -41,8 +41,8 @@
                         <label for="quotePrice">QuotePrice:</label>
                         <input type="number" class="form-control" id="quotePrice"  v-model="quotePrice" />
                     </div>
-                    <b-button variant="success" id="btnQuoteSet" @click="quoteSet" :disabled="btnQuoteSetDisabled">Quote</b-button>
-                </div>
+                    <b-button variant="success" id="btnQuoteSet" :disabled="btnQuoteSetDisabled">Quote</b-button>
+                </div> -->
             </b-col>
             <b-col sm="3">
                 <P></P>
@@ -57,6 +57,7 @@
     export default {
         data() {
             return {
+                modalMessage:'',
                 btnQuoteSetDisabled:false,
                 skuNo: '',
                 mountNo: '',
@@ -68,11 +69,13 @@
 
             }
         },
-        
-        methods: {
-            get() {
-                
+        created(){
+            if(!this.$store.state.loginUserCode){
+                this.$router.push({path:'/login'});
             }
+        },
+        methods: {
+            
         },
     }
 </script>

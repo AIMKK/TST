@@ -1,13 +1,19 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from './views/login/login.vue'
+import Quote from './views/quote/ATQuotePriceSet.vue'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/quote',
+      name: 'quote',
+      component: Quote
+    },
+    {
+      path: '/login',
       name: 'login',
       component: Login
     },
