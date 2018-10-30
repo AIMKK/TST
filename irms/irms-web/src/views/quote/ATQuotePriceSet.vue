@@ -68,6 +68,12 @@
 
             }
         },
+        
+        methods: {
+            get() {
+                
+            }
+        },
     }
 </script>
 <style scoped>

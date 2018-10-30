@@ -4,7 +4,8 @@
   "description": "",
   "main": "irms-site.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.js"
   },
   "keywords": [],
   "author": "",
@@ -17,5 +18,10 @@
     "koa-static": "^5.0.0",
     "koa2-cors": "^2.0.6",
     "q": "^1.5.1"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^0.1.19",
+    "webpack": "^4.23.1",
+    "webpack-cli": "^3.1.2"
   }
 }

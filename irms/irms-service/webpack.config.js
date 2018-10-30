@@ -4,7 +4,7 @@ module.exports = {
     entry: './index.js',
     output: {
         //filename: '[name].bundle.js',
-        filename: 'irms-db-worker.js',
+        filename: 'irms-web-site.js',
         path: path.resolve(__dirname, 'dist-temp'),
 
     },

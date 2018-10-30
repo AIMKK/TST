@@ -5,10 +5,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-
+    loginUserCode:''
   },
   mutations: {
-
+    setLoginUser (state,userCode) {
+      state.loginUserCode=userCode;
+    }
   },
   actions: {
 

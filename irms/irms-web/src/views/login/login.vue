@@ -60,14 +60,14 @@
                             console.log(response.data.message)
                         } else {
                             console.log(response);
-                            this.modalMessage = "Login failed!";
+                            this.modalMessage = "check userID and passworld!";
                             this.$refs.myModalRef.show();
                             this.btnLoginDisabled = false;
                         }
 
                     }).catch((error) => {
                         console.log(error);
-                        this.modalMessage = "Login failed!";
+                        this.modalMessage = "check userID and passworld!";
                         this.$refs.myModalRef.show();
                         this.btnLoginDisabled = false;
                     });
