@@ -56,25 +56,17 @@
                             password: this.password
                         }
                     }).then((response) => {
-                        console.log(response);
                         if (response.data.code == 200 && response.data.message) {
-                            // new Promise((resolve, reject) => {
-                            //     //localStorage.userInfo = { userName: this.username }
-                            //     setTimeout(() => { resolve() }, 500);
-                            // }).then(() => {
-                            //     //Toast.success('login success');
-                            //     this.$router.push('/');
-                            // }).catch((error) => {
-                            //     //Toast.fail('login status store fail')
-                            //     console.log(error)
-                            // })
+                            console.log(response.data.message)
                         } else {
+                            console.log(response);
                             this.modalMessage = "Login failed!";
                             this.$refs.myModalRef.show();
                             this.btnLoginDisabled = false;
                         }
 
                     }).catch((error) => {
+                        console.log(error);
                         this.modalMessage = "Login failed!";
                         this.$refs.myModalRef.show();
                         this.btnLoginDisabled = false;

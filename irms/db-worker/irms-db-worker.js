@@ -20,13 +20,12 @@ rabConnP.then((rabconn) => {
             //还要继续判断是不是函数
             if (businessPro && typeof businessPro === "function") {
                 businessPro(businessParam).then((result) => {
-                  //db worker ,只是根据key 找到数据，然后 返回，数据，复杂的事情交给business
+                    //db worker ,只是根据key 找到数据，然后 返回，数据，复杂的事情交给business
                     ch.ack(msg);
                     //
-                    console.log(result)//目前先打印出来
-                    if(result){
-                        //如果存在值，就返回给调用者
+                    if (msg.properties.replyTo) {
                         console.log('sendback')//目前先打印出来
+                        ch.sendToQueue(msg.properties.replyTo, new Buffer(JSON.stringify(result)), { correlationId: msg.properties.correlationId });
                     }
                     //并且还要向通知队列发送数据，说明已经执行成功，
                     //并且把result 返回过去
