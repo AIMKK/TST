@@ -7,15 +7,14 @@ const maxWaitMillisecond=180000;
 //
 let router = new Router();
 //
-router.post('/login', async (ctx) => {
-    let user = ctx.request.body;
-    console.log(user);
-    let userCode = user.userCode;
-    let password = user.password;
-    //
+router.post('/getProductInfoForQuote', async (ctx) => {
+    let reqBody = ctx.request.body;
+
+    let skuno = reqBody.skuno;
+
     var instruct = {
-        businessKey: 'irmsUserLogin',
-        businessParam: { UserCode: userCode, Password: password }
+        businessKey: 'irmsGetProdInfoForQuote',
+        businessParam: { SkuNo: skuno }
     }
     await mqMiddle.TXRX(queue, taskQueueOption, instruct,maxWaitMillisecond).then((data) => {
         return ctx.body = {

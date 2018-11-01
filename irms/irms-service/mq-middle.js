@@ -5,11 +5,11 @@ var amqplib = require('amqplib');
 var currentConn;
 //
 module.exports = {
-    rpc,
-    send
+    TXRX,
+    TX
 };
-//
-function rpc(taskQueueName, taskQueueOption, sendData, maxWaitMillisecond) {
+//send receive
+function TXRX(taskQueueName, taskQueueOption, sendData, maxWaitMillisecond) {
     if (maxWaitMillisecond < 60000) {
         maxWaitMillisecond = 180000;
     }
@@ -19,18 +19,18 @@ function rpc(taskQueueName, taskQueueOption, sendData, maxWaitMillisecond) {
         //
         return open.then(function (conn) {
             currentConn = conn;
-            return rpcInner();
+            return TXRXInner();
         }).catch(error => {
             currentConn = null;
             console.log(error)
             return 'open mp connection error';
         });
     } else {
-        return rpcInner()
+        return TXRXInner()
     }
 
     //
-    function rpcInner() {
+    function TXRXInner() {
         if (!currentConn) {
             var deferred = Q.defer();
             deferred.reject('connection of mq is invalid');
@@ -92,24 +92,24 @@ function rpc(taskQueueName, taskQueueOption, sendData, maxWaitMillisecond) {
     }
 }
 //
-function send(taskQueueName, taskQueueOption, sendData) {
+function TX(taskQueueName, taskQueueOption, sendData) {
     if (!currentConn) {
         var open = amqplib.connect(rabConnOPtions);
         //
         return open.then(function (conn) {
             currentConn = conn;
-            return sendInner();
+            return TXInner();
         }).catch(error => {
             currentConn = null;
             console.log(error)
             return 'open mp connection error';
         });
     } else {
-        return sendInner()
+        return TXInner()
     }
 
     //
-    function sendInner() {
+    function TXInner() {
         if (!currentConn) {
             var deferred = Q.defer();
             deferred.reject('connection of mq is invalid');
