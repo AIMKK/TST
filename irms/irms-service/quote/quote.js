@@ -9,13 +9,13 @@ let router = new Router();
 //
 router.post('/getProductInfoForQuote', async (ctx) => {
     let reqBody = ctx.request.body;
-
+    console.log(reqBody)
     let skuno = reqBody.skuno;
 
     var instruct = {
         businessKey: 'irmsGetProdInfoForQuote',
         businessParam: { SkuNo: skuno }
-    }
+    }   
     await mqMiddle.TXRX(queue, taskQueueOption, instruct,maxWaitMillisecond).then((data) => {
         return ctx.body = {
             code: 200,

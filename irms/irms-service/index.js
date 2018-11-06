@@ -4,7 +4,7 @@ const bodyParser = require('koa-bodyparser');
 const koaCors = require('koa2-cors')
 const Router = require('koa-router');
 const static = require('koa-static');
-const staticPath = '../irms-web/dist-temp/'; //'./static/dist/';
+const staticPath = '../irms-web/dist/'; //'./static/dist/';//
 //
 const app = new Koa();
 app.use(bodyParser()).use(koaCors());

@@ -3,27 +3,27 @@
         <b-card header="<b>修理报价</b>">
             <b-row class="my-1">
                 <b-col sm="6">
-                    <div><label for="sku">Sku:</label></div>
+                    <div><label for="sku">Sku:{{Skuno}}</label></div>
                 </b-col>
                 <b-col sm="6">
-                    <div><label for="mountno">MountNo:</label></div>
+                    <div><label for="mountno">MountNo:{{MountNo}}</label></div>
                 </b-col>
             </b-row>
             <div>
-                <label for="description">Description:</label>
+                <label for="description">Description:{{ChineseDescription}}</label>
             </div>
             <b-row class="my-1">
                 <b-col sm="3">
-                    <div><label for="laborCost">LaborCost:</label></div>
+                    <div><label for="laborCost">LaborCost:{{LaborCost}}</label></div>
                 </b-col>
                 <b-col sm="3">
-                    <div><label for="matieralCost">MatieralCost:</label></div>
+                    <div><label for="matieralCost">MatieralCost:{{MatieralCost}}</label></div>
                 </b-col>
                 <b-col sm="3">
-                    <div><label for="stoneCost">StoneCost:</label></div>
+                    <div><label for="stoneCost">StoneCost:{{StoneCost}}</label></div>
                 </b-col>
                 <b-col sm="3">
-                    <div><label for="unitCost">UnitCost:</label></div>
+                    <div><label for="unitCost">UnitCost:{{UnitCost}}</label></div>
                 </b-col>
             </b-row>
             <b-list-group>
@@ -100,7 +100,7 @@
 
             <div role="group">
                 <label for="quotePrice">QuotePrice:</label>
-                <b-form-input id="quotePrice"  type="number"></b-form-input>
+                <b-form-input id="quotePrice" type="number"></b-form-input>
             </div>
             <hr>
             <b-row class="my-1">
@@ -122,45 +122,62 @@
     export default {
         data() {
             return {
-                Skuno:'',
-                MountNo:'',
-                MountImage:'',
-                ChineseDescription:'',
-                Costcurrencycode:'',
-                ConfirmedDate:'',
-                LaborCost:'',
-                MatieralCost:'',
-                StoneCost:'',
-                UnitCost:'',
-                StoneInfo:[],
+                Skuno: '123',
+                MountNo: '',
+                MountImage: '',
+                ChineseDescription: '',
+                Costcurrencycode: '',
+                ConfirmedDate: '',
+                LaborCost: '',
+                MatieralCost: '',
+                StoneCost: '',
+                UnitCost: '',
+                StoneInfo: [],
             }
         },
         created() {
             // if(!this.$store.state.loginUserCode){
             //     this.$router.push({path:'/login'});
-            // }
-            console.log('here');
-            var sku=this.$route.query.skuno;
+            // }           
+
+            var sku = this.$route.query.skuno;
             console.log(this.$route);
             //this.$route.query.goodsId?this.$route.query.goodsId:this.$route.params.goodsId;
+
+
             axios({
                 url: apiUrl.quotePrice,
                 method: 'post',
                 data: {
                     skuno: '23895609'
                 }
-            }).then((response) => {               
+            }).then((response) => {
+                console.log(response.data.code);
+                console.log( 'response.data.message');
+                console.log( response.data.message);
                 if (response.data.code == 200 && response.data.message) {
-                    if(response.data.message.length>1){
-                        
+                    if (response.data.message.length > 1) {
+                        //console.log(response);
+                        var mainInfo = response.data.message[0][0];
+                        console.log(mainInfo);
+                        this.Skuno = mainInfo.Skuno;
+                        this.MountNo = mainInfo.MountNo;
+                        this.StoneCost = mainInfo.StoneCost;
+                        this.LaborCost = mainInfo.LaborCost;
+                        this.MountImage = mainInfo.MountImage;
+                        this.UnitCost = mainInfo.UnitCost;
+                        this.Costcurrencycode = mainInfo.Costcurrencycode;
+                        this.ChineseDescription = mainInfo.ChineseDescription;
+                        this.MatieralCost = mainInfo.MatieralCost;
                     }
                 } else {
-                    console.log(response); 
+                    console.log(response);
                 }
 
             }).catch((error) => {
+                this.Skuno = error
                 console.log(error);
-               
+
             });
         },
         methods: {

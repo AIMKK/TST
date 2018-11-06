@@ -49,6 +49,7 @@ function TXRX(taskQueueName, taskQueueOption, sendData, maxWaitMillisecond) {
                 return ch.assertQueue(taskQueueName, taskQueueOption).then(function () {
                     var data = JSON.stringify(sendData);
                     var deferred = Q.defer();
+                    
                     ch.sendToQueue(taskQueueName, Buffer.from(data), { replyTo: tempBackQueue.queue }, function (err, ok) {
                         if (err!=null) {
                             console.log(err);
