@@ -1,119 +1,78 @@
 <template>
     <b-container id="main">
-        <b-card header="<b>修理报价</b>">
-            <b-row class="my-1">
-                <b-col sm="6">
-                    <div><label for="sku">Sku:{{Skuno}}</label></div>
-                </b-col>
-                <b-col sm="6">
-                    <div><label for="mountno">MountNo:{{MountNo}}</label></div>
-                </b-col>
-            </b-row>
-            <div>
-                <label for="description">Description:{{ChineseDescription}}</label>
-            </div>
-            <b-row class="my-1">
-                <b-col sm="3">
-                    <div><label for="laborCost">LaborCost:{{LaborCost}}</label></div>
-                </b-col>
-                <b-col sm="3">
-                    <div><label for="matieralCost">MatieralCost:{{MatieralCost}}</label></div>
-                </b-col>
-                <b-col sm="3">
-                    <div><label for="stoneCost">StoneCost:{{StoneCost}}</label></div>
-                </b-col>
-                <b-col sm="3">
-                    <div><label for="unitCost">UnitCost:{{UnitCost}}</label></div>
-                </b-col>
-            </b-row>
-            <b-list-group>
-                <b-list-group-item class="flex-column align-items-start">
+        <b-card no-body header="<b>修理报价</b>">
+            <b-card-body>
+                <b-row class="my-1">
+                    <b-col sm="6">
+                        <label for="sku">SKU:</label>
+                        <b-form-input id="sku" type="text" v-model="Skuno" aria-describedby="inputFormatterHelp"
+                            :formatter="format" disabled="true" ></b-form-input>
+                        <!-- <label>Sku:</label>
+                        <div><label>{{Skuno}}</label></div> -->
+                    </b-col>
+                    <b-col sm="6">
+                        <div><label>MountNo:{{MountNo}}</label></div>
+                    </b-col>
+                </b-row>
+                <div>
+                    <label>Description:{{ChineseDescription}}</label>
+                </div>
+                <b-row class="my-1">
+                    <b-col sm="3">
+                        <div><label>LaborCost:{{LaborCost}}</label></div>
+                    </b-col>
+                    <b-col sm="3">
+                        <div><label>MatieralCost:{{MatieralCost}}</label></div>
+                    </b-col>
+                    <b-col sm="3">
+                        <div><label>StoneCost:{{StoneCost}}</label></div>
+                    </b-col>
+                    <b-col sm="3">
+                        <div><label>UnitCost:{{UnitCost}}</label></div>
+                    </b-col>
+                </b-row>
+            </b-card-body>
+            <b-list-group flush>
+                <b-list-group-item class="flex-column align-items-start" v-for="(stone,index) in StoneInfo" :key="index">
                     <h5>Stone Info</h5>
                     <b-row class="my-1">
                         <b-col sm="4">
-                            <div><label for="lot">Lot:</label></div>
+                            <div><label>Lot:{{stone.Lot}}</label></div>
                         </b-col>
                         <b-col sm="4">
-                            <div><label for="stoneSize">StoneSize:</label></div>
+                            <div><label>StoneSize:{{stone.Size}}</label></div>
                         </b-col>
                         <b-col sm="4">
-                            <div><label for="mainStone">MainStone:</label></div>
+                            <div><label>MainStone:{{stone.MainStone}}</label></div>
                         </b-col>
                         <b-col sm="4">
-                            <div><label for="stoneQty">StoneQty:</label></div>
+                            <div><label>StoneQty:{{stone.TotalQty}}</label></div>
                         </b-col>
                         <b-col sm="4">
-                            <div><label for="stoneWeight">StoneWeight:</label></div>
+                            <div><label>StoneWeight:{{stone.totalWeight}}</label></div>
                         </b-col>
                         <b-col sm="4">
-                            <div><label for="stoneCost">StoneCost:</label></div>
-                        </b-col>
-                    </b-row>
-                </b-list-group-item>
-                <b-list-group-item class="flex-column align-items-start">
-                    <h5>Stone Info</h5>
-                    <b-row class="my-1">
-                        <b-col sm="4">
-                            <div><label for="lot">Lot:</label></div>
-                        </b-col>
-                        <b-col sm="4">
-                            <div><label for="stoneSize">StoneSize:</label></div>
-                        </b-col>
-                        <b-col sm="4">
-                            <div><label for="mainStone">MainStone:</label></div>
-                        </b-col>
-                        <b-col sm="4">
-                            <div><label for="stoneQty">StoneQty:</label></div>
-                        </b-col>
-                        <b-col sm="4">
-                            <div><label for="stoneWeight">StoneWeight:</label></div>
-                        </b-col>
-                        <b-col sm="4">
-                            <div><label for="stoneCost">StoneCost:</label></div>
-                        </b-col>
-                    </b-row>
-                </b-list-group-item>
-                <b-list-group-item class="flex-column align-items-start">
-                    <h5>Stone Info</h5>
-                    <b-row class="my-1">
-                        <b-col sm="4">
-                            <div><label for="lot">Lot:</label></div>
-                        </b-col>
-                        <b-col sm="4">
-                            <div><label for="stoneSize">StoneSize:</label></div>
-                        </b-col>
-                        <b-col sm="4">
-                            <div><label for="mainStone">MainStone:</label></div>
-                        </b-col>
-                        <b-col sm="4">
-                            <div><label for="stoneQty">StoneQty:</label></div>
-                        </b-col>
-                        <b-col sm="4">
-                            <div><label for="stoneWeight">StoneWeight:</label></div>
-                        </b-col>
-                        <b-col sm="4">
-                            <div><label for="stoneCost">StoneCost:</label></div>
+                            <div><label>StoneCost:{{stone.TotalCost}}</label></div>
                         </b-col>
                     </b-row>
                 </b-list-group-item>
             </b-list-group>
-
-            <div role="group">
-                <label for="quotePrice">QuotePrice:</label>
-                <b-form-input id="quotePrice" type="number"></b-form-input>
-            </div>
-            <hr>
-            <b-row class="my-1">
-                <b-col cols="6">
-                    <b-button variant="secondary" block>Exit</b-button>
-                </b-col>
-                <b-col cols="6">
-                    <b-button variant="success" block>Save</b-button>
-                </b-col>
-            </b-row>
-
+            <b-card-body>
+                <div role="group">
+                    <label for="quotePrice"><b>QuotePrice:</b></label>
+                    <b-form-input id="quotePrice" type="number"></b-form-input>
+                </div>
+                <hr>
+                <b-row class="my-1">
+                    <b-col cols="6">
+                        <b-button variant="secondary" block>Exit</b-button>
+                    </b-col>
+                    <b-col cols="6">
+                        <b-button variant="success" block>Save</b-button>
+                    </b-col>
+                </b-row>
+            </b-card-body>
         </b-card>
-
     </b-container>
 </template>
 <script>
@@ -122,7 +81,7 @@
     export default {
         data() {
             return {
-                Skuno: '123',
+                Skuno: '',
                 MountNo: '',
                 MountImage: '',
                 ChineseDescription: '',
@@ -144,7 +103,6 @@
             console.log(this.$route);
             //this.$route.query.goodsId?this.$route.query.goodsId:this.$route.params.goodsId;
 
-
             axios({
                 url: apiUrl.quotePrice,
                 method: 'post',
@@ -153,13 +111,13 @@
                 }
             }).then((response) => {
                 console.log(response.data.code);
-                console.log( 'response.data.message');
-                console.log( response.data.message);
+                console.log('response.data.message');
+                console.log(response.data.message);
                 if (response.data.code == 200 && response.data.message) {
                     if (response.data.message.length > 1) {
                         //console.log(response);
                         var mainInfo = response.data.message[0][0];
-                        console.log(mainInfo);
+                        // console.log(mainInfo);
                         this.Skuno = mainInfo.Skuno;
                         this.MountNo = mainInfo.MountNo;
                         this.StoneCost = mainInfo.StoneCost;
@@ -169,6 +127,9 @@
                         this.Costcurrencycode = mainInfo.Costcurrencycode;
                         this.ChineseDescription = mainInfo.ChineseDescription;
                         this.MatieralCost = mainInfo.MatieralCost;
+                        //
+                        this.StoneInfo = response.data.message[1];
+                        // console.log(this.StoneInfo);
                     }
                 } else {
                     console.log(response);

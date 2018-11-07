@@ -18,17 +18,21 @@ function getProdInfoForQuote(prodInfoForQuoteParam) {
                 }
             }catch(error){
                 ProdInfo="";
-            }            
+            }
             return ProdInfo;
 
         }).catch((error) => {
             //记录日志
+            console.log('命令执行不正确--')
             console.log(error);
-            return null;
+            console.log('---------------')
+            return '命令执行不正确';            
         })
     }).catch(error => {
         //记录日志
+        console.log('貌似连接不给力--')
         console.log(error)
-        return null;
+        console.log('---------------')
+        return '貌似连接不给力！';
     });
 };

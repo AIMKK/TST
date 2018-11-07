@@ -26,7 +26,7 @@ function TXRX(taskQueueName, taskQueueOption, sendData, maxWaitMillisecond) {
             return 'open mp connection error';
         });
     } else {
-        return TXRXInner()
+        return TXRXInner();
     }
 
     //
@@ -67,14 +67,14 @@ function TXRX(taskQueueName, taskQueueOption, sendData, maxWaitMillisecond) {
                                     });
                                 }
                                 //
-                                deferred.resolve(backData)
+                                deferred.resolve(backData);
                             }, { noAck: true });
                             //
                             setTimeout(function () {
                                 if (!backConsumed) {
                                     backConsumed = true;
                                     ch.close().catch((error) => {
-                                        console.log(error)
+                                        console.log(error);
                                     });
                                     //
                                     deferred.reject('no data back to rpc queue in limit time');
