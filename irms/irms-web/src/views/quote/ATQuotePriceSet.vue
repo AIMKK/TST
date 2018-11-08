@@ -3,72 +3,67 @@
         <b-card no-body header="<b>修理报价</b>">
             <b-card-body>
                 <b-row class="my-1">
-                    <b-col sm="6">
-                        <label for="sku">SKU:</label>
-                        <b-form-input id="sku" type="text" v-model="Skuno" aria-describedby="inputFormatterHelp"
-                            :formatter="format" disabled="true" ></b-form-input>
-                        <!-- <label>Sku:</label>
-                        <div><label>{{Skuno}}</label></div> -->
+                    <b-col cols="12" sm="6">
+                        <label><b>SKU:</b><span class="value">{{Skuno}}</span></label>
                     </b-col>
-                    <b-col sm="6">
-                        <div><label>MountNo:{{MountNo}}</label></div>
+                    <b-col cols="12" sm="6">
+                        <label><b>模号:</b><span class="value">{{MountNo}}</span></label>
                     </b-col>
-                </b-row>
-                <div>
-                    <label>Description:{{ChineseDescription}}</label>
-                </div>
-                <b-row class="my-1">
-                    <b-col sm="3">
-                        <div><label>LaborCost:{{LaborCost}}</label></div>
+                    <b-col cols="12">
+                        <label><b>描述:</b><span class="value">{{ChineseDescription}}</span></label>
                     </b-col>
-                    <b-col sm="3">
-                        <div><label>MatieralCost:{{MatieralCost}}</label></div>
-                    </b-col>
-                    <b-col sm="3">
-                        <div><label>StoneCost:{{StoneCost}}</label></div>
-                    </b-col>
-                    <b-col sm="3">
-                        <div><label>UnitCost:{{UnitCost}}</label></div>
-                    </b-col>
+                    <b-col sm="6" md="4" lg="3">
+                            <label><b>人工成本:</b><span class="value">{{LaborCost , "",2 | formatMoney}}</span>{{Costcurrencycode}}</label>
+                        </b-col>
+                        <b-col sm="6" md="4" lg="3">
+                            <label><b>材料成本:</b><span class="value">{{MatieralCost , "",2 | formatMoney}}</span>{{Costcurrencycode}}</label>
+                        </b-col>
+                        <b-col sm="6" md="4" lg="3">
+                            <label><b>钻石成本:</b><span class="value">{{StoneCost, "",2  | formatMoney}}</span>{{Costcurrencycode}}</label>
+                        </b-col>
+                        <b-col sm="6" md="4" lg="3">
+                            <label><b>共计:</b><span class="value">{{UnitCost, "",2  | formatMoney}}</span>{{Costcurrencycode}}</label>
+                        </b-col>
                 </b-row>
             </b-card-body>
             <b-list-group flush>
                 <b-list-group-item class="flex-column align-items-start" v-for="(stone,index) in StoneInfo" :key="index">
-                    <h5>Stone Info</h5>
+                    
+                    <b><b-badge pill  variant="secondary">{{index+1}}</b-badge> 钻石信息</b>                    
                     <b-row class="my-1">
-                        <b-col sm="4">
-                            <div><label>Lot:{{stone.Lot}}</label></div>
+                        <b-col sm="6" md="4" lg="3">
+                            <label><b>Lot:</b><span class="value">{{stone.Lot}}</span></label>
                         </b-col>
-                        <b-col sm="4">
-                            <div><label>StoneSize:{{stone.Size}}</label></div>
+                        <b-col sm="6" md="4" lg="3">
+                            <label><b>钻石大小:</b><span class="value">{{stone.Size}}</span></label>
                         </b-col>
-                        <b-col sm="4">
-                            <div><label>MainStone:{{stone.MainStone}}</label></div>
+                        <b-col sm="6" md="4" lg="3">
+                            <label><b>是否主石:</b><span class="value">{{stone.MainStone}}</span></label>
                         </b-col>
-                        <b-col sm="4">
-                            <div><label>StoneQty:{{stone.TotalQty}}</label></div>
+                        <b-col sm="6" md="4" lg="3">
+                            <label><b>数量:</b><span class="value">{{stone.TotalQty}}</span></label>
                         </b-col>
-                        <b-col sm="4">
-                            <div><label>StoneWeight:{{stone.totalWeight}}</label></div>
+                        <b-col sm="6" md="4" lg="3">
+                            <label><b>钻石重量:</b><span class="value">{{stone.totalWeight,3 | formatNumber}}</span>ct</label>
                         </b-col>
-                        <b-col sm="4">
-                            <div><label>StoneCost:{{stone.TotalCost}}</label></div>
+                        <b-col sm="6" md="4" lg="3">
+                            <label><b>钻石价值:</b><span class="value">{{stone.TotalCost, "",2 | formatMoney}}</span>{{Costcurrencycode}}</label>
                         </b-col>
                     </b-row>
                 </b-list-group-item>
             </b-list-group>
             <b-card-body>
                 <div role="group">
-                    <label for="quotePrice"><b>QuotePrice:</b></label>
+                    <label for="quotePrice"><b>输入报价金额({{Costcurrencycode}}):</b></label>
                     <b-form-input id="quotePrice" type="number"></b-form-input>
                 </div>
                 <hr>
                 <b-row class="my-1">
                     <b-col cols="6">
-                        <b-button variant="secondary" block>Exit</b-button>
+                        <b-button variant="secondary" block>退出</b-button>
                     </b-col>
                     <b-col cols="6">
-                        <b-button variant="success" block>Save</b-button>
+                        <b-button variant="success" block>保存</b-button>
                     </b-col>
                 </b-row>
             </b-card-body>
@@ -78,6 +73,7 @@
 <script>
     import axios from 'axios';
     import apiUrl from '@/service-api-config.js';
+    import accounting from 'accounting';
     export default {
         data() {
             return {
@@ -141,18 +137,26 @@
 
             });
         },
+        filters:{
+            formatMoney(money,prefix,precision ){
+                return accounting.formatMoney(money,prefix, precision);
+            },
+            formatNumber(number,precision){
+                return accounting.formatNumber(number, precision);
+            }
+        },
         methods: {
 
         },
     }
 </script>
 <style scoped>
-    .header {
-        text-align: center;
-        padding-bottom: 10px;
-    }
-
     #main {
         padding: 5px;
+    }
+
+    .value {
+        margin-left: 10px;
+        margin-right: 5px;
     }
 </style>
