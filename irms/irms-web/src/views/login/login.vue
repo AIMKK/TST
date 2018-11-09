@@ -88,7 +88,7 @@
         background: #ffffff;
         padding: 20px 0px;
         text-align: center;
-        border: 1px solid #F1F1F1;  
+        border: 1px solid #DFDFDF;  
         /* box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);      */
     }
 
