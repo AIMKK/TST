@@ -1,16 +1,16 @@
 <template>
     <b-container fluid>
         <b-row class="my-1">
-            <b-col cols="12" sm ="8" lg="4"  offset-sm="2"  offset-lg="4" class="container">
+            <b-col cols="12" sm="8" lg="4" offset-sm="2" offset-lg="4" class="container">
                 <div class="main">
                     <div class="header">
                         <b>iRMS</b>
                     </div>
                     <div class="text-left">
-                        <b-form-group  label="Login ID:" label-for="loginID">
+                        <b-form-group label="Login ID:" label-for="loginID">
                             <b-form-input id="loginID" v-model.trim="userCode" placeholder="LoginID"></b-form-input>
                         </b-form-group>
-                        <b-form-group  label="Password:" label-for="password">
+                        <b-form-group label="Password:" label-for="password">
                             <b-form-input id="password" type="password" v-model.trim="password" placeholder="Password"></b-form-input>
                         </b-form-group>
                         <b-button variant="success" id="btnLogin" @click="login" :disabled="btnLoginDisabled" block>Login</b-button>
@@ -25,6 +25,8 @@
     </b-container>
 </template>
 <script>
+    import { mapState } from 'vuex';
+    import { mapMutations } from 'vuex';
     import axios from 'axios';
     import apiUrl from '@/service-api-config.js';
     export default {
@@ -36,12 +38,15 @@
                 modalMessage: ''
             }
         },
+        computed: mapState([
+            'loginUserCode'
+        ]),
         methods: {
             login() {
                 this.btnLoginDisabled = true;
                 if (this.userCode == "" || this.password == "") {
                     this.btnLoginDisabled = false;
-                    this.modalMessage = "Login ID or password can't empty!";
+                    this.modalMessage = "LoginID or password can't empty!";
                     this.$refs.myModalRef.show();
                 } else {
                     //check user password senddata,receive,huoqushujule,
@@ -54,10 +59,15 @@
                         }
                     }).then((response) => {
                         if (response.data.code == 200 && response.data.message) {
-                            console.log(response.data.message)
+                            // console.log(response.data.message)
+                            this.setLoginUserInfo(response.data.message)
+                            //如果成功跳转到 主界面，目前 跳转到上次次
+                            if (this.loginUserCode) {
+                                this.$router.push('/quote');
+                            }
                         } else {
                             console.log(response);
-                            this.modalMessage = "check userID and passworld!";
+                            this.modalMessage = "check loginID and passworld!";
                             this.$refs.myModalRef.show();
                             this.btnLoginDisabled = false;
                         }
@@ -72,16 +82,20 @@
             },
             hideModal() {
                 this.$refs.myModalRef.hide()
-            }
+            },
+            ...mapMutations([
+                'setLoginUserInfo',
+
+            ]),
         },
     }
 </script>
-<style scoped>   
+<style scoped>
     .container .main {
         background: #ffffff;
         padding: 20px 15px;
         text-align: center;
         border: 1px solid #DFDFDF;
-        margin-top: 10px;   
+        margin-top: 30px;
     }
 </style>

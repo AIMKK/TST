@@ -79,6 +79,7 @@
     </b-container>
 </template>
 <script>
+    import { mapState } from 'vuex'
     import axios from 'axios';
     import apiUrl from '@/service-api-config.js';
     import accounting from 'accounting';
@@ -86,7 +87,7 @@
         data() {
             return {
                 loadState: '',
-                loadErrorInfo:'',
+                loadErrorInfo: '',
                 Skuno: '',
                 MountNo: '',
                 MountImage: '',
@@ -101,11 +102,13 @@
             }
         },
         created() {
-            if(!this.$store.state.loginUserCode){
-                this.$router.push({path:'/login'});
+            console.log(this.loginUserCode);//this.$store.state.loginUserCode
+            //不存在loginuser
+            if (!this.loginUserCode) {
+                this.$router.push({ path: '/login' });
                 // console.log('no login');
-                return ;
-            }           
+                return;
+            }
 
             var sku = this.$route.query.skuno;
             console.log(sku);
@@ -146,10 +149,10 @@
                     this.loadState = "nodata";
                 }
 
-            }).catch((error) => {               
+            }).catch((error) => {
                 console.log(error);
-                this.loadState = "loadError";                
-                loadErrorInfo=error;
+                this.loadState = "loadError";
+                loadErrorInfo = error;
             });
         },
         filters: {
@@ -166,6 +169,9 @@
         methods: {
 
         },
+        computed: mapState([
+            'loginUserCode'
+        ]),
     }
 </script>
 <style scoped>
