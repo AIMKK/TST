@@ -101,9 +101,11 @@
             }
         },
         created() {
-            // if(!this.$store.state.loginUserCode){
-            //     this.$router.push({path:'/login'});
-            // }           
+            if(!this.$store.state.loginUserCode){
+                this.$router.push({path:'/login'});
+                // console.log('no login');
+                return ;
+            }           
 
             var sku = this.$route.query.skuno;
             console.log(sku);

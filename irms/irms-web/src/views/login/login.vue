@@ -1,24 +1,21 @@
 <template>
     <b-container fluid>
         <b-row class="my-1">
-            <b-col sm="4" offset-sm="4" class="container">
+            <b-col cols="12" sm ="8" lg="4"  offset-sm="2"  offset-lg="4" class="container">
                 <div class="main">
                     <div class="header">
                         <b>iRMS</b>
                     </div>
-                    <div class="content text-left">
-                        <div class="form-group">
-                            <label for="loginID">Login ID:</label>
-                            <input type="text" class="form-control" id="loginID" placeholder="Login ID" v-model="userCode" />
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password:</label>
-                            <input type="password" class="form-control" id="password" placeholder="Password" v-model="password" />
-                        </div>
-                        <b-button variant="success" id="btnLogin" @click="login" :disabled="btnLoginDisabled">Login</b-button>
+                    <div class="text-left">
+                        <b-form-group  label="Login ID:" label-for="loginID">
+                            <b-form-input id="loginID" v-model.trim="userCode" placeholder="LoginID"></b-form-input>
+                        </b-form-group>
+                        <b-form-group  label="Password:" label-for="password">
+                            <b-form-input id="password" type="password" v-model.trim="password" placeholder="Password"></b-form-input>
+                        </b-form-group>
+                        <b-button variant="success" id="btnLogin" @click="login" :disabled="btnLoginDisabled" block>Login</b-button>
                     </div>
                 </div>
-
             </b-col>
 
         </b-row>
@@ -79,20 +76,12 @@
         },
     }
 </script>
-<style scoped>
-    #btnLogin {
-        width: 100%;
-    }
-
-    .container .main {       
+<style scoped>   
+    .container .main {
         background: #ffffff;
-        padding: 20px 0px;
+        padding: 20px 15px;
         text-align: center;
-        border: 1px solid #DFDFDF;  
-        /* box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);      */
-    }
-
-    .container .content {
-        padding: 15px;
+        border: 1px solid #DFDFDF;
+        margin-top: 10px;   
     }
 </style>

@@ -8,7 +8,7 @@ export default new Vuex.Store({
     loginUserCode:''
   },
   mutations: {
-    setLoginUser (state,userCode) {
+    setLoginUser (userCode) {
       state.loginUserCode=userCode;
     }
   },

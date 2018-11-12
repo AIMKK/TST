@@ -12,14 +12,14 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(['dist-temp']),
     ],
-    node: {
-        console: true,
-        global: true,
-        process: true,
-        Buffer: true,
-        __filename: true,
-        __dirname: true,
-        setImmediate: true
-    },
+    // node: {
+    //     console: true,
+    //     global: true,
+    //     process: true,
+    //     Buffer: true,
+    //     __filename: true,
+    //     __dirname: true,
+    //     setImmediate: true
+    // },
 
 };
