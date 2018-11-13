@@ -19,6 +19,20 @@ function TXRX(taskQueueName, taskQueueOption, sendData, maxWaitMillisecond) {
         //
         return open.then(function (conn) {
             currentConn = conn;
+            //
+            conn.on('error', function (err) {
+                console.log('rabconn error:')
+                console.log(err);
+            })
+            //if there is some resource shortage, e.g., memory
+            conn.on('blocked', function (reason) {
+                console.log('blocked:')
+                console.log(reason)
+            })
+            //once the resource shortage has alleviated
+            conn.on('unblocked', function () {
+                console.log('unblocked')
+            })
             return TXRXInner();
         }).catch(error => {
             currentConn = null;
@@ -49,9 +63,9 @@ function TXRX(taskQueueName, taskQueueOption, sendData, maxWaitMillisecond) {
                 return ch.assertQueue(taskQueueName, taskQueueOption).then(function () {
                     var data = JSON.stringify(sendData);
                     var deferred = Q.defer();
-                    
+
                     ch.sendToQueue(taskQueueName, Buffer.from(data), { replyTo: tempBackQueue.queue }, function (err, ok) {
-                        if (err!=null) {
+                        if (err != null) {
                             console.log(err);
                             deferred.reject('send to mq queue failed !');
                         }

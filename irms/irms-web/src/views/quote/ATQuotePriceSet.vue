@@ -5,25 +5,29 @@
                 <b-card-body>
                     <b-row class="my-1">
                         <b-col cols="12" sm="6">
-                            <label><b>SKU:</b><span class="value">{{Skuno}}</span></label>
+                            <label><span class="key"><b>SKU:</b></span><span class="value">{{Skuno}}</span></label>
                         </b-col>
                         <b-col cols="12" sm="6">
-                            <label><b>模号:</b><span class="value">{{MountNo}}</span></label>
+                            <label><span class="key"><b>模号:</b></span><span class="value">{{MountNo}}</span></label>
                         </b-col>
                         <b-col cols="12">
-                            <label><b>描述:</b><span class="value">{{ChineseDescription}}</span></label>
+                            <label><span class="key"><b>描述:</b></span><span class="value">{{ChineseDescription}}</span></label>
                         </b-col>
                         <b-col sm="6" md="4" lg="3">
-                            <label><b>人工成本:</b><span class="value">{{LaborCost , "",2 | formatMoney}}</span>{{Costcurrencycode}}</label>
+                            <label><span class="key"><b>人工成本:</b></span><span class="value">{{LaborCost , "",2 |
+                                    formatMoney}}</span>{{Costcurrencycode}}</label>
                         </b-col>
                         <b-col sm="6" md="4" lg="3">
-                            <label><b>材料成本:</b><span class="value">{{MatieralCost , "",2 | formatMoney}}</span>{{Costcurrencycode}}</label>
+                            <label><span class="key"><b>材料成本:</b></span><span class="value">{{MatieralCost , "",2 |
+                                    formatMoney}}</span>{{Costcurrencycode}}</label>
                         </b-col>
                         <b-col sm="6" md="4" lg="3">
-                            <label><b>钻石成本:</b><span class="value">{{StoneCost, "",2 | formatMoney}}</span>{{Costcurrencycode}}</label>
+                            <label><span class="key"><b>钻石成本:</b></span><span class="value">{{StoneCost, "",2 |
+                                    formatMoney}}</span>{{Costcurrencycode}}</label>
                         </b-col>
                         <b-col sm="6" md="4" lg="3">
-                            <label><b>共计:</b><span class="value">{{UnitCost, "",2 | formatMoney}}</span>{{Costcurrencycode}}</label>
+                            <label><span class="key"><b>共计:</b></span><span class="value">{{UnitCost, "",2 |
+                                    formatMoney}}</span>{{Costcurrencycode}}</label>
                         </b-col>
                     </b-row>
                 </b-card-body>
@@ -35,22 +39,25 @@
                         </b>
                         <b-row class="my-1">
                             <b-col sm="6" md="4" lg="3">
-                                <label><b>Lot:</b><span class="value">{{stone.Lot}}</span></label>
+                                <label><span class="key"><b>Lot:</b> </span><span class="value">{{stone.Lot}}</span></label>
                             </b-col>
                             <b-col sm="6" md="4" lg="3">
-                                <label><b>钻石大小:</b><span class="value">{{stone.Size}}</span></label>
+                                <label><span class="key"><b>钻石大小:</b></span><span class="value">{{stone.Size}}</span></label>
                             </b-col>
                             <b-col sm="6" md="4" lg="3">
-                                <label><b>是否主石:</b><span class="value">{{stone.MainStone | formatMainStone}}</span></label>
+                                <label><span class="key"><b class="key">是否主石:</b></span><span class="value">{{stone.MainStone
+                                        | formatMainStone}}</span></label>
                             </b-col>
                             <b-col sm="6" md="4" lg="3">
-                                <label><b>数量:</b><span class="value">{{stone.TotalQty}}</span></label>
+                                <label><span class="key"><b>数量:</b></span><span class="value">{{stone.TotalQty}}</span></label>
                             </b-col>
                             <b-col sm="6" md="4" lg="3">
-                                <label><b>钻石重量:</b><span class="value">{{stone.totalWeight,3 | formatNumber}}</span>ct</label>
+                                <label><span class="key"><b>钻石重量:</b></span><span class="value">{{stone.totalWeight,3 |
+                                        formatNumber}}</span>CT</label>
                             </b-col>
                             <b-col sm="6" md="4" lg="3">
-                                <label><b>钻石价值:</b><span class="value">{{stone.TotalCost, "",2 | formatMoney}}</span>{{Costcurrencycode}}</label>
+                                <label><span class="key"><b>钻石价值:</b></span><span class="value">{{stone.TotalCost, "",2
+                                        | formatMoney}}</span>{{Costcurrencycode}}</label>
                             </b-col>
                         </b-row>
                     </b-list-group-item>
@@ -60,15 +67,18 @@
                         <label for="quotePrice"><b>输入报价金额({{Costcurrencycode}}):</b></label>
                         <b-form-input id="quotePrice" type="number"></b-form-input>
                     </div>
-                    <hr>
-                    <b-row class="my-1">
-                        <b-col cols="6">
-                            <b-button variant="secondary" block>退出</b-button>
-                        </b-col>
-                        <b-col cols="6">
-                            <b-button variant="success" block>保存</b-button>
-                        </b-col>
-                    </b-row>
+                    <!-- <hr> -->
+                    <div class="footer">
+                        <b-row class="my-1">
+                            <b-col cols="6" >
+                                <b-button variant="secondary" block @click="exit">退出</b-button>
+                            </b-col>
+                            <b-col cols="6" >
+                                <b-button variant="success" block>保存</b-button>
+                            </b-col>
+                        </b-row>
+                    </div>
+                   
                 </b-card-body>
 
             </div>
@@ -102,9 +112,9 @@
             }
         },
         created() {
-            console.log(this.loginUserCode);//this.$store.state.loginUserCode
+            var userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
             //不存在loginuser
-            if (!this.loginUserCode) {
+            if (!userInfo || !userInfo.UserCode) {
                 this.$router.push({ path: '/login' });
                 // console.log('no login');
                 return;
@@ -119,7 +129,7 @@
                 url: apiUrl.quotePrice,
                 method: 'post',
                 data: {
-                    skuno: '23895609'
+                    skuno: '23895609'//'23895609'
                 }
             }).then((response) => {
                 console.log(response.data.code);
@@ -167,7 +177,10 @@
             }
         },
         methods: {
-
+            exit(){
+                sessionStorage.clear();
+                this.$router.push({ path: '/login' });
+            }
         },
         computed: mapState([
             'loginUserCode'
@@ -179,8 +192,20 @@
         padding: 5px;
     }
 
+    @media screen and (max-width: 576px) {
+        .key {
+            display: inline-block;
+            width: 95px;
+            /* text-align: left; */
+        }
+    }
+
     .value {
         margin-left: 10px;
         margin-right: 5px;
+    }
+
+    .footer{
+        margin-top: 25px;
     }
 </style>

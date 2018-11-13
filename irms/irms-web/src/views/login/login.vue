@@ -43,6 +43,7 @@
         ]),
         methods: {
             login() {
+                sessionStorage.removeItem('userInfo');
                 this.btnLoginDisabled = true;
                 if (this.userCode == "" || this.password == "") {
                     this.btnLoginDisabled = false;
@@ -61,6 +62,8 @@
                         if (response.data.code == 200 && response.data.message) {
                             // console.log(response.data.message)
                             this.setLoginUserInfo(response.data.message)
+                            //
+                            sessionStorage.setItem('userInfo',JSON.stringify(response.data.message));
                             //如果成功跳转到 主界面，目前 跳转到上次次
                             if (this.loginUserCode) {
                                 this.$router.push('/quote');
