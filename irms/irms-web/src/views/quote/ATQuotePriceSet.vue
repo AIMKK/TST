@@ -70,15 +70,15 @@
                     <!-- <hr> -->
                     <div class="footer">
                         <b-row class="my-1">
-                            <b-col cols="6" >
+                            <b-col cols="6">
                                 <b-button variant="secondary" block @click="exit">退出</b-button>
                             </b-col>
-                            <b-col cols="6" >
+                            <b-col cols="6">
                                 <b-button variant="success" block>保存</b-button>
                             </b-col>
                         </b-row>
                     </div>
-                   
+
                 </b-card-body>
 
             </div>
@@ -113,23 +113,35 @@
         },
         created() {
             var userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
-            //不存在loginuser
+            //不存在loginuser            
+            // console.log(this.$route);          
+            var sku = this.$route.query.skuno;//先通过路径来找
+            if(!sku){//如果路径上没找到，就通过 参数来找
+                sku=this.$route.params.skuno;
+            }
             if (!userInfo || !userInfo.UserCode) {
-                this.$router.push({ path: '/login' });
-                // console.log('no login');
+                this.$router.push({
+                    name: 'login',
+                    params: {
+                        skuno:sku
+                    }
+                });
                 return;
             }
-
-            var sku = this.$route.query.skuno;
-            console.log(sku);
-            console.log(this.$route);
-            //this.$route.query.goodsId?this.$route.query.goodsId:this.$route.params.goodsId;
-
+            // //临时测试 写死
+            // if (!sku) {
+            //     sku = '23895609';
+            // }
+            if(!sku){//如果还是没有sku那么说明数据不正确了
+                //显示提示信息，alert？model box？
+                return;
+            }
+           
             axios({
                 url: apiUrl.quotePrice,
                 method: 'post',
                 data: {
-                    skuno: '23895609'//'23895609'
+                    skuno: sku
                 }
             }).then((response) => {
                 console.log(response.data.code);
@@ -177,7 +189,7 @@
             }
         },
         methods: {
-            exit(){
+            exit() {
                 sessionStorage.clear();
                 this.$router.push({ path: '/login' });
             }
@@ -205,7 +217,7 @@
         margin-right: 5px;
     }
 
-    .footer{
+    .footer {
         margin-top: 25px;
     }
 </style>

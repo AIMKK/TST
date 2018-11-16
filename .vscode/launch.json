@@ -15,7 +15,7 @@
             "type": "node",
             "request": "launch",
             "name": "node debug",
-            "program": "${workspaceFolder}\\NodeMssql\\dbhelpertest.js"
+            "program": "${workspaceFolder}\\irms\\db-worker\\sendmail.js"
         }
     ]
 }

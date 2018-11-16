@@ -15,7 +15,7 @@ const queue = 'task';
             console.log(err);
             //这个地方需要重新连接
             console.log('restart again');
-            //
+            //一秒钟以后重启
             setTimeout(function () {
                 start();
             }, 1000);	            

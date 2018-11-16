@@ -40,7 +40,7 @@
         },
         computed: mapState([
             'loginUserCode'
-        ]),
+        ]), 
         methods: {
             login() {
                 sessionStorage.removeItem('userInfo');
@@ -63,10 +63,19 @@
                             // console.log(response.data.message)
                             this.setLoginUserInfo(response.data.message)
                             //
-                            sessionStorage.setItem('userInfo',JSON.stringify(response.data.message));
+                            sessionStorage.setItem('userInfo', JSON.stringify(response.data.message));
                             //如果成功跳转到 主界面，目前 跳转到上次次
                             if (this.loginUserCode) {
-                                this.$router.push('/quote');
+                                var sku = this.$route.query.skuno;//先通过路径来找                                   
+                                if (!sku) {//如果路径上没找到，就通过 参数来找
+                                    sku=this.$route.params.skuno;
+                                }
+                                this.$router.push({
+                                    path: '/quote',
+                                    query: {
+                                        skuno:sku
+                                    }
+                                });
                             }
                         } else {
                             console.log(response);

@@ -21,6 +21,7 @@ function TXRX(taskQueueName, taskQueueOption, sendData, maxWaitMillisecond) {
             currentConn = conn;
             //
             conn.on('error', function (err) {
+                currentConn=null;
                 console.log('rabconn error:')
                 console.log(err);
             })
@@ -113,6 +114,21 @@ function TX(taskQueueName, taskQueueOption, sendData) {
         //
         return open.then(function (conn) {
             currentConn = conn;
+            //
+            conn.on('error', function (err) {
+                currentConn=null;
+                console.log('rabconn error:')
+                console.log(err);
+            })
+            //if there is some resource shortage, e.g., memory
+            conn.on('blocked', function (reason) {
+                console.log('blocked:')
+                console.log(reason)
+            })
+            //once the resource shortage has alleviated
+            conn.on('unblocked', function () {
+                console.log('unblocked')
+            })
             return TXInner();
         }).catch(error => {
             currentConn = null;
