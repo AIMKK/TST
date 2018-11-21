@@ -67,20 +67,17 @@
                         <label for="quotePrice"><b>输入报价金额({{Costcurrencycode}}):</b></label>
                         <b-form-input id="quotePrice" type="number"></b-form-input>
                     </div>
-                    <!-- <hr> -->
                     <div class="footer">
                         <b-row class="my-1">
                             <b-col cols="6">
                                 <b-button variant="secondary" block @click="exit">退出</b-button>
                             </b-col>
                             <b-col cols="6">
-                                <b-button variant="success" block>保存</b-button>
+                                <b-button variant="success" block @click="saveQuote">保存</b-button>
                             </b-col>
                         </b-row>
                     </div>
-
                 </b-card-body>
-
             </div>
             <div v-if="loadState==='loadError'">
                 {{loadErrorInfo}}
@@ -116,14 +113,14 @@
             //不存在loginuser            
             // console.log(this.$route);          
             var sku = this.$route.query.skuno;//先通过路径来找
-            if(!sku){//如果路径上没找到，就通过 参数来找
-                sku=this.$route.params.skuno;
+            if (!sku) {//如果路径上没找到，就通过 参数来找
+                sku = this.$route.params.skuno;
             }
             if (!userInfo || !userInfo.UserCode) {
                 this.$router.push({
                     name: 'login',
                     params: {
-                        skuno:sku
+                        skuno: sku
                     }
                 });
                 return;
@@ -132,11 +129,11 @@
             // if (!sku) {
             //     sku = '23895609';
             // }
-            if(!sku){//如果还是没有sku那么说明数据不正确了
+            if (!sku) {//如果还是没有sku那么说明数据不正确了
                 //显示提示信息，alert？model box？
                 return;
             }
-           
+
             axios({
                 url: apiUrl.quotePrice,
                 method: 'post',
@@ -192,6 +189,49 @@
             exit() {
                 sessionStorage.clear();
                 this.$router.push({ path: '/login' });
+            },
+            saveQuote() {
+                //保存数据//atQuoteSave
+                axios({
+                    url: apiUrl.quoteSave,
+                    method: 'post',
+                    data: {
+                        //组织数据传递过去
+                        workshopOrderMaster: {
+                            OrderDate: new Date(),
+                            WorkShopOrderNo: '',
+                            WorkShopCode: '99999999',
+                            PrintChopCode: '',
+                            LocationCode: 'hk992',
+                            PickUpLocation: 'hk992',
+                            Salesman: '1',
+                            VIPCode: 'tester',
+                            VIPName: '',
+                            FactoryQuotePrice: '0.1',
+                            FactoryQuoteDate: new Date(),
+                            FactoryQuoteUserCode: '1',
+                            WorkShopRemark: 'test'
+                        },
+                        workShopOrderDetail: {
+                            WorkShopOrderNo:'',
+                            SequenceNo:'1',
+                            InvoiceNo:'',
+                            InvoiceSN:null,
+                            SkuNo:this.Skuno.substring(0,8),
+                            SkuDit:this.Skuno.substring(9,10),
+                            OrderQty:'1',
+                            UpdateUserCode:'1'
+                        }
+                    }
+                }).then((response) => {
+                    console.log('response.data.message');
+                    console.log(response);
+                    if (response.data.code == 200 && response.data.message) {
+
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                });
             }
         },
         computed: mapState([

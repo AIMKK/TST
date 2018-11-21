@@ -29,4 +29,27 @@ router.post('/getProductInfoForQuote', async (ctx) => {
     });    
 });
 
+//quoteSave
+router.post('/atQuoteSave', async (ctx) => {
+    let reqBody = ctx.request.body;
+    console.log(reqBody)
+    let workshopOrderMaster = reqBody.workshopOrderMaster;   
+    let  workShopOrderDetail= reqBody.workShopOrderDetail;
+    var instruct = {
+        businessKey: 'irmsATQuoteSave',
+        businessParam: { workshopOrderMaster ,workShopOrderDetail}
+    }   
+    await mqMiddle.TXRX(queue, taskQueueOption, instruct,maxWaitMillisecond).then((data) => {
+        return ctx.body = {
+            code: 200,
+            message: data
+        };
+    }).catch(error => {
+        return ctx.body = {
+            code: 500,
+            message: error
+        };
+    });    
+});
+//
 module.exports = router;

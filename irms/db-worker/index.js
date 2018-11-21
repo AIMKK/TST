@@ -1,5 +1,6 @@
 const rabConnOPtions = require('./config/rabitmqConnConfig.js');
 const irmsBusinessSet = require('./business/business-set.js');
+const log4js = require('log4js');
 const amqp = require('amqplib');
 //
 const queue = 'task';
@@ -18,7 +19,7 @@ const queue = 'task';
             //一秒钟以后重启
             setTimeout(function () {
                 start();
-            }, 1000);	            
+            }, 1000);
         })
         //if there is some resource shortage, e.g., memory
         rabconn.on('blocked', function (reason) {
@@ -29,6 +30,11 @@ const queue = 'task';
         rabconn.on('unblocked', function () {
             console.log('unblocked')
         })
+        log4js.configure({
+            appenders: { cheese: { type: 'file', filename: 'cheese.log' } },
+            categories: { default: { appenders: ['cheese'], level: 'error' } }
+        });
+
         return rabconn.createChannel();
     }).then((ch) => {
         ch.prefetch(1);
@@ -39,20 +45,29 @@ const queue = 'task';
                     var instructContent = JSON.parse(msg.content.toString());
                     //
                     var businessKey = instructContent.businessKey;
-                    var businessParam = instructContent.businessParam;
+                    var businessParam = instructContent.businessParam;                 
                     var businessPro = irmsBusinessSet.getBusinessByKey(businessKey);
                     //还要继续判断是不是函数
                     if (businessPro && typeof businessPro === "function") {
                         businessPro(businessParam).then((result) => {
                             //db worker ,只是根据key 找到数据，然后 返回，数据，复杂的事情交给business
-                            ch.ack(msg);
-                            //
+                            console.log(result)
+                            ch.ack(msg);                           
+                            //返回result
                             if (msg.properties.replyTo) {
                                 console.log('sendback')//目前先打印出来
-                                ch.sendToQueue(msg.properties.replyTo, new Buffer(JSON.stringify(result)), { correlationId: msg.properties.correlationId });
-                            }
-                            //并且还要向通知队列发送数据，说明已经执行成功，
-                            //并且把result 返回过去
+                                var buf;
+                                try{
+                                    if(result==null||result==undefined){
+                                        buf=new Buffer('');
+                                    }else{
+                                        buf=new Buffer(JSON.stringify(result));
+                                    }                                    
+                                }catch(error){
+                                    buf=new Buffer('');
+                                }
+                                ch.sendToQueue(msg.properties.replyTo, buf, { correlationId: msg.properties.correlationId });
+                            }                            
                         }).catch(error => {
                             console.log('exec business error:' + error);
                             ch.ack(msg);
@@ -62,11 +77,20 @@ const queue = 'task';
                     } else { //没有找到businessProc
                         console.log('not find businessproc error');
                         ch.ack(msg);
-                        //并且还要向通知队列发送数据，说明 businessKey 无效
+                        if (msg.properties.replyTo) {
+                            var buf=new Buffer(JSON.stringify(`current request can't be served,check request cmd pls!`));                      
+                            ch.sendToQueue(msg.properties.replyTo, buf, { correlationId: msg.properties.correlationId });
+                        }
                     }
                 } catch (error) {
                     console.log('error when consuming');
                     console.log(error);
+                    //
+                    ch.ack(msg);
+                    if (msg.properties.replyTo) {
+                        var buf=new Buffer(JSON.stringify('error when consuming'));                      
+                        ch.sendToQueue(msg.properties.replyTo, buf, { correlationId: msg.properties.correlationId });
+                    }
                 }
             }, { noAck: false });
         }).then(function () {

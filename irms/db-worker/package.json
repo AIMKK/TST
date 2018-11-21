@@ -14,6 +14,7 @@
         "@babel/core": "^7.1.2",
         "@babel/preset-env": "^7.1.0",
         "amqplib": "^0.5.2",
+        "log4js": "^3.0.6",
         "mssql": "^4.2.2",
         "soap": "^0.25.0"
     },

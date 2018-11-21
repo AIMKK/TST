@@ -15,7 +15,7 @@
             "type": "node",
             "request": "launch",
             "name": "node debug",
-            "program": "${workspaceFolder}\\irms\\db-worker\\sendmail.js"
+            "program": "${workspaceFolder}\\irms\\db-worker\\index.js"
         }
     ]
 }

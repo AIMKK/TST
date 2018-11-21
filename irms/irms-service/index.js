@@ -5,6 +5,7 @@ const koaCors = require('koa2-cors')
 const Router = require('koa-router');
 const static = require('koa-static');
 const staticPath = '../irms-web/dist/'; //'./static/dist/';//
+const log4js = require('log4js');
 //
 const app = new Koa();
 app.use(bodyParser()).use(koaCors());

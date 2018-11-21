@@ -4,3 +4,4 @@
 **/rabitmqConnConfig.js
 **/dbConnConfig.js
 **/db-conn-config.js
+**/*.log
