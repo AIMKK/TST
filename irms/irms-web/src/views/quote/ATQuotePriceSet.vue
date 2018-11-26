@@ -65,7 +65,10 @@
                 <b-card-body>
                     <div role="group">
                         <label for="quotePrice"><b>输入报价金额({{Costcurrencycode}}):</b></label>
-                        <b-form-input id="quotePrice" type="number"></b-form-input>
+                        <b-form-input id="quotePrice" type="number" v-model="QuotePrice" :state="QuoteState" ></b-form-input>
+                        <!-- <b-form-invalid-feedback id="quotePriceFeedback">                           
+                            QuotePrice must more than 0;
+                          </b-form-invalid-feedback> -->
                     </div>
                     <div class="footer">
                         <b-row class="my-1">
@@ -73,7 +76,7 @@
                                 <b-button variant="secondary" block @click="exit">退出</b-button>
                             </b-col>
                             <b-col cols="6">
-                                <b-button variant="success" block @click="saveQuote">保存</b-button>
+                                <b-button variant="success" block @click="btnQuoteClick">保存</b-button>
                             </b-col>
                         </b-row>
                     </div>
@@ -83,6 +86,9 @@
                 {{loadErrorInfo}}
             </div>
         </b-card>
+        <b-modal v-model="modalShow" title="iRMS" size="sm" @ok="handleQuoteSaveOk">
+            {{modalMessage}}
+        </b-modal>
     </b-container>
 </template>
 <script>
@@ -106,12 +112,14 @@
                 StoneCost: '',
                 UnitCost: '',
                 StoneInfo: [],
+                QuotePrice:0,
+                QuoteState:true,
+                modalMessage: '',//modal ui msg
+                modalShow: false,//modal ui show
             }
         },
         created() {
             var userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
-            //不存在loginuser            
-            // console.log(this.$route);          
             var sku = this.$route.query.skuno;//先通过路径来找
             if (!sku) {//如果路径上没找到，就通过 参数来找
                 sku = this.$route.params.skuno;
@@ -125,10 +133,7 @@
                 });
                 return;
             }
-            // //临时测试 写死
-            // if (!sku) {
-            //     sku = '23895609';
-            // }
+
             if (!sku) {//如果还是没有sku那么说明数据不正确了
                 //显示提示信息，alert？model box？
                 return;
@@ -190,15 +195,30 @@
                 sessionStorage.clear();
                 this.$router.push({ path: '/login' });
             },
-            saveQuote() {
+            handleQuoteSaveOk(evt) {
+                // Prevent modal from closing
+                evt.preventDefault();
+                this.modalMessage="正在保存中..."
+                this.saveQuote();
+            },
+            btnQuoteClick(){
+                if(this.QuotePrice<=0){
+                    this.QuoteState=false;
+                    return;
+                }
+                this.modalMessage="确定保存报价单吗？"
+                this.modalShow=true;                
+            },
+            saveQuote() {                
                 //保存数据//atQuoteSave
+               
                 axios({
                     url: apiUrl.quoteSave,
                     method: 'post',
                     data: {
                         //组织数据传递过去
                         workshopOrderMaster: {
-                            OrderDate: new Date(),
+                            OrderDate: new Date().format("yyyy-MM-dd hh:mm:ss"),
                             WorkShopOrderNo: '',
                             WorkShopCode: '99999999',
                             PrintChopCode: '',
@@ -207,20 +227,20 @@
                             Salesman: '1',
                             VIPCode: 'tester',
                             VIPName: '',
-                            FactoryQuotePrice: '0.1',
-                            FactoryQuoteDate: new Date(),
+                            FactoryQuotePrice: this.QuotePrice,
+                            FactoryQuoteDate: new Date().format("yyyy-MM-dd hh:mm:ss"),
                             FactoryQuoteUserCode: '1',
                             WorkShopRemark: 'test'
                         },
                         workShopOrderDetail: {
-                            WorkShopOrderNo:'',
-                            SequenceNo:'1',
-                            InvoiceNo:'',
-                            InvoiceSN:null,
-                            SkuNo:this.Skuno.substring(0,8),
-                            SkuDit:this.Skuno.substring(9,10),
-                            OrderQty:'1',
-                            UpdateUserCode:'1'
+                            WorkShopOrderNo: '',
+                            SequenceNo: '1',
+                            InvoiceNo: '',
+                            InvoiceSN: null,
+                            SkuNo: this.Skuno.substring(0, 8),
+                            SkuDit: this.Skuno.substring(9, 10),
+                            OrderQty: '1',
+                            UpdateUserCode: '1'
                         }
                     }
                 }).then((response) => {
@@ -229,10 +249,19 @@
                     if (response.data.code == 200 && response.data.message) {
 
                     }
+                    this.modalShow=false; 
                 }).catch((error) => {
                     console.log(error);
+                    this.modalMessage=error
+                    // this.modalShow=false; 
                 });
-            }
+            },
+            infiniteHandler($state) {
+                console.log('we')
+
+                return;
+
+            },
         },
         computed: mapState([
             'loginUserCode'

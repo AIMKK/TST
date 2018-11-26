@@ -26,11 +26,14 @@ function altQuoteSave(workshopOrderParam) {
             var orderNO;
             try {
                 orderNO = result.output.WorkShopOrderNo;
-                if(orderNO.trim().length==0)
-                workshopOrderParam.workShopOrderDetail.WorkShopOrderNo = orderNO;
+                if(orderNO.trim().length>0){
+                    workshopOrderParam.workShopOrderDetail.WorkShopOrderNo = orderNO;
+                }else{
+                    throw 'can not get workshoporderNO';
+                }
             } catch (error) {
                 console.log(error);
-                throw 'cant not get workshoporderNo';
+                throw error;
             }
             //
             return workOrderDetailCmd(workshopOrderParam.workShopOrderDetail).then(() => {
@@ -39,7 +42,7 @@ function altQuoteSave(workshopOrderParam) {
         }).then((result) => {
             return trans.commit().then((error) => {
                 if (error) {
-                    console.log(error)
+                    console.log(error);
                 }
                 return result;
             });

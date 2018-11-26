@@ -1,6 +1,6 @@
 const msDB = require('mssql');
 const { irmsConnConfig } = require('../config/db-conn-config.js');
-const { convertToDatetime } = require('../helper/convert-to-datetime.js')
+const { convertToDatetimeString } = require('../helper/convert-to-datetime.js')
 var dbconnPool;
 //216
 module.exports = {
@@ -75,10 +75,9 @@ function createSaveWorkShopOrderMasterCmd(iniReqParam /* [pool or transaction] *
     var saveWorkShopOrderMaster = function (workshopOrderMasterParam) {
         var promise = new Promise(function (resolve, reject) {
             try {
-
                 //对参数进行转换，如果失败就中止
                 var request = new msDB.Request(iniReqParam);
-                request.input('OrderDate', msDB.DateTime, convertToDatetime(workshopOrderMasterParam.OrderDate));//convertToDatetime(workshopOrderMasterParam.OrderDate)
+                request.input('OrderDate', msDB.VarChar(25), convertToDatetimeString(workshopOrderMasterParam.OrderDate));//convertToDatetime(workshopOrderMasterParam.OrderDate)
                 request.output('WorkShopOrderNo', msDB.VarChar(20), '');
                 request.input('WorkShopCode', msDB.VarChar(10), workshopOrderMasterParam.WorkShopCode);
                 request.input('PrintChopCode', msDB.VarChar(10), workshopOrderMasterParam.PrintChopCode);
@@ -95,36 +94,36 @@ function createSaveWorkShopOrderMasterCmd(iniReqParam /* [pool or transaction] *
                 request.input('OrderQty', msDB.SmallInt, workshopOrderMasterParam.OrderQty);
                 request.input('Remark', msDB.NVarChar(msDB.MAX), workshopOrderMasterParam.Remark);
                 request.input('UpdateUserCode', msDB.VarChar(10), workshopOrderMasterParam.UpdateUserCode);
-                request.input('EstimatedCompleteDate', msDB.DateTime, convertToDatetime(workshopOrderMasterParam.EstimatedCompleteDate));
-                request.input('WorkShopPickupDate', msDB.DateTime, convertToDatetime(workshopOrderMasterParam.WorkShopPickupDate));
-                request.input('WorkShopReturnDate', msDB.DateTime, convertToDatetime(workshopOrderMasterParam.WorkShopReturnDate));
-                request.input('FactoryReadDate', msDB.DateTime, convertToDatetime(workshopOrderMasterParam.FactoryReadDate));
-                request.input('FactoryProposeDate', msDB.DateTime, convertToDatetime(workshopOrderMasterParam.FactoryProposeDate));
-                request.input('FactoryReadUserCode', msDB.VarChar(10), workshopOrderMasterParam.FactoryReadUserCode);
-                request.input('FactoryQuoteDate', msDB.DateTime, convertToDatetime(workshopOrderMasterParam.FactoryQuoteDate));
+                request.input('EstimatedCompleteDate', msDB.VarChar(25), convertToDatetimeString(workshopOrderMasterParam.EstimatedCompleteDate));
+                request.input('WorkShopPickupDate', msDB.VarChar(25), convertToDatetimeString(workshopOrderMasterParam.WorkShopPickupDate));
+                request.input('WorkShopReturnDate', msDB.VarChar(25), convertToDatetimeString(workshopOrderMasterParam.WorkShopReturnDate));
+                request.input('FactoryReadDate', msDB.VarChar(25), convertToDatetimeString(workshopOrderMasterParam.FactoryReadDate));
+                request.input('FactoryProposeDate', msDB.VarChar(25), convertToDatetimeString(workshopOrderMasterParam.FactoryProposeDate));
+                request.input('FactoryReadUserCode', msDB.VarChar(10), workshopOrderMasterParam.FactoryReadUserCode);                
+                request.input('FactoryQuoteDate', msDB.VarChar(25), convertToDatetimeString(workshopOrderMasterParam.FactoryQuoteDate));
                 request.input('FactoryQuotePrice', msDB.Decimal(18, 4), workshopOrderMasterParam.FactoryQuotePrice);
                 request.input('FactoryQuoteUserCode', msDB.VarChar(10), workshopOrderMasterParam.FactoryQuoteUserCode);
-                request.input('ShopConfirmDate', msDB.DateTime, convertToDatetime(workshopOrderMasterParam.ShopConfirmDate));
+                request.input('ShopConfirmDate', msDB.VarChar(25), convertToDatetimeString(workshopOrderMasterParam.ShopConfirmDate));
                 request.input('ShopConfirmUserCode', msDB.VarChar(10), workshopOrderMasterParam.ShopConfirmUserCode);
-                request.input('EstimatedArrivalDate', msDB.DateTime, convertToDatetime(workshopOrderMasterParam.EstimatedArrivalDate));
+                request.input('EstimatedArrivalDate', msDB.VarChar(25), convertToDatetimeString(workshopOrderMasterParam.EstimatedArrivalDate));
                 request.input('EstimatedArrivalUserCode', msDB.VarChar(10), workshopOrderMasterParam.EstimatedArrivalUserCode);
-                request.input('FactoryDelayToDate', msDB.DateTime, convertToDatetime(workshopOrderMasterParam.FactoryDelayToDate));
-                request.input('ReworkDate', msDB.DateTime, convertToDatetime(workshopOrderMasterParam.ReworkDate));
+                request.input('FactoryDelayToDate', msDB.VarChar(25), convertToDatetimeString(workshopOrderMasterParam.FactoryDelayToDate));
+                request.input('ReworkDate', msDB.VarChar(25), convertToDatetimeString(workshopOrderMasterParam.ReworkDate));
                 request.input('ReworkReason', msDB.NVarChar(msDB.MAX), workshopOrderMasterParam.ReworkReason);
                 request.input('ReworkUserCode', msDB.VarChar(10), workshopOrderMasterParam.ReworkUserCode);
-                request.input('SettleDate', msDB.DateTime, convertToDatetime(workshopOrderMasterParam.SettleDate));
+                request.input('SettleDate', msDB.VarChar(25), convertToDatetimeString(workshopOrderMasterParam.SettleDate));
                 request.input('SettleAmount', msDB.Decimal(18, 4), workshopOrderMasterParam.SettleAmount);
                 request.input('SettleUserCode', msDB.VarChar(10), workshopOrderMasterParam.SettleUserCode);
                 request.input('InfoRemark', msDB.NVarChar(msDB.MAX), workshopOrderMasterParam.InfoRemark);
                 request.input('VersionNo', msDB.SmallInt, workshopOrderMasterParam.VersionNo);
-                request.input('TranferPickupDate', msDB.DateTime, convertToDatetime(workshopOrderMasterParam.TranferPickupDate));
-                request.input('CustomerPickupDate', msDB.DateTime, convertToDatetime(workshopOrderMasterParam.CustomerPickupDate));
+                request.input('TranferPickupDate', msDB.VarChar(25), convertToDatetimeString(workshopOrderMasterParam.TranferPickupDate));
+                request.input('CustomerPickupDate', msDB.VarChar(25), convertToDatetimeString(workshopOrderMasterParam.CustomerPickupDate));
                 request.input('WorkShopFinalPurpose', msDB.NVarChar(msDB.MAX), workshopOrderMasterParam.WorkShopFinalPurpose);
                 request.input('CompleteSku', msDB.VarChar(10), workshopOrderMasterParam.CompleteSku);
-                request.input('WorkShopCompleteDate', msDB.DateTime, convertToDatetime(workshopOrderMasterParam.WorkShopCompleteDate));
-                request.input('WorkshopReturnReworkDate', msDB.DateTime, convertToDatetime(workshopOrderMasterParam.WorkshopReturnReworkDate));
+                request.input('WorkShopCompleteDate', msDB.VarChar(25), convertToDatetimeString(workshopOrderMasterParam.WorkShopCompleteDate));
+                request.input('WorkshopReturnReworkDate', msDB.VarChar(25), convertToDatetimeString(workshopOrderMasterParam.WorkshopReturnReworkDate));
                 request.input('WorkShopRemark', msDB.NVarChar(msDB.MAX), workshopOrderMasterParam.WorkShopRemark);
-                request.input('ArrivalDate', msDB.DateTime, convertToDatetime(workshopOrderMasterParam.ArrivalDate));
+                request.input('ArrivalDate', msDB.VarChar(25), convertToDatetimeString(workshopOrderMasterParam.ArrivalDate));
                 //
                 resolve(request.execute('SP_WorkShopOrderMaster_Set'));
             } catch (error) {
