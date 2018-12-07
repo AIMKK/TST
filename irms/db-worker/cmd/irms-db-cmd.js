@@ -28,6 +28,7 @@ function createDBConnPool() {
 function createUserLoginCmd(iniReqParam /* [pool or transaction] */) {
     //UserLogin
     var userLogin = function (userLoginParam) {
+        userLoginParam=userLoginParam||{};
         var promise = new Promise(function (resolve, reject) {
             try {
                 var request = new msDB.Request(iniReqParam);
@@ -51,6 +52,7 @@ function createGetProdInfoForQuoteCmd(iniReqParam /* [pool or transaction] */) {
 
     //getProdInfoForQuote
     var getProdInfoForQuote = function (getProdInfoForQuoteParam) {
+        getProdInfoForQuoteParam=getProdInfoForQuoteParam||{};
         var promise = new Promise(function (resolve, reject) {
             try {
                 var request = new msDB.Request(iniReqParam);
@@ -73,9 +75,11 @@ function createGetProdInfoForQuoteCmd(iniReqParam /* [pool or transaction] */) {
 function createSaveWorkShopOrderMasterCmd(iniReqParam /* [pool or transaction] */) {
     //saveWorkShopOrderMaster
     var saveWorkShopOrderMaster = function (workshopOrderMasterParam) {
+        workshopOrderMasterParam=workshopOrderMasterParam||{};
         var promise = new Promise(function (resolve, reject) {
             try {
-                //对参数进行转换，如果失败就中止
+                //对参数进行转换，如果失败就中止               
+                //
                 var request = new msDB.Request(iniReqParam);
                 request.input('OrderDate', msDB.VarChar(25), convertToDatetimeString(workshopOrderMasterParam.OrderDate));//convertToDatetime(workshopOrderMasterParam.OrderDate)
                 request.output('WorkShopOrderNo', msDB.VarChar(20), '');
@@ -143,6 +147,7 @@ function createSaveWorkShopOrderMasterCmd(iniReqParam /* [pool or transaction] *
 function createSaveWorkShopOrderDetailCmd(iniReqParam /* [pool or transaction] */) {
     //saveWorkShopOrderDetail
     var saveWorkShopOrderDetail = function (workShopOrderDetailParam) {
+        workShopOrderDetailParam=workShopOrderDetailParam||{};
         var promise = new Promise(function (resolve, reject) {
             try {
                 var request = new msDB.Request(iniReqParam);                
@@ -180,6 +185,7 @@ function creategettestatCmd(iniReqParam /* [pool or transaction] */) {
 
     //getProdInfoForQuote
     var getProdInfoForQuote = function (paramtest) {
+        paramtest=paramtest||{};
         var promise = new Promise(function (resolve, reject) {
             try {
                 var request = new msDB.Request(iniReqParam);

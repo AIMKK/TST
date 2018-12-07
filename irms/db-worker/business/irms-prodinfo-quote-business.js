@@ -26,7 +26,7 @@ function getProdInfoForQuote(prodInfoForQuoteParam) {
             console.log('命令执行不正确--')
             console.log(error);
             console.log('---------------')
-            return '命令执行不正确';            
+            return '命令执行不正确'; 
         })
     }).catch(error => {
         //记录日志

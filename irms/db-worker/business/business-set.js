@@ -4,8 +4,9 @@ const newVipQuickJoin = require('./new-vip-quick-join.js');
 const irmsUserLogin=require('./irms-userlogin-business.js');
 const irmsGetProdInfoForQuote=require('./irms-prodinfo-quote-business.js');
 const irmsATQuoteSave=require('./irms-atquote-business.js');
+//
 //store business key
-var businessSet = {
+var bussinessSet = {
     irmsUserLogin,
     irmsGetProdInfoForQuote,
     irmsATQuoteSave,
@@ -13,20 +14,20 @@ var businessSet = {
     newVipQuickJoin,
 };
 //
-function getBusinessByKey(businessKey) {
-    var business = null;
+function getBussinessByKey(bussinessKey) {
+    var bussiness = null;
     try {
-        if (!businessKey) {
+        if (!bussinessKey) {
             return null;
         }
         //
-        business = businessSet[businessKey];
+        bussiness = bussinessSet[bussinessKey];
     } catch (err) {
-        business = null;
+        bussiness = null;
     }
-    return business;
+    return bussiness;
 }
 //
 module.exports = {
-    getBusinessByKey
+    getBussinessByKey
 };
