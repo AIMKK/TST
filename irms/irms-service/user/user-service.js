@@ -14,15 +14,16 @@ router.post('/login', async (ctx) => {
     let password = user.password;
     //
     var instruct = {
-        businessKey: 'irmsUserLogin',
-        businessParam: { UserCode: userCode, Password: password }
+        bussinessKey: 'irmsUserLogin',
+        bussinessParam: { UserCode: userCode, Password: password }
     }
     await mqMiddle.TXRX(queue, taskQueueOption, instruct,maxWaitMillisecond).then((data) => {
-        return ctx.body = {
-            code: 200,
-            message: data
-        };
-    }).catch(error => {
+        return ctx.body = data;
+        // {
+        //     code: 200,
+        //     message: data
+        // };
+    }).catch(error => {       
         return ctx.body = {
             code: 500,
             message: error

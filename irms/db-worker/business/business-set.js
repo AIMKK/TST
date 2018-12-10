@@ -2,8 +2,10 @@
 const newVipQuickJoin = require('./new-vip-quick-join.js');
 //
 const irmsUserLogin=require('./irms-userlogin-business.js');
-const irmsGetProdInfoForQuote=require('./irms-prodinfo-quote-business.js');
+//const irmsGetProdInfoForQuote=require('./irms-prodinfo-quote-business.js');
 const irmsATQuoteSave=require('./irms-atquote-business.js');
+
+const {irmsGetProdInfoForQuote}=require('./irms-db-business.js');
 //
 //store business key
 var bussinessSet = {

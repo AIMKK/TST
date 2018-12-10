@@ -13,14 +13,15 @@ router.post('/getProductInfoForQuote', async (ctx) => {
     let skuno = reqBody.skuno;
 
     var instruct = {
-        businessKey: 'irmsGetProdInfoForQuote',
-        businessParam: { SkuNo: skuno }
+        bussinessKey: 'irmsGetProdInfoForQuote',
+        bussinessParam: { SkuNo: skuno }
     }   
     await mqMiddle.TXRX(queue, taskQueueOption, instruct,maxWaitMillisecond).then((data) => {
-        return ctx.body = {
-            code: 200,
-            message: data
-        };
+        return ctx.body = data;
+        // {
+        //     code: 200,
+        //     message: data
+        // };
     }).catch(error => {
         return ctx.body = {
             code: 500,
@@ -36,14 +37,15 @@ router.post('/atQuoteSave', async (ctx) => {
     let workshopOrderMaster = reqBody.workshopOrderMaster;   
     let  workShopOrderDetail= reqBody.workShopOrderDetail;
     var instruct = {
-        businessKey: 'irmsATQuoteSave',
-        businessParam: { workshopOrderMaster ,workShopOrderDetail}
+        bussinessKey: 'irmsATQuoteSave',
+        bussinessParam: { workshopOrderMaster ,workShopOrderDetail}
     }   
     await mqMiddle.TXRX(queue, taskQueueOption, instruct,maxWaitMillisecond).then((data) => {
-        return ctx.body = {
-            code: 200,
-            message: data
-        };
+        return ctx.body = data;
+        // {
+        //     code: 200,
+        //     message: data
+        // };
     }).catch(error => {
         return ctx.body = {
             code: 500,

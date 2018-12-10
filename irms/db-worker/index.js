@@ -44,42 +44,47 @@ const queue = 'task';
                     console.log("[irms-dbworker] Received '%s'", msg.content.toString());
                     var instructContent = JSON.parse(msg.content.toString());
                     //
-                    var businessKey = instructContent.businessKey;
-                    var businessParam = instructContent.businessParam;                 
-                    var businessPro = irmsBusinessSet.getBusinessByKey(businessKey);
+                    instructContent=instructContent||{};
+                    var bussinessKey = instructContent.bussinessKey;
+                    var bussinessParam = instructContent.bussinessParam;
+                    var bussinessPro = irmsBusinessSet.getBussinessByKey(bussinessKey);
                     //还要继续判断是不是函数
-                    if (businessPro && typeof businessPro === "function") {
-                        businessPro(businessParam).then((result) => {
+                    if (bussinessPro && typeof bussinessPro === "function") {
+                        bussinessPro(bussinessParam).then((result) => {
                             //db worker ,只是根据key 找到数据，然后 返回，数据，复杂的事情交给business
                             console.log(result)
-                            ch.ack(msg);                           
+                            ch.ack(msg);
                             //返回result
-                            if (msg.properties.replyTo) {
+                            if (msg.properties && msg.properties.replyTo) {
                                 console.log('sendback')//目前先打印出来
-                                var buf;
-                                try{
-                                    if(result==null||result==undefined){
-                                        buf=new Buffer('');
-                                    }else{
-                                        buf=new Buffer(JSON.stringify(result));
-                                    }                                    
-                                }catch(error){
-                                    buf=new Buffer('');
-                                }
-                                ch.sendToQueue(msg.properties.replyTo, buf, { correlationId: msg.properties.correlationId });
-                            }                            
+                                var backDataBuff;
+                                var backData={code:'200',message:''};
+                                try {
+                                    if (result === null || result === undefined) {
+                                        backData.message='';                                        
+                                    } else {
+                                        backData.message=result;
+                                    }
+                                    backDataBuff = Buffer.from(JSON.stringify(backData));
+                                } catch (error) {
+                                    backDataBuff = Buffer.from('');
+                                }                               
+                                ch.sendToQueue(msg.properties.replyTo, backDataBuff, { correlationId: msg.properties.correlationId });
+                            }
                         }).catch(error => {
-                            console.log('exec business error:' + error);
+                            console.log('exec bussiness error:' + error);
                             ch.ack(msg);
                             //并且还要向通知队列发送数据，说明 businessPro无法有效的执行，把错误告返回
                             //error 返回过去
                         });
                     } else { //没有找到businessProc
-                        console.log('not find businessproc error');
-                        ch.ack(msg);
-                        if (msg.properties.replyTo) {
-                            var buf=new Buffer(JSON.stringify(`current request can't be served,check request cmd pls!`));                      
-                            ch.sendToQueue(msg.properties.replyTo, buf, { correlationId: msg.properties.correlationId });
+                        console.log('not find bussinessproc error');
+                        ch.ack(msg);                      
+                        if (msg.properties&&msg.properties.replyTo) {
+                            var backData={code:'400',message:''};
+                            backData.message=`current request can't be served,check request cmd pls!`
+                            var backDataBuf = Buffer.from(JSON.stringify(backData));
+                            ch.sendToQueue(msg.properties.replyTo, backDataBuf, { correlationId: msg.properties.correlationId });
                         }
                     }
                 } catch (error) {
@@ -87,9 +92,11 @@ const queue = 'task';
                     console.log(error);
                     //
                     ch.ack(msg);
-                    if (msg.properties.replyTo) {
-                        var buf=new Buffer(JSON.stringify('error when consuming'));                      
-                        ch.sendToQueue(msg.properties.replyTo, buf, { correlationId: msg.properties.correlationId });
+                    if (msg.properties&&msg.properties.replyTo) {
+                        var backData={code:'500',message:''};
+                        backData.message=`error when consuming!`
+                        var backDataBuf = Buffer.from(JSON.stringify(backData));
+                        ch.sendToQueue(msg.properties.replyTo, backDataBuf, { correlationId: msg.properties.correlationId });
                     }
                 }
             }, { noAck: false });

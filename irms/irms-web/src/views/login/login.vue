@@ -68,7 +68,7 @@
                             userCode: this.userCode,
                             password: this.password
                         }
-                    }).then((response) => {
+                    }).then((response) => {                                           
                         if (response.data.code == 200 && response.data.message) {
                             // console.log(response.data.message)
                             this.setLoginUserInfo(response.data.message)

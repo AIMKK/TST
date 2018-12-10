@@ -146,15 +146,15 @@
                     skuno: sku
                 }
             }).then((response) => {
-                console.log(response.data.code);
+                console.log(response.data.code);               
                 console.log('response.data.message');
                 console.log(response.data.message);
                 if (response.data.code == 200 && response.data.message) {
                     if (response.data.message.length > 1) {
                         this.loadState = "loaded";
                         //console.log(response);
-                        var mainInfo = response.data.message[0][0];
-                        // console.log(mainInfo);
+                        //console.log()
+                        var mainInfo = response.data.message[0][0];                         
                         this.Skuno = mainInfo.Skuno;
                         this.MountNo = mainInfo.MountNo;
                         this.StoneCost = mainInfo.StoneCost;
