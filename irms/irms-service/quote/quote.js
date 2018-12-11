@@ -17,11 +17,7 @@ router.post('/getProductInfoForQuote', async (ctx) => {
         bussinessParam: { SkuNo: skuno }
     }   
     await mqMiddle.TXRX(queue, taskQueueOption, instruct,maxWaitMillisecond).then((data) => {
-        return ctx.body = data;
-        // {
-        //     code: 200,
-        //     message: data
-        // };
+        return ctx.body = data;        
     }).catch(error => {
         return ctx.body = {
             code: 500,
@@ -41,11 +37,7 @@ router.post('/atQuoteSave', async (ctx) => {
         bussinessParam: { workshopOrderMaster ,workShopOrderDetail}
     }   
     await mqMiddle.TXRX(queue, taskQueueOption, instruct,maxWaitMillisecond).then((data) => {
-        return ctx.body = data;
-        // {
-        //     code: 200,
-        //     message: data
-        // };
+        return ctx.body = data;        
     }).catch(error => {
         return ctx.body = {
             code: 500,

@@ -2,6 +2,13 @@
 var Q = require('q');
 var rabConnOPtions = require('./config/rabitmqConnConfig.js');
 var amqplib = require('amqplib');
+const log4jsConfig=require('./log4js-config.js');
+const log4js = require('log4js');
+//
+log4js.configure(log4jsConfig);
+// 
+const tiplogger = log4js.getLogger('console');
+//
 var currentConn;
 //
 module.exports = {
@@ -20,24 +27,29 @@ function TXRX(taskQueueName, taskQueueOption, sendData, maxWaitMillisecond) {
         return open.then(function (conn) {
             currentConn = conn;
             //
+            process.on('exit', ()=>{
+                if(currentConn){
+                    currentConn.close.bind(currentConn);
+                }                
+                log4js.shutdown();
+            });
+            //
             conn.on('error', function (err) {
                 currentConn=null;
-                console.log('rabconn error:')
-                console.log(err);
+                tiplogger.error('rabconn error:'+err);
             })
             //if there is some resource shortage, e.g., memory
             conn.on('blocked', function (reason) {
-                console.log('blocked:')
-                console.log(reason)
+                tiplogger.info('blocked:'+reason);
             })
             //once the resource shortage has alleviated
             conn.on('unblocked', function () {
-                console.log('unblocked')
+                tiplogger.info('unblocked');
             })
             return TXRXInner();
         }).catch(error => {
             currentConn = null;
-            console.log(error)
+            tiplogger.error(error);
             return 'open mp connection error';
         });
     } else {
@@ -67,7 +79,7 @@ function TXRX(taskQueueName, taskQueueOption, sendData, maxWaitMillisecond) {
 
                     ch.sendToQueue(taskQueueName, Buffer.from(data), { replyTo: tempBackQueue.queue }, function (err, ok) {
                         if (err != null) {
-                            console.log(err);
+                            tiplogger.error(err);
                             deferred.reject('send to mq queue failed !');
                         }
                         else {
@@ -78,7 +90,7 @@ function TXRX(taskQueueName, taskQueueOption, sendData, maxWaitMillisecond) {
                                 if (!backConsumed) {
                                     backConsumed = true;
                                     ch.close().catch((error) => {
-                                        console.log(error)
+                                        tiplogger.error(error);
                                     });
                                 }
                                 //
@@ -89,7 +101,7 @@ function TXRX(taskQueueName, taskQueueOption, sendData, maxWaitMillisecond) {
                                 if (!backConsumed) {
                                     backConsumed = true;
                                     ch.close().catch((error) => {
-                                        console.log(error);
+                                        tiplogger.error(error);
                                     });
                                     //
                                     deferred.reject('no data back to rpc queue in limit time');
@@ -102,7 +114,7 @@ function TXRX(taskQueueName, taskQueueOption, sendData, maxWaitMillisecond) {
             });
         }).catch(function (error) {
             currentConn = null;
-            console.log(error)
+            tiplogger.error(error);
             return 'create mq chanel error';
         });
     }
@@ -114,25 +126,30 @@ function TX(taskQueueName, taskQueueOption, sendData) {
         //
         return open.then(function (conn) {
             currentConn = conn;
+             //
+             process.on('exit', ()=>{
+                if(currentConn){
+                    currentConn.close.bind(currentConn);
+                }                
+                log4js.shutdown();
+            });
             //
             conn.on('error', function (err) {
                 currentConn=null;
-                console.log('rabconn error:')
-                console.log(err);
+                tiplogger.error('rabconn error:'+err);
             })
             //if there is some resource shortage, e.g., memory
             conn.on('blocked', function (reason) {
-                console.log('blocked:')
-                console.log(reason)
+                tiplogger.info('blocked:'+reason);
             })
             //once the resource shortage has alleviated
             conn.on('unblocked', function () {
-                console.log('unblocked')
+                tiplogger.info('unblocked');
             })
             return TXInner();
         }).catch(error => {
             currentConn = null;
-            console.log(error)
+            tiplogger.error(error);
             return 'open mp connection error';
         });
     } else {
@@ -156,7 +173,7 @@ function TX(taskQueueName, taskQueueOption, sendData) {
                 var deferred = Q.defer();
                 ch.sendToQueue(taskQueueName, Buffer.from(data), {}, function (err, ok) {
                     if (!err) {
-                        console.log(err);
+                        tiplogger.error(err);
                         deferred.reject('send to mq queue failed !');
                     }
                     else {
@@ -167,7 +184,7 @@ function TX(taskQueueName, taskQueueOption, sendData) {
             });
         }).catch(function (error) {
             currentConn = null;
-            console.log(error)
+            tiplogger.error(error);
             return 'create mq chanel error';
         });
     }

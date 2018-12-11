@@ -13,7 +13,6 @@ module.exports = {
     createNewVipQuickJoinCmd,
     createGetVIPPointsCmd,
     creategettestatCmd,
-
 }
 //
 function createDBConnPool() {

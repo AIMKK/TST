@@ -5,7 +5,12 @@ const koaCors = require('koa2-cors')
 const Router = require('koa-router');
 const static = require('koa-static');
 const staticPath = '../irms-web/dist/'; //'./static/dist/';//
+const log4jsConfig=require('./log4js-config.js');
 const log4js = require('log4js');
+//
+log4js.configure(log4jsConfig);
+// 
+const tiplogger = log4js.getLogger('console');
 //
 const app = new Koa();
 app.use(bodyParser()).use(koaCors());
@@ -26,5 +31,5 @@ rootRouter.use('/quoteAPI', quoteRouter.routes(), quoteRouter.allowedMethods());
 app.use(rootRouter.routes()).use(rootRouter.allowedMethods()).use(bodyParser());
 //
 app.listen(3000);
-console.log('irms service api start at 3000');
+tiplogger.info('irms service api start at 3000');
 
