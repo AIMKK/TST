@@ -10,14 +10,107 @@
 </head>
 
 <body>
-    <div id="app">
+    <div id="app" v-bind:title="title">
         {{ message }}
+        <br>
+        <span v-if="seen">Now you see me{{ message.split('').reverse().join('') }}</span>
+        <h1 v-if="seen">Y</h1>
+        <h1 v-else>N</h1>
+        <h1 v-show="seen">H!</h1>
+        <br>
+        <br>
+        <span>Expressions:{{ message.split('').reverse().join('') }}</span>
+        <span> Computed reversed message: "{{ reversedMessage }}"</span>
+        <span v-once>This will never change: {{ message }}</span>
+        <br>
+        <ol>
+
+            <todo-item v-for="(item, index)  in todos" v-bind:todo="item" v-bind:key="item.text">
+
+            </todo-item>
+        </ol>
+        <br>
+        <ol>
+            <li v-for="(todo, index) in todos" :key="index">
+                {{ todo.text }}-{{ index }}
+            </li>
+        </ol>
+        <br>
+        <button v-on:click="reverseMessage">Reverse Message</button>
+        <button v-on:click="counter += 1">Add 1</button>
+        <button v-on:click="say('hi')">Say hi</button>
+        <button v-on:click.stop.prevent="warn('Form cannot be submitted yet.', $event)">
+            Submit
+        </button>
+        <br>
+        <input v-model="message">
+        <br>
+        <input type="checkbox" id="checkbox" v-model="checked">
+        <label for="checkbox">{{ checked }}</label>
+        <br>
+        <p>Using v-html directive:{{rawHtml}} </p>
+        <!-- <p>Using v-html directive:<span v-html="rawHtml"></span> </p>   -->
+        <br>
+        <form v-on:submit.prevent="onSubmit"> ... </form>
+        <br>
+        <div class="static" v-bind:class="{ active: isActive, 'text-danger': hasError }"></div>
+        <div v-bind:class="classObject"></div>
+        <div v-bind:class="[activeClass, errorClass]"></div>
+        <div v-bind:class="[isActive ? activeClass : '', errorClass]"></div>
+        <div v-bind:class="[{ active: isActive }, errorClass]"></div>
     </div>
     <script>
+        Vue.component('todo-item', {
+            props: ['todo'],
+            template: '<li>{{ todo.text }}</li>'
+        })
+        //  //
         var app = new Vue({
             el: '#app',
             data: {
-                message: 'Hello Vue!'
+                message: 'Hello everyone!',
+                title: 'You loaded this page on ' + new Date().toLocaleString(),
+                seen: true,
+                todos: [
+                    { text: 'Learn JavaScript' },
+                    { text: 'Learn Vue' },
+                    { text: 'Build something awesome' }
+                ],
+                rawHtml: '<p>test</p>',
+                isActive: true,
+                hasError: false,
+                classObject: {
+                    active: true,
+                    'text-danger': false
+                },
+                activeClass: 'active',
+                errorClass: 'text-danger',
+                counter: 0,
+                checked:false,
+                
+            },
+            methods: {
+                reverseMessage: function () {
+                    this.message = this.message.split('').reverse().join('')
+                },
+                onSubmit: function () {
+
+                },
+                say: function (message) {
+                    alert(message)
+                },
+                warn: function (message, event) {
+                    // now we have access to the native event
+                    if (event) event.preventDefault()
+                    alert(message)
+                }
+            },
+            computed: {
+                // a computed getter
+                reversedMessage: function () {
+                    // `this` points to the vm instance
+                    return this.message.split('').reverse().join('')
+                }
             }
         })
     </script>
