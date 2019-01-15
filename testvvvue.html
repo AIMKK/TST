@@ -12,7 +12,13 @@
 <body>
     <div id="app" v-bind:title="title">
         {{ message }}
-        <br>
+        <ol>
+
+            <todo-item v-for="(item, index)  in todos" v-bind:todo="item" v-bind:msg="message" v-bind:key="item.text">
+
+            </todo-item>
+        </ol>
+        <!-- <br>
         <span v-if="seen">Now you see me{{ message.split('').reverse().join('') }}</span>
         <h1 v-if="seen">Y</h1>
         <h1 v-else>N</h1>
@@ -49,7 +55,7 @@
         <label for="checkbox">{{ checked }}</label>
         <br>
         <p>Using v-html directive:{{rawHtml}} </p>
-        <!-- <p>Using v-html directive:<span v-html="rawHtml"></span> </p>   -->
+        <p>Using v-html directive:<span v-html="rawHtml"></span> </p>  
         <br>
         <form v-on:submit.prevent="onSubmit"> ... </form>
         <br>
@@ -57,12 +63,12 @@
         <div v-bind:class="classObject"></div>
         <div v-bind:class="[activeClass, errorClass]"></div>
         <div v-bind:class="[isActive ? activeClass : '', errorClass]"></div>
-        <div v-bind:class="[{ active: isActive }, errorClass]"></div>
+        <div v-bind:class="[{ active: isActive }, errorClass]"></div> -->
     </div>
     <script>
         Vue.component('todo-item', {
-            props: ['todo'],
-            template: '<li>{{ todo.text }}</li>'
+            props: ['todo','msg'],
+            template: '<li>{{ todo.text }}--{{msg}}</li>'
         })
         //  //
         var app = new Vue({
@@ -73,8 +79,8 @@
                 seen: true,
                 todos: [
                     { text: 'Learn JavaScript' },
-                    { text: 'Learn Vue' },
-                    { text: 'Build something awesome' }
+                    // { text: 'Learn Vue' },
+                    // { text: 'Build something awesome' }
                 ],
                 rawHtml: '<p>test</p>',
                 isActive: true,
