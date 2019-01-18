@@ -21,15 +21,25 @@ import Group from 'vux/src/components/group';
 Vue.component('group', Group);
 import GroupTitle from 'vux/src/components/group-title'; 
 Vue.component('group-title', GroupTitle);
-
 //
-
+import VueI18n from 'vue-i18n';
+Vue.use(VueI18n);
+const i18n = new VueI18n({
+  locale: 'CHS',    // 语言标识
+  messages: {
+    'CHS': require('./assets/langs/chs'),   // 简体
+    'CHI': require('./assets/langs/chi'),   // 繁体
+    'ENG': require('./assets/langs/eng'),    // 英文
+  },
+})
+//
 //
 Vue.config.productionTip = false;
 //
 dateFormatMixin();
 
 new Vue({
+  i18n,
   router,
   store,
   render: h => h(App)

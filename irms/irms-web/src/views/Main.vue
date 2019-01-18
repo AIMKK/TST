@@ -5,8 +5,8 @@
             <x-header :left-options="{showBack: false}" :right-options="{showMore: true}" title="slot:overwrite-title"
                 @on-click-more="headerMoreBtnClick" style="width: 100%; position: absolute; left: 0px; top: 0px; z-index: 100;">
                 <div slot="overwrite-left" style="color:#ccc;font-size: 12px; position:relative; top: 12px; left:-15px;">
-                    <x-icon type="person" size="15" style="fill:#fff;"></x-icon><span style="position:relative; top: 1px; margin-right: 10px;">{{userCode}}</span>
-                    <x-icon type="home" size="15" style="fill:#fff;"></x-icon><span style="position:relative; top: 1px; margin-right: 10px;">{{locationCode}}</span>
+                    <x-icon type="person" size="15" style="fill:#fff;"></x-icon><span style="position:relative; top: -2px; margin-right: 10px;">{{userCode}}</span>
+                    <x-icon type="home" size="15" style="fill:#fff;"></x-icon><span style="position:relative; top: -2px; margin-right: 10px;">{{locationCode}}</span>
                 </div>
                 <div>iRMS</div>
                 <!-- <x-icon slot="right" type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;"></x-icon> -->
@@ -42,7 +42,7 @@
                             </grid-item>
                         </grid>
                     </group>
-                    <divider class="bottom-diviver">底线</divider>
+                    <divider class="bottom-diviver">我们的底线</divider>
                 </div>
             </div>
         </box>

@@ -6,20 +6,17 @@
         <div class="login-body">
             <div class="login-body-content">
                 <group label-width="4.5em" label-margin-right="1em" label-align="right">
-                    <x-input title="User:" placeholder="user" v-model="userCode">
+                    <x-input :title="$t('loginLangs.User:')" placeholder="user" v-model="userCode">
                         <!-- <x-icon slot="label" type="person" style="fill:#35495E;" ></x-icon> -->
                     </x-input>
-                    <x-input title="Pwd:" type="password" placeholder="password" v-model="password">
-                        <!-- <x-icon slot="label" type="person" style="fill:#35495E;" ></x-icon> -->
+                    <x-input :title="$t('loginLangs.Pwd:')" type="password" placeholder="password" v-model="password">
                     </x-input>
-                    <x-input title="Location:" placeholder="location" v-model="loginLocation">
-                        <!-- <x-icon slot="label" type="person" style="fill:#35495E;" ></x-icon> -->
+                    <x-input :title="$t('loginLangs.Location:')"  placeholder="location" v-model="loginLocation">
                     </x-input>
-
                 </group>
                 <div class="Login-btn">
                     <group>
-                        <x-button type="primary" :disabled="loginBtnDisable" @click.native="loginBtnClick">Login</x-button>
+                        <x-button type="primary" :disabled="loginBtnDisable" @click.native="loginBtnClick">{{$t('loginLangs.Login')}}</x-button>
                     </group>
                 </div>
             </div>
@@ -74,17 +71,17 @@
                 var loaginLoc = this.loginLocation || '';
                 //
                 if (loginUser.trim().length == 0) {
-                    this.setToastInner(true, "用户名不能空白！");
+                    this.setToastInner(true, this.$t("loginLangs.LoginUserCanotEmpty"));
                     return;
                 }
                 //
                 if (loginPwd.trim().length == 0) {
-                    this.setToastInner(true, "密码不能空白！");
+                    this.setToastInner(true, this.$t("loginLangs.LoginPwdCanotEmpty"));//
                     return;
                 }
                 //
                 if (loaginLoc.trim().length == 0) {
-                    this.setToastInner(true, "登录位置不能空白！");
+                    this.setToastInner(true, this.$t("loginLangs.LoginLocCanotEmpty"));
                     return;
                 }
                 //验证用户名密码，并且用户所在的位置是否有权限。
@@ -115,7 +112,7 @@
                         });
                     } else {
                         this.setLoadingInner(false);
-                        this.setToastInner(true,"登录失败，请检查用户名或密码！","20em",2000)
+                        this.setToastInner(true,this.$t("loginLangs.ChkUserOrPwdForFailedLogin"),"20em",2000)
                     }
                 }).catch((error) => {
                     console.log(error)
@@ -170,6 +167,6 @@
     }
 
     .Login-btn {
-        padding: 10px 10px 0px 10px;
+        padding: 10px 2px 0px 2px;
     }
 </style>

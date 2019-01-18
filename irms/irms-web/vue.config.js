@@ -1,9 +1,22 @@
+const vuxLoader = require('vux-loader');
+//
 module.exports = {
     baseUrl: './',
     configureWebpack: config => {
-        require('vux-loader').merge(config, {
+        vuxLoader.merge(config, {
             options: {},
-            plugins: ['vux-ui']
+            plugins: [
+                {
+                    name: 'vux-ui'
+                },
+                // {
+                //     name: 'i18n',
+                //     vuxStaticReplace: true,
+                //     staticReplace: true,
+                //     extractToFiles: 'src/locales/components.yml',
+                //     localeList: ['en', 'zh-CN', 'tw']
+                // }
+            ]
         })
     }
 };
