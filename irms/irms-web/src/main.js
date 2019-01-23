@@ -21,6 +21,11 @@ import Group from 'vux/src/components/group';
 Vue.component('group', Group);
 import GroupTitle from 'vux/src/components/group-title'; 
 Vue.component('group-title', GroupTitle);
+// import Popup  from 'vux/src/components/popup'; 
+// Vue.component('popup', Popup );
+//
+import Actionsheet  from 'vux/src/components/actionsheet'; 
+Vue.component('action-sheet', Actionsheet );
 //
 import VueI18n from 'vue-i18n';
 Vue.use(VueI18n);
@@ -33,6 +38,9 @@ const i18n = new VueI18n({
   },
 })
 //
+import './assets/icon/iconfont.css';
+import './assets/icon/iconfontsvg.css';
+import './assets/icon/iconfont.js';
 //
 Vue.config.productionTip = false;
 //

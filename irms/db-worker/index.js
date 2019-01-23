@@ -12,6 +12,31 @@ const tiplogger = log4js.getLogger('console');
 const queue = 'task';
 //
 (function start() {
+    /*
+    *sendToReplayQueue
+    */
+    function sendToReplayQueue(channel,replyTo,replyCorrelationId,responseCode,replyData){
+         //返回replyData        
+         if (channel && replyTo) {
+            tiplogger.info('sendback')//目前先打印出来
+            var backDataBuff;
+            var backData = { code: responseCode, message: '' };
+            try {
+                if (replyData === null || replyData === undefined) {
+                    backData.message = '';
+                } else {
+                    backData.message = replyData;
+                }
+                backDataBuff = Buffer.from(JSON.stringify(backData));
+            } catch (error) {
+                backDataBuff = Buffer.from('');
+            }
+            channel.sendToQueue(replyTo, backDataBuff, { correlationId: replyCorrelationId });
+        }else{
+            tiplogger.info('can not reply to back queue,back queue param error!')//目前先打印出来
+        }
+    }
+    //
     var connOpen = amqp.connect(rabConnOPtions);
     //还要考虑如果连接断掉了，就要，重新去建立连接，
     connOpen.then((rabconn) => {
@@ -65,48 +90,33 @@ const queue = 'task';
                             //
                             ch.ack(msg);
                             //返回result
-                            if (msg.properties && msg.properties.replyTo) {
-                                tiplogger.info('sendback')//目前先打印出来
-                                var backDataBuff;
-                                var backData = { code: '200', message: '' };
-                                try {
-                                    if (result === null || result === undefined) {
-                                        backData.message = '';
-                                    } else {
-                                        backData.message = result;
-                                    }
-                                    backDataBuff = Buffer.from(JSON.stringify(backData));
-                                } catch (error) {
-                                    backDataBuff = Buffer.from('');
-                                }
-                                ch.sendToQueue(msg.properties.replyTo, backDataBuff, { correlationId: msg.properties.correlationId });
+                            if (msg.properties && msg.properties.replyTo) {                                
+                                sendToReplayQueue(ch,msg.properties.replyTo,msg.properties.correlationId ,'200',result);
                             }
                         }).catch(error => {
                             tiplogger.error('exec bussiness error:' + error);
                             ch.ack(msg);
                             //并且还要向通知队列发送数据，说明 businessPro无法有效的执行，把错误告返回
                             //error 返回过去
+                            if (msg.properties && msg.properties.replyTo) {
+                                sendToReplayQueue(ch,msg.properties.replyTo,msg.properties.correlationId ,'500','exec bussiness error');
+                            }                            
                         });
                     } else { //没有找到businessProc
                         tiplogger.error('not find bussinessproc error');
                         ch.ack(msg);
+                        //
                         if (msg.properties && msg.properties.replyTo) {
-                            var backData = { code: '400', message: '' };
-                            backData.message = `current request can't be served,check request cmd pls!`
-                            var backDataBuf = Buffer.from(JSON.stringify(backData));
-                            ch.sendToQueue(msg.properties.replyTo, backDataBuf, { correlationId: msg.properties.correlationId });
-                        }
+                            sendToReplayQueue(ch,msg.properties.replyTo,msg.properties.correlationId ,'400',`current request can't be served,check request cmd pls!`);
+                        }    
                     }
                 } catch (error) {
                     tiplogger.error('error when consuming:'+error);
-                    //
                     ch.ack(msg);
+                    //
                     if (msg.properties && msg.properties.replyTo) {
-                        var backData = { code: '500', message: '' };
-                        backData.message = `error when consuming!`
-                        var backDataBuf = Buffer.from(JSON.stringify(backData));
-                        ch.sendToQueue(msg.properties.replyTo, backDataBuf, { correlationId: msg.properties.correlationId });
-                    }
+                        sendToReplayQueue(ch,msg.properties.replyTo,msg.properties.correlationId ,'500',`error when consuming!`);
+                    }   
                 }
             }, { noAck: false });
         }).then(function () {

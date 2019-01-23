@@ -1,6 +1,6 @@
 
 
-export function dateFormatMixin() {
+export  function dateFormatMixin() {
     Date.prototype.format = function (format) {
         var args = {
             "M+": this.getMonth() + 1,

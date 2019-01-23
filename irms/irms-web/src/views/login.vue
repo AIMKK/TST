@@ -1,6 +1,7 @@
 <template>
     <div class="login-container">
-        <x-header :left-options="{showBack: false}" :right-options="{showMore: true}" style="width: 100%; position: absolute; left: 0px; top: 0px; z-index: 100;">
+        <x-header :left-options="{showBack: false}" :right-options="{showMore: true}" style="width: 100%; position: absolute; left: 0px; top: 0px; z-index: 100;"
+            @on-click-more="headerMoreBtnClick">
             <div>iRMS</div>
         </x-header>
         <div class="login-body">
@@ -11,7 +12,7 @@
                     </x-input>
                     <x-input :title="$t('loginLangs.Pwd:')" type="password" placeholder="password" v-model="password">
                     </x-input>
-                    <x-input :title="$t('loginLangs.Location:')"  placeholder="location" v-model="loginLocation">
+                    <x-input :title="$t('loginLangs.Location:')" placeholder="location" v-model="loginLocation">
                     </x-input>
                 </group>
                 <div class="Login-btn">
@@ -20,17 +21,25 @@
                     </group>
                 </div>
             </div>
+           
         </div>
-        <toast v-model="showToast" type="text" :width="tostWidth" :time="tostShowTime" is-show-mask :text="tostMsg" :position="position">
+        <toast v-model="showToast" type="text" :width="tostWidth" :time="tostShowTime" is-show-mask :text="tostMsg"
+            :position="position">
         </toast>
+
         <div v-transfer-dom>
             <loading :show="showLoading" :text="loadingTxt"></loading>
         </div>
+        <action-sheet v-model="showMoreActSheet" :menus="loginMoreMenus" @on-click-menu="actSheetMenuClick" 
+             theme="android">
+
+        </action-sheet>
     </div>
 </template>
 <script>
     import axios from 'axios';
     import apiUrl from '@/service-api-config.js';
+    import {getLangCodeByKey} from '@/comm-func.js';
     import {
         XInput, XButton, Box, Toast, Loading, TransferDom
     } from 'vux';
@@ -44,11 +53,14 @@
                 loginBtnDisable: false,
                 position: 'default',
                 showToast: false,
-                tostShowTime:1000,
+                tostShowTime: 1000,
                 tostMsg: '',
                 tostWidth: '12em',
                 showLoading: false,
                 loadingTxt: '',
+                showMoreActSheet: false,
+
+
             }
         },
         components: {
@@ -57,6 +69,7 @@
             Box,
             Toast,
             Loading,
+
         },
         directives: {
             TransferDom
@@ -100,8 +113,12 @@
                 }).then((response) => {
                     if (response.data.code == 200 && response.data.message) {
                         console.log(response.data.message)
-
-                        sessionStorage.setItem('userInfo', JSON.stringify(response.data.message));
+                        var loginInfo={
+                            userCode:userID,
+                            loginLocation:this.loginLocation,
+                        }
+                        // sessionStorage.removeItem('userInfo');
+                        sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
                         this.setLoadingInner(false);
                         //如果成功跳转到 主界面，目前 跳转到上次次
                         this.$router.push({
@@ -112,23 +129,23 @@
                         });
                     } else {
                         this.setLoadingInner(false);
-                        this.setToastInner(true,this.$t("loginLangs.ChkUserOrPwdForFailedLogin"),"20em",2000)
+                        this.setToastInner(true, this.$t("loginLangs.ChkUserOrPwdForFailedLogin"), "20em", 2000)
                     }
                 }).catch((error) => {
                     console.log(error)
                     this.setLoadingInner(false);
-                    this.setToastInner(true,error)
+                    this.setToastInner(true, error)
                 });
             },
             //
-            setToastInner(show, msg, width,showTime) {
+            setToastInner(show, msg, width, showTime) {
                 this.showToast = !!show;
                 this.tostMsg = msg;
                 if (width) {
                     this.tostWidth = width;
                 }
-                if(showTime){
-                    this.tostShowTime=showTime;
+                if (showTime) {
+                    this.tostShowTime = showTime;
                 }
             },
             //
@@ -137,8 +154,31 @@
                 this.loadingTxt = txt;
             },
             //
+            headerMoreBtnClick() {
+                this.showMoreActSheet = true;
+
+            },
+            actSheetMenuClick(key) {               
+                this.$i18n.locale =getLangCodeByKey(key);
+               
+            },
+
+        },
+        computed: {
+            // actSheetCancelTxt: function () {
+            //     return this.$t("moreBtnForCommLangs.Cancel");
+            // },
+            loginMoreMenus: function () {
+                return {
+                    // chngLang: this.$t("moreBtnForCommLangs.ChngLang"),
+                    CHS: this.$t("moreBtnForCommLangs.CHSLang"),
+                    CHI: this.$t("moreBtnForCommLangs.CHILang"),
+                    ENG: this.$t("moreBtnForCommLangs.ENGLang"),                   
+                }
+            },
         }
     }
+
 </script>
 <style>
     .login-container {
@@ -164,9 +204,16 @@
     .login-title {
         margin-bottom: 20px;
         text-align: center;
+        
     }
 
     .Login-btn {
         padding: 10px 2px 0px 2px;
+    }
+
+    .loginMorePopup {
+        padding-bottom: 15px;
+        height:200px;
+
     }
 </style>

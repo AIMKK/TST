@@ -9,6 +9,7 @@ module.exports = {
     createGetProdInfoForQuoteCmd,
     createSaveWorkShopOrderMasterCmd,
     createSaveWorkShopOrderDetailCmd,
+    createGetFunctionIDCmd,
     //test
     createNewVipQuickJoinCmd,
     createGetVIPPointsCmd,
@@ -178,6 +179,31 @@ function createSaveWorkShopOrderDetailCmd(iniReqParam /* [pool or transaction] *
 
     return saveWorkShopOrderDetail;
 }
+
+/*
+*createGetFunctionIDCmd
+*/
+function createGetFunctionIDCmd(iniReqParam /* [pool or transaction] */) {
+    //GetFunctionID
+    var getFunctionID = function (getFunctionIDParam) {
+        getFunctionIDParam=getFunctionIDParam||{};
+        var promise = new Promise(function (resolve, reject) {
+            try {
+                var request = new msDB.Request(iniReqParam);
+                request.input('UserCode', msDB.VarChar(10), getFunctionIDParam.UserCode);
+                //         
+                resolve(request.execute('testFunctionID_Get'));
+            } catch (error) {
+                reject(error);
+            }
+        });
+
+        return promise;
+    };
+
+    return getFunctionID;
+}
+
 
 //getprodInfoForQuote
 function creategettestatCmd(iniReqParam /* [pool or transaction] */) {

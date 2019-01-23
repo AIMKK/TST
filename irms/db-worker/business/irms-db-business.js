@@ -7,7 +7,8 @@ const localTestDB = require('../cmd/local-test-cmd.js');
 module.exports = {
     irmsNewVipQuickJoin,
     irmsAtestTableDataAdd,    
-    irmsGetProdInfoForQuote
+    irmsGetProdInfoForQuote,
+    irmsGetFunctionID,
 };
 var resultMsg = {
     successed: false,
@@ -243,5 +244,29 @@ function irmsGetProdInfoForQuote(prodInfoForQuoteParam) {
         console.log(error)
         console.log('---------------')
         return '貌似连接不给力！';
+    });
+};
+
+/*
+*irmsGetFunctionID
+*/
+function irmsGetFunctionID(getFunctionIDParam) {
+    var irmsConn = irmsDB.createDBConnPool();
+    return irmsConn.then(pool => {
+        var command = irmsDB.createGetFunctionIDCmd(pool);
+        return command(getFunctionIDParam).then(result => {
+            var functionList="";
+            try {
+               console.log(result)
+                if (result && result.recordsets) {
+                    if(result.recordsets.length>0){
+                        functionList=result.recordsets;
+                    }
+                }
+            }catch(error){
+                functionList="";
+            }
+            return functionList;
+        })
     });
 };
