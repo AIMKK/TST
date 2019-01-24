@@ -134,7 +134,7 @@
                 }).catch((error) => {
                     console.log(error)
                     this.setLoadingInner(false);
-                    this.setToastInner(true, error)
+                    this.setToastInner(true, error,"20em",20000)
                 });
             },
             //

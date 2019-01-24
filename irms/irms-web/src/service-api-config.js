@@ -1,6 +1,7 @@
 const LOCALURL = "http://192.168.122.244:3000/"
 const APIURL = {
-    login: LOCALURL + 'userAPI/login',
+    login: LOCALURL + 'irmsAPI/login',
+    getFunctionID: LOCALURL + 'irmsAPI/getFunctionID',
     quotePrice: LOCALURL + 'quoteAPI/getProductInfoForQuote',
     quoteSave:LOCALURL+'quoteAPI/atQuoteSave',
 }

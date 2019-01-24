@@ -12,11 +12,11 @@ const tiplogger = log4js.getLogger('console');
 var currentConn;
 //
 module.exports = {
-    TXRX,
-    TX
+    RemoteCall,
+    PushMsg
 };
 //send receive
-function TXRX(taskQueueName, taskQueueOption, sendData, maxWaitMillisecond) {
+function RemoteCall(taskQueueName, taskQueueOption, sendData, maxWaitMillisecond) {
     if (maxWaitMillisecond < 60000) {
         maxWaitMillisecond = 180000;
     }
@@ -46,18 +46,18 @@ function TXRX(taskQueueName, taskQueueOption, sendData, maxWaitMillisecond) {
             conn.on('unblocked', function () {
                 tiplogger.info('unblocked');
             })
-            return TXRXInner();
+            return RemoteCallInner();
         }).catch(error => {
             currentConn = null;
             tiplogger.error(error);
             return 'open mp connection error';
         });
     } else {
-        return TXRXInner();
+        return RemoteCallInner();
     }
 
     //
-    function TXRXInner() {
+    function RemoteCallInner() {
         if (!currentConn) {
             var deferred = Q.defer();
             deferred.reject('connection of mq is invalid');
@@ -120,7 +120,7 @@ function TXRX(taskQueueName, taskQueueOption, sendData, maxWaitMillisecond) {
     }
 }
 //
-function TX(taskQueueName, taskQueueOption, sendData) {
+function PushMsg(taskQueueName, taskQueueOption, sendData) {
     if (!currentConn) {
         var open = amqplib.connect(rabConnOPtions);
         //
@@ -146,18 +146,18 @@ function TX(taskQueueName, taskQueueOption, sendData) {
             conn.on('unblocked', function () {
                 tiplogger.info('unblocked');
             })
-            return TXInner();
+            return PushMsgInner();
         }).catch(error => {
             currentConn = null;
             tiplogger.error(error);
             return 'open mp connection error';
         });
     } else {
-        return TXInner()
+        return PushMsgInner()
     }
 
     //
-    function TXInner() {
+    function PushMsgInner() {
         if (!currentConn) {
             var deferred = Q.defer();
             deferred.reject('connection of mq is invalid');

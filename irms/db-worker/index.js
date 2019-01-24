@@ -18,7 +18,7 @@ const queue = 'task';
     function sendToReplayQueue(channel,replyTo,replyCorrelationId,responseCode,replyData){
          //返回replyData        
          if (channel && replyTo) {
-            tiplogger.info('sendback')//目前先打印出来
+            tiplogger.info('reply back')//目前先打印出来
             var backDataBuff;
             var backData = { code: responseCode, message: '' };
             try {
@@ -84,35 +84,39 @@ const queue = 'task';
                     //还要继续判断是不是函数
                     if (bussinessPro && typeof bussinessPro === "function") {
                         bussinessPro(bussinessParam).then((result) => {
-                            //db worker ,只是根据key 找到数据，然后 返回，数据，复杂的事情交给business
-                            tiplogger.info("Some debug messages");
-                            tiplogger.info(result);
-                            //
+                            //db worker ,只是根据key 找到数据，然后 返回，数据，复杂的事情交给business                            
                             ch.ack(msg);
+                            //
+                            tiplogger.info("exec bussiness ok");
+                            // tiplogger.info(result);
+                            //
                             //返回result
                             if (msg.properties && msg.properties.replyTo) {                                
                                 sendToReplayQueue(ch,msg.properties.replyTo,msg.properties.correlationId ,'200',result);
                             }
                         }).catch(error => {
-                            tiplogger.error('exec bussiness error:' + error);
                             ch.ack(msg);
+                            //
+                            tiplogger.error('exec bussiness error:' + error);                            
                             //并且还要向通知队列发送数据，说明 businessPro无法有效的执行，把错误告返回
                             //error 返回过去
                             if (msg.properties && msg.properties.replyTo) {
                                 sendToReplayQueue(ch,msg.properties.replyTo,msg.properties.correlationId ,'500','exec bussiness error');
-                            }                            
+                            }
                         });
                     } else { //没有找到businessProc
-                        tiplogger.error('not find bussinessproc error');
                         ch.ack(msg);
+                        //
+                        tiplogger.error('not find bussinessproc error');
                         //
                         if (msg.properties && msg.properties.replyTo) {
                             sendToReplayQueue(ch,msg.properties.replyTo,msg.properties.correlationId ,'400',`current request can't be served,check request cmd pls!`);
                         }    
                     }
                 } catch (error) {
-                    tiplogger.error('error when consuming:'+error);
                     ch.ack(msg);
+                    //
+                    tiplogger.error('error when consuming:'+error);
                     //
                     if (msg.properties && msg.properties.replyTo) {
                         sendToReplayQueue(ch,msg.properties.replyTo,msg.properties.correlationId ,'500',`error when consuming!`);

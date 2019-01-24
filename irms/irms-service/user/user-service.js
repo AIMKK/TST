@@ -17,7 +17,7 @@ router.post('/login', async (ctx) => {
         bussinessKey: 'irmsUserLogin',
         bussinessParam: { UserCode: userCode, Password: password }
     }
-    await mqMiddle.TXRX(queue, taskQueueOption, instruct,maxWaitMillisecond).then((data) => {
+    await mqMiddle.RemoteCall(queue, taskQueueOption, instruct,maxWaitMillisecond).then((data) => {
         return ctx.body = data;        
     }).catch(error => {       
         return ctx.body = {

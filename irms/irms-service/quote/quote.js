@@ -16,7 +16,7 @@ router.post('/getProductInfoForQuote', async (ctx) => {
         bussinessKey: 'irmsGetProdInfoForQuote',
         bussinessParam: { SkuNo: skuno }
     }   
-    await mqMiddle.TXRX(queue, taskQueueOption, instruct,maxWaitMillisecond).then((data) => {
+    await mqMiddle.RemoteCall(queue, taskQueueOption, instruct,maxWaitMillisecond).then((data) => {
         return ctx.body = data;        
     }).catch(error => {
         return ctx.body = {
@@ -36,7 +36,7 @@ router.post('/atQuoteSave', async (ctx) => {
         bussinessKey: 'irmsATQuoteSave',
         bussinessParam: { workshopOrderMaster ,workShopOrderDetail}
     }   
-    await mqMiddle.TXRX(queue, taskQueueOption, instruct,maxWaitMillisecond).then((data) => {
+    await mqMiddle.RemoteCall(queue, taskQueueOption, instruct,maxWaitMillisecond).then((data) => {
         return ctx.body = data;        
     }).catch(error => {
         return ctx.body = {

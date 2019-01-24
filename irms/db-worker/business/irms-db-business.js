@@ -6,8 +6,9 @@ const localTestDB = require('../cmd/local-test-cmd.js');
 
 module.exports = {
     irmsNewVipQuickJoin,
-    irmsAtestTableDataAdd,    
+    irmsAtestTableDataAdd,
     irmsGetProdInfoForQuote,
+    irmsUserLogin,
     irmsGetFunctionID,
 };
 var resultMsg = {
@@ -218,16 +219,16 @@ function irmsGetProdInfoForQuote(prodInfoForQuoteParam) {
     return irmsConn.then(pool => {
         var quoteCmd = irmsDB.createGetProdInfoForQuoteCmd(pool);
         return quoteCmd(prodInfoForQuoteParam).then(result => {
-            var ProdInfo="";
+            var ProdInfo = "";
             try {
                 //这个地方返回的是两个集合               
                 if (result && result.recordsets) {
-                    if(result.recordsets.length>0){
-                        ProdInfo=result.recordsets;
+                    if (result.recordsets.length > 0) {
+                        ProdInfo = result.recordsets;
                     }
                 }
-            }catch(error){
-                ProdInfo="";
+            } catch (error) {
+                ProdInfo = "";
             }
             return ProdInfo;
 
@@ -236,7 +237,7 @@ function irmsGetProdInfoForQuote(prodInfoForQuoteParam) {
             console.log('命令执行不正确--')
             console.log(error);
             console.log('---------------')
-            return '命令执行不正确'; 
+            return '命令执行不正确';
         })
     }).catch(error => {
         //记录日志
@@ -248,6 +249,39 @@ function irmsGetProdInfoForQuote(prodInfoForQuoteParam) {
 };
 
 /*
+*irmsUserLogin
+*/
+function irmsUserLogin(userLoginParam) {
+    var irmsConn = irmsDB.createDBConnPool();
+    //
+    return irmsConn.then(pool => {
+        var loginCmd = irmsDB.createUserLoginCmd(pool);
+        return loginCmd(userLoginParam).then(result => {
+            //根据具体的业务来确定，怎么处理result的值直接返回还是包装一次
+            //如果用户名密码正确，那么，recordset 就会有值,获取第一个值即可
+            var user = "";
+            try {
+                /*
+                { recordsets: [ [] ],
+                  recordset: [],
+                  output: {},
+                  rowsAffected: [],
+                  returnValue: 0 }
+                */
+                if (result && result.recordset) {
+                    if (result.recordset.length > 0) {
+                        user = result.recordset[0];
+                    }
+                }
+            } catch (error) {
+                user = "";
+            }
+            return user;
+        })
+    })
+};
+
+/*
 *irmsGetFunctionID
 */
 function irmsGetFunctionID(getFunctionIDParam) {
@@ -255,16 +289,15 @@ function irmsGetFunctionID(getFunctionIDParam) {
     return irmsConn.then(pool => {
         var command = irmsDB.createGetFunctionIDCmd(pool);
         return command(getFunctionIDParam).then(result => {
-            var functionList="";
+            var functionList = "";
             try {
-               console.log(result)
                 if (result && result.recordsets) {
-                    if(result.recordsets.length>0){
-                        functionList=result.recordsets;
+                    if (result.recordsets.length > 0) {
+                        functionList = result.recordsets;
                     }
                 }
-            }catch(error){
-                functionList="";
+            } catch (error) {
+                functionList = "";
             }
             return functionList;
         })

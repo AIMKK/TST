@@ -73,13 +73,15 @@
             </div>
         </div>
 
-        <action-sheet v-model="showMoreActSheet" :menus="loginMoreMenus" @on-click-menu="actSheetMenuClick" theme="android">
+        <action-sheet v-model="showMoreActSheet" :menus="moreMenus" @on-click-menu="actSheetMenuClick" theme="android">
 
         </action-sheet>
     </div>
 </template>
 
 <script>
+    import axios from 'axios';
+    import apiUrl from '@/service-api-config.js';
     import { getLangCodeByKey } from '@/comm-func.js';
     import {
         Grid, GridItem, Divider, XButton
@@ -106,6 +108,8 @@
             } else {
                 this.userCode = loginInfo.userCode;
                 this.locationCode = loginInfo.loginLocation;
+                //
+                this.getFunctions(loginInfo.userCode);
             }
         },
         methods: {
@@ -132,10 +136,28 @@
                     path: '/login2'
                 });
             },
+            getFunctions(userID) {               
+                axios({
+                    url: apiUrl.getFunctionID,
+                    method: 'post',
+                    data: {
+                        userCode: userID,
+                    }
+                }).then((response) => {
+                    if (response.data.code == 200 && response.data.message) {
+                        console.log(response.data.message)
+                       
+                    } else {
+                        console.log('hererere')
+                    }
+                }).catch((error) => {
+                    console.log(error)
+                  
+                });
+            },
         },
         computed: {
-
-            loginMoreMenus: function () {
+            moreMenus: function () {
                 return {
                     // chngLang: this.$t("moreBtnForCommLangs.ChngLang"),
                     CHS: this.$t("moreBtnForCommLangs.CHSLang"),

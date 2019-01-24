@@ -17,16 +17,17 @@ app.use(bodyParser()).use(koaCors());
 app.use(static(path.join(__dirname, staticPath)));
 
 //=====subrooter require
-let userRouter = require('./user/user-service.js');
+// let userRouter = require('./user/user-service.js');
 let quoteRouter = require('./quote/quote.js');
+let irmsAPIRouter = require('./irms-api/irms-api.js');
 //
 const rootRouter = new Router({
     prefix: ''
 });
 //==subrooter register
-rootRouter.use('/userAPI', userRouter.routes(), userRouter.allowedMethods());
+// rootRouter.use('/userAPI', userRouter.routes(), userRouter.allowedMethods());
 rootRouter.use('/quoteAPI', quoteRouter.routes(), quoteRouter.allowedMethods());
-
+rootRouter.use('/irmsAPI', irmsAPIRouter.routes(), irmsAPIRouter.allowedMethods());
 //
 app.use(rootRouter.routes()).use(rootRouter.allowedMethods()).use(bodyParser());
 //
