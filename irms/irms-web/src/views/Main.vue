@@ -136,7 +136,7 @@
                     path: '/login2'
                 });
             },
-            getFunctions(userID) {               
+            getFunctions(userID) {
                 axios({
                     url: apiUrl.getFunctionID,
                     method: 'post',
@@ -155,6 +155,23 @@
                   
                 });
             },
+
+            //
+            createFunctionNode(functionID,desc,icon,routerLink){
+                return {
+                    functionID:functionID,
+                    description:desc,
+                    icon:icon,
+                    routerLink:routerLink,
+                    children:[],
+                }
+            },
+
+            //
+            createFunctionNodeTree(){
+
+            },
+
         },
         computed: {
             moreMenus: function () {
@@ -185,7 +202,9 @@
         overflow-x: hidden;
     }
 
-    .mainui-content {}
+    /* .mainui-content {
+
+    } */
 
     .grid-center {
         display: block;

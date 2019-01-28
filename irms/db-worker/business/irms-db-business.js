@@ -262,8 +262,8 @@ function irmsUserLogin(userLoginParam) {
             var user = "";
             try {
                 /*
-                { recordsets: [ [] ],
-                  recordset: [],
+                { recordsets: [ [] ],--sp 内部返回多个datatable，对应的就是多个
+                  recordset: [],-- 应该就是第一个table
                   output: {},
                   rowsAffected: [],
                   returnValue: 0 }
@@ -291,9 +291,9 @@ function irmsGetFunctionID(getFunctionIDParam) {
         return command(getFunctionIDParam).then(result => {
             var functionList = "";
             try {
-                if (result && result.recordsets) {
-                    if (result.recordsets.length > 0) {
-                        functionList = result.recordsets;
+                if (result && result.recordset) {
+                    if (result.recordset.length > 0) {
+                        functionList = result.recordset;
                     }
                 }
             } catch (error) {
