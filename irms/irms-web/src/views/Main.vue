@@ -18,13 +18,11 @@
             <!-- <x-icon slot="right" type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;"></x-icon> -->
         </x-header>
         <div class="mainui-body">
-                <!-- v-if="menuRoot.Children" -->
-            <div class="mainui-content" v-if="menuRoot.Children" >
+            <div class="mainui-content" v-if="menuRoot.Children">
                 <group :title="menu.Description" v-for="menu in menuRoot.Children" :key="menu.FunctionID">
                     <grid :cols="5">
                         <grid-item :label="secondMenu.Description" v-for="secondMenu in menu.Children" :key="secondMenu.FunctionID"
                             :link="{ path: '/component/cell'}" @on-item-click="onItemClick">
-                            <!-- <span class="grid-center"> {{secondMenu.Icon}}</span> -->
                             <div slot="icon" class="divTxtCenter">
                                 <svg class="iconsvg" aria-hidden="true">
                                     <use :xlink:href="'#'+secondMenu.Icon"></use>
@@ -112,7 +110,9 @@
                 }).then((response) => {
                     if (response.data.code == 200 && response.data.message) {
                         //
-                        this.menuRoot = this.organizeFunction(response.data.message);
+                        var rootNode = this.organizeFunction(response.data.message);
+                        this.paddingSecondLevlMenuPlaceHold(rootNode,5);
+                        this.menuRoot = rootNode;
                         console.log(this.menuRoot)
                     } else {
                         console.log('hererere')
@@ -193,9 +193,38 @@
                         }
                     }
                 }
+
                 //
                 return rootFuncNode;
 
+            },
+            /*
+                paddingSecondLevlMenuPlaceHold
+            */
+            paddingSecondLevlMenuPlaceHold(rootFuncNode,menuLeastNum) {
+                if (!rootFuncNode || !rootFuncNode.Children) {
+                    return;
+                }
+                if(menuLeastNum<0){
+                    menuLeastNum=0;
+                }
+                //
+                var firstLevlChilds = rootFuncNode.Children || [];
+                var firstLevllen = firstLevlChilds.length;
+                var secndLevelMenu;
+                var tempLen;
+                var tempNode;
+                for (let index = 0; index < firstLevllen; index++) {
+                    secndLevelMenu = firstLevlChilds[index];
+                    tempLen=secndLevelMenu.Children.length||0;
+                    if (tempLen < menuLeastNum) {
+                        for (let j = 0; j < menuLeastNum-tempLen; j++) {
+                            tempNode = this.createFunctionNode(secndLevelMenu.FunctionID+'padding'+j, this.$t("mainLangs.ComingSoon"), 'icon-jingqingqidai', '', tempLen+j);
+                            //
+                            secndLevelMenu.Children.push(tempNode)                            
+                        }
+                    }
+                }
             },
             /*
                 findFuncByID

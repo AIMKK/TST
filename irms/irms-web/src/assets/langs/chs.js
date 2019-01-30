@@ -19,5 +19,6 @@ module.exports = {
   },
   mainLangs:{
     BottomLine:'到底线了',
+    ComingSoon:'敬请期待',
   },
 }
