@@ -7,69 +7,34 @@
             <div slot="overwrite-left" style="color:#ccc;font-size: 12px; position:relative; top: 12px; left:-15px;">
                 <!-- <x-icon type="person" size="15" style="fill:#fff;"></x-icon><span style="position:relative; top: -2px; margin-right: 10px;">{{userCode}}</span>
                 <x-icon type="home" size="15" style="fill:#fff;"></x-icon><span style="position:relative; top: -2px; margin-right: 10px;">{{locationCode}}</span> -->
-                <svg style="width:14px;height:14px;fill: #fff;" aria-hidden="true"> <use xlink:href="#icon-user"></use> </svg><span style="position:relative; top: -1px; margin-right: 10px;">{{userCode}}</span>                
-                <svg style="width: 14px;height:14px;fill: #fff;" aria-hidden="true"> <use xlink:href="#icon-shouye"></use> </svg><span style="position:relative; top: -1px; margin-right: 10px;">{{locationCode}}</span>
+                <svg style="width:14px;height:14px;fill: #fff;" aria-hidden="true">
+                    <use xlink:href="#icon-user"></use>
+                </svg><span style="position:relative; top: -1px; margin-right: 10px;">{{userCode}}</span>
+                <svg style="width: 14px;height:14px;fill: #fff;" aria-hidden="true">
+                    <use xlink:href="#icon-shouye"></use>
+                </svg><span style="position:relative; top: -1px; margin-right: 10px;">{{locationCode}}</span>
             </div>
             <div>iRMS</div>
             <!-- <x-icon slot="right" type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;"></x-icon> -->
         </x-header>
         <div class="mainui-body">
-            <div class="mainui-content">
-                <group title="销售运营" label-width="5.5em" label-margin-right="2em" label-align="justify">
+                <!-- v-if="menuRoot.Children" -->
+            <div class="mainui-content" v-if="menuRoot.Children" >
+                <group :title="menu.Description" v-for="menu in menuRoot.Children" :key="menu.FunctionID">
                     <grid :cols="5">
-                        <grid-item label="销售运营销售运营销售运营" v-for="i in 9" :link="{ path: '/component/cell'}"
-                            @on-item-click="onItemClick">
-                            <span class="grid-center"> aaa</span>
-                        </grid-item>
-                    </grid>
-                </group>
-                <group title="库存控制" label-width="5.5em" label-margin-right="2em" label-align="justify">
-                    <grid :cols="5">
-                        <grid-item label="库存" v-for="i in 11" :link="{ path: '/component/cell'}" @on-item-click="onItemClick">
-                            <span class="grid-center"> aaa</span>
-                        </grid-item>
-                    </grid>
-                </group>
-                <group title="客户管理" label-width="5.5em" label-margin-right="2em" label-align="justify">
-                    <grid :cols="5">
-                        <grid-item label="客户" v-for="i in 8" :link="{ path: '/component/cell'}" @on-item-click="onItemClick">
-                            <span class="grid-center"> aaa</span>
-                        </grid-item>
-                    </grid>
-                </group>
-                <group title="后勤事务" label-width="5.5em" label-margin-right="2em" label-align="justify">
-                    <grid :cols="5">
-                        <grid-item label="后勤" v-for="i in 15" :link="{ path: '/component/cell'}" @on-item-click="onItemClick">
-                            <span class="grid-center"> aaa</span>
-                        </grid-item>
-                    </grid>
-                </group>
-                <group title="测试">
-                    <grid>
-                        <grid-item label="九宫格" v-for="i in 5">
-
-                            <!-- <div slot="icon" class="iconfont divTxtCenter">&#xe64d;</div> -->
+                        <grid-item :label="secondMenu.Description" v-for="secondMenu in menu.Children" :key="secondMenu.FunctionID"
+                            :link="{ path: '/component/cell'}" @on-item-click="onItemClick">
+                            <!-- <span class="grid-center"> {{secondMenu.Icon}}</span> -->
                             <div slot="icon" class="divTxtCenter">
                                 <svg class="iconsvg" aria-hidden="true">
-                                    <use xlink:href="#icon-user1"></use>
-                                </svg>
-                            </div>
-                        </grid-item>
-                    </grid>
-                </group>
-                <group title="测试2">
-                    <grid>
-                        <grid-item label="九宫格2" v-for="i in 5">
-                            <div slot="icon" class="divTxtCenter">
-                                <svg class="iconsvg" aria-hidden="true">
-                                    <use xlink:href="#icon-YLTC_lipinshangjiao"></use>
+                                    <use :xlink:href="'#'+secondMenu.Icon"></use>
                                 </svg>
                             </div>
                         </grid-item>
                     </grid>
                 </group>
 
-                <divider class="bottom-diviver">我们的底线</divider>
+                <divider class="bottom-diviver">{{$t('mainLangs.BottomLine')}}</divider>
             </div>
         </div>
 
@@ -99,6 +64,7 @@
                 userCode: '',
                 locationCode: '',
                 showMoreActSheet: false,
+                menuRoot: {},
             }
         },
         created: function () {
@@ -145,33 +111,161 @@
                     }
                 }).then((response) => {
                     if (response.data.code == 200 && response.data.message) {
-                        console.log(response.data.message)
-                       
+                        //
+                        this.menuRoot = this.organizeFunction(response.data.message);
+                        console.log(this.menuRoot)
                     } else {
                         console.log('hererere')
                     }
                 }).catch((error) => {
                     console.log(error)
-                  
+
                 });
             },
-
-            //
-            createFunctionNode(functionID,desc,icon,routerLink){
+            /*
+                createFunctionNode
+            */
+            createFunctionNode(functionID, desc, icon, routerLink, SortOrder) {
                 return {
-                    functionID:functionID,
-                    description:desc,
-                    icon:icon,
-                    routerLink:routerLink,
-                    children:[],
+                    FunctionID: functionID,
+                    Description: desc,
+                    Icon: icon,
+                    RouterLink: routerLink,
+                    Children: [],
+                    SortOrder: SortOrder,
                 }
             },
+            /*
+                organizeFunction
+            */
+            organizeFunction(functionArr) {
+                if (!functionArr) {
+                    return;
+                }
+                //是否是数组，
+                if (Object.prototype.toString.call(functionArr) !== '[object Array]') {
+                    return;
+                }
+                //
+                var rootFuncNode = this.createFunctionNode();
+                if (!rootFuncNode) {
+                    return;
+                }
+                //
+                var tempFunc;
+                var tempParentFunc;
+                var tempNode;
+                var tempParentNode;
 
-            //
-            createFunctionNodeTree(){
+                if (functionArr.length == 0) {
+                    return rootFuncNode;
+                }
+                //
+                for (let index = 0; index < functionArr.length; index++) {
+                    tempFunc = functionArr[index];
+                    if (!tempFunc.ParentID) {//说明是第一层的
+                        tempNode = this.createFunctionNode(tempFunc.FunctionID, tempFunc.Description, tempFunc.Icon, tempFunc.RouterLink, tempFunc.SortOrder);
+                        rootFuncNode.Children = rootFuncNode.Children || [];
+                        rootFuncNode.Children.push(tempNode);//
+                        //
+                        functionArr.splice(index, 1)//从原来数据中删除掉
+                        index--;//因为数组元素减少了值
+                        continue;
+                        //break;
+                    } else {//说明是其他层的
+                        tempParentFunc = this.findFuncByID(functionArr, tempFunc.ParentID);
+                        if (tempParentFunc) {
+                            continue;//先留着等待后面加入到children
+                        } else {//如果不存在功能列表中
+                            tempParentNode = this.findMenuNodeByID(rootFuncNode, tempFunc.ParentID);
+                            //如果存在menuNode中就加入
+                            if (tempParentNode) {
+                                tempNode = this.createFunctionNode(tempFunc.FunctionID, tempFunc.Description, tempFunc.Icon, tempFunc.RouterLink, tempFunc.SortOrder);
+                                //
+                                tempParentNode.Children = tempParentNode.Children || [];
+                                //
+                                tempParentNode.Children.push(tempNode);//加入到child里面
+                            }
+                            //
+                            functionArr.splice(index, 1)//从原来数据中删除掉
+                            index--;//因为数组元素减少了值
+                            continue;
+                        }
+                    }
+                }
+                //
+                return rootFuncNode;
 
             },
+            /*
+                findFuncByID
+            */
+            findFuncByID(functionArr, ID) {
+                if (!functionArr) {
+                    return;
+                }
+                //是否是数组，
+                if (Object.prototype.toString.call(functionArr) !== '[object Array]') {
+                    return;
+                }
+                var tempFunc;
+                //
+                for (var index = 0; index < functionArr.length; index++) {
+                    tempFunc = functionArr[index];
+                    if (tempFunc.FunctionID == ID) {
+                        break;
+                    } else {
+                        tempFunc = null;
+                    }
+                }
+                //
+                return tempFunc;
+            },
+            /*
+                findMenuNodeByID
+            */
+            findMenuNodeByID(rootFuncNode, ID) {
+                if (!rootFuncNode) {
+                    return;
+                }
+                //
+                var nodeArr = [];
+                nodeArr = this.unshiftMergeArr(rootFuncNode.Children, nodeArr);
 
+                //
+                var tempNode;
+                while (nodeArr.length > 0) {
+                    tempNode = nodeArr.shift() || {};//nodeArr.splice(0, 1);//从头开始进行判断  or shift//splice return arr
+                    //
+                    if (tempNode.FunctionID == ID) {
+                        break;
+                    } else {
+                        nodeArr = this.unshiftMergeArr(tempNode.Children, nodeArr);//当前节点的子节点
+                        tempNode = null;
+                    }
+                }
+                //
+                return tempNode;
+            },
+            /*
+                unshiftMergeArr
+                insert to head
+            */
+            unshiftMergeArr(fromArr, toArr) {
+                if (!fromArr) {
+                    return toArr;
+                }
+                //
+                if (!toArr) {
+                    return [].concat(fromArr);
+                }
+                //
+                for (let index = 0; index < fromArr.length; index++) {
+                    toArr.unshift(fromArr[index]);
+                }
+                //
+                return toArr;
+            },
         },
         computed: {
             moreMenus: function () {
@@ -184,7 +278,6 @@
                 }
             },
         },
-
     }
 </script>
 <style>
