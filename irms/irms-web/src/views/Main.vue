@@ -18,21 +18,23 @@
             <!-- <x-icon slot="right" type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;"></x-icon> -->
         </x-header>
         <div class="mainui-body">
-            <div class="mainui-content" v-if="menuRoot.Children">
-                <group :title="menu.Description" v-for="menu in menuRoot.Children" :key="menu.FunctionID">
-                    <grid :cols="5">
-                        <grid-item :label="secondMenu.Description" v-for="secondMenu in menu.Children" :key="secondMenu.FunctionID"
-                            :link="{ path: '/component/cell'}" @on-item-click="onItemClick">
-                            <div slot="icon" class="divTxtCenter">
-                                <svg class="iconsvg" aria-hidden="true">
-                                    <use :xlink:href="'#'+secondMenu.Icon"></use>
-                                </svg>
-                            </div>
-                        </grid-item>
-                    </grid>
-                </group>
-
-                <divider class="bottom-diviver">{{$t('mainLangs.BottomLine')}}</divider>
+            <div class="mainui-content">
+                <div class="menu-group" v-if="menuRoot.Children">
+                    <group :title="menu.Description" v-for="menu in menuRoot.Children" :key="menu.FunctionID">
+                        <grid :cols="4">
+                            <grid-item :label="secondMenu.Description" v-for="secondMenu in menu.Children" :key="secondMenu.FunctionID"
+                                :link="{ path: secondMenu.RouterLink}" @on-item-click="onItemClick">
+                                <div slot="icon" class="divTxtCenter">
+                                    <!-- <badge text="8" style="position:absolute; top:5px;right:5px;"></badge> -->
+                                    <svg class="iconsvg" aria-hidden="true">
+                                        <use :xlink:href="'#'+secondMenu.Icon"></use>
+                                    </svg>
+                                </div>
+                            </grid-item>
+                        </grid>
+                    </group>
+                </div>
+                <!-- <divider class="bottom-diviver">{{$t('mainLangs.BottomLine')}}</divider> -->
             </div>
         </div>
 
@@ -47,7 +49,7 @@
     import apiUrl from '@/service-api-config.js';
     import { getLangCodeByKey } from '@/comm-func.js';
     import {
-        Grid, GridItem, Divider, XButton
+        Grid, GridItem, Divider, XButton, Badge
     } from 'vux';
     export default {
         name: 'Main',
@@ -55,7 +57,8 @@
             Grid,
             GridItem,
             Divider,
-            XButton
+            XButton,
+            Badge
         },
         data() {
             return {
@@ -63,6 +66,7 @@
                 locationCode: '',
                 showMoreActSheet: false,
                 menuRoot: {},
+                // path:'/alterQuote',
             }
         },
         created: function () {
@@ -111,9 +115,9 @@
                     if (response.data.code == 200 && response.data.message) {
                         //
                         var rootNode = this.organizeFunction(response.data.message);
-                        this.paddingSecondLevlMenuPlaceHold(rootNode,5);
+                        this.paddingSecondLevlMenuPlaceHold(rootNode, 4);
                         this.menuRoot = rootNode;
-                        console.log(this.menuRoot)
+
                     } else {
                         console.log('hererere')
                     }
@@ -201,12 +205,12 @@
             /*
                 paddingSecondLevlMenuPlaceHold
             */
-            paddingSecondLevlMenuPlaceHold(rootFuncNode,menuLeastNum) {
+            paddingSecondLevlMenuPlaceHold(rootFuncNode, menuLeastNum) {
                 if (!rootFuncNode || !rootFuncNode.Children) {
                     return;
                 }
-                if(menuLeastNum<0){
-                    menuLeastNum=0;
+                if (menuLeastNum < 0) {
+                    menuLeastNum = 0;
                 }
                 //
                 var firstLevlChilds = rootFuncNode.Children || [];
@@ -216,12 +220,12 @@
                 var tempNode;
                 for (let index = 0; index < firstLevllen; index++) {
                     secndLevelMenu = firstLevlChilds[index];
-                    tempLen=secndLevelMenu.Children.length||0;
+                    tempLen = secndLevelMenu.Children.length || 0;
                     if (tempLen < menuLeastNum) {
-                        for (let j = 0; j < menuLeastNum-tempLen; j++) {
-                            tempNode = this.createFunctionNode(secndLevelMenu.FunctionID+'padding'+j, this.$t("mainLangs.ComingSoon"), 'icon-jingqingqidai', '', tempLen+j);
+                        for (let j = 0; j < menuLeastNum - tempLen; j++) {
+                            tempNode = this.createFunctionNode(secndLevelMenu.FunctionID + 'padding' + j, this.$t("mainLangs.ComingSoon"), 'icon-jingqingqidai', '', tempLen + j);
                             //
-                            secndLevelMenu.Children.push(tempNode)                            
+                            secndLevelMenu.Children.push(tempNode)
                         }
                     }
                 }
@@ -328,6 +332,10 @@
 
     } */
 
+    .menu-group {
+        padding-bottom: 5px;
+    }
+
     .grid-center {
         display: block;
         text-align: center;
@@ -341,7 +349,6 @@
 
     a {
         text-decoration: none;
-        /* color: #000000; */
     }
 
     .divTxtCenter {

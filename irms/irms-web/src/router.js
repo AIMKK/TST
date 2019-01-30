@@ -4,6 +4,7 @@ import Login from './views/login/login.vue';
 import Quote from './views/quote/ATQuotePriceSet.vue';
 import Main from './views/main.vue';
 import Login2 from './views/login.vue';
+import AlterQuote from './views/alter-quote.vue';
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ export default new Router({
       path: '/main',
       name: 'main',
       component: Main
+    },
+    {
+      path: '/alterQuote',
+      name: 'alterQuote',
+      component: AlterQuote
     },
     {
       path: '/login2',
