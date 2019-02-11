@@ -21,5 +21,6 @@ module.exports = {
   mainLangs:{
     BottomLine:'到底線了',
     ComingSoon:'敬請期待',
+    Exit:'退出',
   },
 }

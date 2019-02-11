@@ -1,12 +1,28 @@
 <template>
 
     <div class="mainui-container">
-
-        <x-header :left-options="{showBack: false}" :right-options="{showMore: true}" title="slot:overwrite-title"
-            @on-click-more="headerMoreBtnClick" style="width: 100%; position: absolute; left: 0px; top: 0px; z-index: 100;">
-            <div slot="overwrite-left" style="color:#ccc;font-size: 12px; position:relative; top: 12px; left:-15px;">
+        <div style="width: 100%; position: absolute; left: 0px; top: 0px; z-index: 100;">
+            <x-header :left-options="{showBack: false}" :right-options="{showMore: true}" title="slot:overwrite-title"
+                @on-click-more="headerMoreBtnClick">
+                <div slot="overwrite-left">
+                    <svg style="width:20px;height:22px;fill: #ccc;" aria-hidden="true">
+                        <use xlink:href="#icon-tuichu"></use>
+                    </svg><span style="position:relative; top: -6px; margin-right: 10px;">{{$t('mainLangs.Exit')}}</span>
+                </div>
+                <div>iRMS</div>
+                <!-- <x-icon slot="right" type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;"></x-icon> -->
+            </x-header>
+            <!-- <div slot="overwrite-left" style="color:#ccc;font-size: 12px; position:relative; top: 12px; left:-15px;">
+                <svg style="width:14px;height:14px;fill: #fff;" aria-hidden="true">
+                    <use xlink:href="#icon-user"></use>
+                </svg><span style="position:relative; top: -1px; margin-right: 10px;">{{userCode}}</span>
+                <svg style="width: 14px;height:14px;fill: #fff;" aria-hidden="true">
+                    <use xlink:href="#icon-shouye"></use>
+                </svg><span style="position:relative; top: -1px; margin-right: 10px;">{{locationCode}}</span>
+            </div> -->
+            <div style="color:#ccc;font-size: 12px; position: absolute; top: 30px; left:80px;  ">
                 <!-- <x-icon type="person" size="15" style="fill:#fff;"></x-icon><span style="position:relative; top: -2px; margin-right: 10px;">{{userCode}}</span>
-                <x-icon type="home" size="15" style="fill:#fff;"></x-icon><span style="position:relative; top: -2px; margin-right: 10px;">{{locationCode}}</span> -->
+                    <x-icon type="home" size="15" style="fill:#fff;"></x-icon><span style="position:relative; top: -2px; margin-right: 10px;">{{locationCode}}</span> -->
                 <svg style="width:14px;height:14px;fill: #fff;" aria-hidden="true">
                     <use xlink:href="#icon-user"></use>
                 </svg><span style="position:relative; top: -1px; margin-right: 10px;">{{userCode}}</span>
@@ -14,16 +30,16 @@
                     <use xlink:href="#icon-shouye"></use>
                 </svg><span style="position:relative; top: -1px; margin-right: 10px;">{{locationCode}}</span>
             </div>
-            <div>iRMS</div>
-            <!-- <x-icon slot="right" type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;"></x-icon> -->
-        </x-header>
+        </div>
+
         <div class="mainui-body">
             <div class="mainui-content">
                 <div class="menu-group" v-if="menuRoot.Children">
                     <group :title="menu.Description" v-for="menu in menuRoot.Children" :key="menu.FunctionID">
                         <grid :cols="4">
-                            <grid-item :label="secondMenu.Description" v-for="secondMenu in menu.Children" :key="secondMenu.FunctionID"
-                                :link="{ path: secondMenu.RouterLink}" @on-item-click="onItemClick">
+                            <grid-item :label="secondMenu.Description" v-for="secondMenu in menu.Children"
+                                :key="secondMenu.FunctionID" :link="{ path: secondMenu.RouterLink}"
+                                @on-item-click="onItemClick">
                                 <div slot="icon" class="divTxtCenter">
                                     <!-- <badge text="8" style="position:absolute; top:5px;right:5px;"></badge> -->
                                     <svg class="iconsvg" aria-hidden="true">
@@ -321,6 +337,7 @@
         width: 100%;
         overflow-x: hidden;
         overflow-y: hidden;
+        background-color: #fff;
     }
 
     .mainui-body {

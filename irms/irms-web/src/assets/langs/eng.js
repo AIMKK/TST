@@ -21,5 +21,6 @@ module.exports = {
   mainLangs:{
     BottomLine:'This is the bottom line',
     ComingSoon:'Developing',
+    Exit:'Exit',
   },
 }

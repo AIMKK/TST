@@ -34,7 +34,7 @@ const i18n = new VueI18n({
   messages: {
     'CHS': require('./assets/langs/chs'),   // 简体
     'CHI': require('./assets/langs/chi'),   // 繁体
-    'ENG': require('./assets/langs/eng'),    // 英文
+    'ENG': require('./assets/langs/eng'),   // 英文
   },
 })
 //
