@@ -25,7 +25,7 @@
                     <card :header="{title:'待报价:ATHK021-2019-000125'}" :footer="{title: '开始报价',link:''}">
                         <!-- <div slot="header"> 待报价:ATHK021-2019-000125</div> -->
                         <div slot="content" class="card-padding">
-                            <div class="shortInfo"><span class="shortInfoName">店铺:</span>hk021</div>
+                            <!-- <div class="shortInfo"><span class="shortInfoName">店铺:</span>hk021</div>
                             <div class="shortInfo"><span class="shortInfoName">销售员:</span>123456</div>
                             <div class="shortInfo"><span class="shortInfoName">Vip:</span>123456</div>
                             <div class="shortInfo"><span class="shortInfoName">SKU:</span>123456</div>
@@ -34,8 +34,121 @@
                                     总重量:1.11卡 色泽:G 净度:VS1 4粒 圆形 钻石 总重量:0.39卡 证书:(G.I.A.:1229909190 ) 201粒 圆形 钻石
                                     总重量:7.21卡
                                 </p>
-                            </div>
+                            </div> -->
+                            <div>
+                                <x-table full-bordered style="background-color:#fff;">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="4">汇总信息</th>
+                                            <!-- <th>Price</th>
+                                      <th>Quantity</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>SKU</td>
 
+                                            <td>1234568</td>
+                                            <td>Mount</td>
+
+                                            <td>$1.25 x 10</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Vip</td>
+
+                                            <td>1234568</td>
+                                            <td>salesman</td>
+
+                                            <td>$1.25 x 10</td>
+                                        </tr>
+                                        <tr>
+                                            <td>SKU</td>
+
+                                            <td>1234568</td>
+                                            <td>Mount</td>
+
+                                            <td>$1.25 x 10</td>
+                                        </tr>
+                                        <tr>
+                                            <td>SKU</td>
+
+                                            <td>1234568</td>
+                                            <td>Mount</td>
+
+                                            <td>$1.25 x 10</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">Description</td>
+                                           
+                                            <!-- <td>x 08</td> -->
+                                        </tr>
+                                        <tr>
+                                                <td style="line-height:1.5;" colspan="4">18K/750 白色黄金 钻石镶嵌 颈链
+                                                        金重:24.50克 英寸:18 1粒 梨形 钻石
+                                                        总重量:1.11卡 色泽:G 净度:VS1 4粒 圆形 钻石 总重量:0.39卡 证书:(G.I.A.:1229909190 ) 201粒 圆形
+                                                        钻石
+                                                        总重量:7.21卡
+                                                    </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">
+                                                <x-table full-bordered style="background-color:#fff;">
+                                                    <!-- <thead>
+                                                        <tr>
+                                                            <th colspan="4">钻石明细</th>
+                                                        </tr>
+                                                    </thead> -->
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="4">钻石明细1</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lot</td>
+                                            <td>NA6810-A</td>
+                                            <td>砖石大小</td>
+                                            <td>AA0003825</td>
+                                        </tr>
+                                        <tr>
+                                            <td>是否主石</td>
+                                            <td>Y</td>
+                                            <td>数量</td>
+                                            <td>1</td>
+                                        </tr>
+                                        <tr>
+                                            <td>重量</td>
+                                            <td>0.017CT</td>
+                                            <td>钻石价值</td>
+                                            <td>70.55HKD</td>
+                                        </tr>
+                                        <tr>
+                                                <td colspan="4">钻石明细2</td>
+                                            </tr>
+                                        <tr>
+                                                <td>Lot</td>
+                                                <td>NA6810-A</td>
+                                                <td>砖石大小</td>
+                                                <td>AA0003825</td>
+                                            </tr>
+                                            <tr>
+                                                <td>是否主石</td>
+                                                <td>Y</td>
+                                                <td>数量</td>
+                                                <td>1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>重量</td>
+                                                <td>0.017CT</td>
+                                                <td>钻石价值</td>
+                                                <td>70.55HKD</td>
+                                            </tr>
+                                           
+                                    </tbody>
+                                </x-table>
+                                </td>
+                                </tr>
+                                </tbody>
+                                </x-table>
+                            </div>
                         </div>
                     </card>
                 </div>
@@ -50,7 +163,7 @@
     import apiUrl from '@/service-api-config.js';
     import { getLangCodeByKey } from '@/comm-func.js';
     import {
-        XInput, XButton, Box, Toast, Loading, TransferDom, Card
+        XInput, XButton, Box, Toast, Loading, TransferDom, Card, XTable
     } from 'vux';
 
     export default {
@@ -86,6 +199,7 @@
             Toast,
             Loading,
             Card,
+            XTable
         },
         directives: {
             TransferDom
@@ -143,10 +257,11 @@
         width: 60px;
         padding-right: 5px;
         line-height: 20px;
-        text-align:right;
-        background-color: #ccc;       
+        text-align: right;
+        background-color: #ccc;
     }
-    .shortDesc{
+
+    .shortDesc {
         clear: both;
     }
 
