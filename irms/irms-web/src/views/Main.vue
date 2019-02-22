@@ -6,7 +6,7 @@
                 @on-click-more="headerMoreBtnClick">
                 <div slot="overwrite-left">
                     <svg style="width:20px;height:22px;fill: #ccc;" aria-hidden="true">
-                        <use xlink:href="#icon-tuichu"></use>
+                        <use xlink:href="#icon-exit2"></use>
                     </svg><span style="position:relative; top: -6px; margin-right: 10px;">{{$t('mainLangs.Exit')}}</span>
                 </div>
                 <div>iRMS</div>
