@@ -60,7 +60,7 @@
                                             </td>
                                         </tr> 
                                         <tr>
-                                            <td colspan="4"> <p class="quote-body-content-itemTitle leaveleftborder">{{$t('alterQuoteListLangs.Cost')}}(HKD)</p></td>
+                                            <td colspan="4"> <p class="quote-body-content-itemTitle leaveleftborder">{{$t('alterQuoteListLangs.Cost')}}[HKD]</p></td>
                                         </tr>
                                         <tr>
                                             <td>{{$t('alterQuoteListLangs.LaborCost')}}</td>
@@ -94,42 +94,42 @@
                                                                 <td colspan="4"><p class="quote-body-content-itemSecndTitle leaveleftborder">钻石明细[1]</p></td>
                                                             </tr>
                                                             <tr>
-                                                                    <td>Lot</td>
-                                                                    <td>NA6810-A</td>
-                                                                    <td>大小</td>
-                                                                    <td>AA0003825</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>主石</td>
-                                                                    <td>Y</td>
-                                                                    <td>数量</td>
-                                                                    <td>1</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>重量</td>
-                                                                    <td>0.017CT</td>
-                                                                    <td>价值</td>
-                                                                    <td>70.55HKD</td>
-                                                                </tr>
+                                                                <td>{{$t('alterQuoteListLangs.Lot')}}</td>
+                                                                <td>NA6810-A</td>
+                                                                <td>{{$t('alterQuoteListLangs.StoneSizeCode')}}</td>
+                                                                <td>AA0003825</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>{{$t('alterQuoteListLangs.MainStone')}}</td>
+                                                                <td>Y</td>
+                                                                <td>{{$t('alterQuoteListLangs.Qty')}}</td>
+                                                                <td>1</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>{{$t('alterQuoteListLangs.Weight')}}</td>
+                                                                <td>0.017CT</td>
+                                                                <td>{{$t('alterQuoteListLangs.Cost')}}</td>
+                                                                <td>70.55HKD</td>
+                                                            </tr>
                                                             <tr>
                                                                 <td colspan="4"><p class="quote-body-content-itemSecndTitle leaveleftborder">钻石明细[2]</p></td>
                                                             </tr>
                                                             <tr>
-                                                                <td>Lot</td>
+                                                                <td>{{$t('alterQuoteListLangs.Lot')}}</td>
                                                                 <td>NA6810-A</td>
-                                                                <td>大小</td>
+                                                                <td>{{$t('alterQuoteListLangs.StoneSizeCode')}}</td>
                                                                 <td>AA0003825</td>
                                                             </tr>
                                                             <tr>
-                                                                <td>主石</td>
+                                                                <td>{{$t('alterQuoteListLangs.MainStone')}}</td>
                                                                 <td>Y</td>
-                                                                <td>数量</td>
+                                                                <td>{{$t('alterQuoteListLangs.Qty')}}</td>
                                                                 <td>1</td>
                                                             </tr>
                                                             <tr>
-                                                                <td>重量</td>
+                                                                <td>{{$t('alterQuoteListLangs.Weight')}}</td>
                                                                 <td>0.017CT</td>
-                                                                <td>价值</td>
+                                                                <td>{{$t('alterQuoteListLangs.Cost')}}</td>
                                                                 <td>70.55HKD</td>
                                                             </tr>
                                                         </tbody>
