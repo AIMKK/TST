@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   moreBtnForCommLangs:{
     ChngLang:'Change Lang',
     CHSLang:'<span style="text-align:center;display:block; ">CHS</span>',
@@ -21,6 +21,30 @@ module.exports = {
   mainLangs:{
     BottomLine:'This is the bottom line',
     ComingSoon:'Developing',
+    Exit:'Exit',
+  },
+  alterQuoteListLangs:{
+    CardHeader:'CodeForQuote:',
+    CardFooter:'Make Quotation',
+    BaseInfo:'Base Info',
+    Quotation:'Quotation',
+    Location:'Location',
+    SalesMan:'SalesMan',
+    SKU:'SKU',
+    SkuDescription:'SKU Description',
+    MountNo:'Mount',
+    Vip:'Vip',
+    StoneInfo:'Diamond Information',
+    Cost:'Cost',
+    LaborCost:'Labor',
+    MaterialCost:'Material',
+    StoneCost:'Stone',
+    TotalCost:'Total',
+    Lot:'Lot',
+    StoneSizeCode:'Size',
+    MainStone:'Main',
+    Qty:'Qty',
+    Weight:'Weight',
     Exit:'Exit',
   },
 }

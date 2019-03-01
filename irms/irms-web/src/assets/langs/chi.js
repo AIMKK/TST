@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   moreBtnForCommLangs:{
     ChngLang:'切換語言',
     CHSLang:'<span style="text-align:center;display:block; ">簡體</span>',
@@ -21,6 +21,30 @@ module.exports = {
   mainLangs:{
     BottomLine:'到底線了',
     ComingSoon:'敬請期待',
+    Exit:'退出',
+  },
+  alterQuoteListLangs:{
+    CardHeader:'報價申請編號:',
+    CardFooter:'開始報價',
+    BaseInfo:'基本信息',
+    Quotation:'報價信息',
+    Location:'店鋪',
+    SalesMan:'銷售員',
+    SKU:'貨品',
+    SkuDescription:'貨品描述',
+    MountNo:'模號',
+    Vip:'會員編號',
+    StoneInfo:'鑽石詳情',
+    Cost:'成本',
+    LaborCost:'人工',
+    MaterialCost:'物料',
+    StoneCost:'鑽石',
+    TotalCost:'共計',
+    Lot:'Lot',
+    StoneSizeCode:'大小',
+    MainStone:'主石',
+    Qty:'件數',
+    Weight:'重量',
     Exit:'退出',
   },
 }

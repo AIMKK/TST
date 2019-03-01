@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   moreBtnForCommLangs:{
     ChngLang:'切换语言',
     CHSLang:'<span style="text-align:center;display:block; ">简体</span>',
@@ -20,6 +20,30 @@ module.exports = {
   mainLangs:{
     BottomLine:'到底线了',
     ComingSoon:'敬请期待',
+    Exit:'退出',
+  },
+  alterQuoteListLangs:{
+    CardHeader:'报价申请编号:',
+    CardFooter:'开始报价',
+    BaseInfo:'基本信息',
+    Quotation:'报价信息',
+    Location:'店铺',
+    SalesMan:'销售员',
+    SKU:'货品',
+    SkuDescription:'货品描述',
+    MountNo:'模号',
+    Vip:'会员编号',
+    StoneInfo:'钻石详情',
+    Cost:'成本',
+    LaborCost:'人工',
+    MaterialCost:'物料',
+    StoneCost:'钻石',
+    TotalCost:'共计',
+    Lot:'Lot',
+    StoneSizeCode:'大小',
+    MainStone:'主石',
+    Qty:'件数',
+    Weight:'重量',
     Exit:'退出',
   },
 }

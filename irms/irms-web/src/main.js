@@ -29,12 +29,16 @@ Vue.component('action-sheet', Actionsheet );
 //
 import VueI18n from 'vue-i18n';
 Vue.use(VueI18n);
+//
+import CHS from './assets/langs/chs'; // 简体
+import CHI from './assets/langs/chi'; // 繁体
+import ENG from './assets/langs/eng'; // 英文
 const i18n = new VueI18n({
   locale: 'CHS',    // 语言标识
   messages: {
-    'CHS': require('./assets/langs/chs'),   // 简体
-    'CHI': require('./assets/langs/chi'),   // 繁体
-    'ENG': require('./assets/langs/eng'),   // 英文
+    'CHS': CHS,//require('./assets/langs/chs'),   // 简体
+    'CHI': CHI,//require('./assets/langs/chi'),   // 繁体
+    'ENG': ENG,//require('./assets/langs/eng'),   // 英文
   },
 })
 //
