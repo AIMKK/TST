@@ -3,7 +3,6 @@
         <div style="width: 100%; position: absolute; left: 0px; top: 0px; z-index: 100;">
             <x-header :left-options="{showBack: true}" :right-options="{showMore: true}"
                 @on-click-more="headerMoreBtnClick">
-
                 <div>iRMS</div>
             </x-header>
             <div style="color:#ccc;font-size: 12px; position: absolute; top: 30px; left:80px;  ">
