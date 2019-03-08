@@ -23,6 +23,7 @@ import GroupTitle from 'vux/src/components/group-title';
 Vue.component('group-title', GroupTitle);
 // import Popup  from 'vux/src/components/popup'; 
 // Vue.component('popup', Popup );
+
 //
 import Actionsheet  from 'vux/src/components/actionsheet'; 
 Vue.component('action-sheet', Actionsheet );

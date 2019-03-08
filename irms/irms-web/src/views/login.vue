@@ -5,15 +5,16 @@
             <div>iRMS</div>
         </x-header>
         <div class="login-body">
-            <div class="login-body-content">
+            <div class="login-body-content" v-if="isSupportUserAgent">
                 <group label-width="4.5em" label-margin-right="1em" label-align="right">
                     <x-input :title="$t('loginLangs.User:')" placeholder="user" v-model="userCode">
                         <!-- <x-icon slot="label" type="person" style="fill:#35495E;" ></x-icon> -->
                     </x-input>
-                    <x-input :title="$t('loginLangs.Pwd:')" type="password" placeholder="password" v-model="password">
+                    <x-input :title="$t('loginLangs.Pwd:')" type="password" placeholder="password" v-model="password"
+                    @keyup.native.enter="loginBtnClick">
                     </x-input>
-                    <x-input :title="$t('loginLangs.Location:')" placeholder="location" v-model="loginLocation">
-                    </x-input>
+                    <!-- <x-input :title="$t('loginLangs.Location:')" placeholder="location" v-model="loginLocation">
+                    </x-input> -->
                 </group>
                 <div class="Login-btn">
                     <group>
@@ -21,7 +22,9 @@
                     </group>
                 </div>
             </div>
-           
+            <div class="login-body-content"  v-else>
+                <p>请使用【微信/支付宝】扫码打开此应用</p>
+            </div>
         </div>
         <toast v-model="showToast" type="text" :width="tostWidth" :time="tostShowTime" is-show-mask :text="tostMsg"
             :position="position">
@@ -39,7 +42,7 @@
 <script>
     import axios from 'axios';
     import apiUrl from '@/service-api-config.js';
-    import {getLangCodeByKey} from '@/comm-func.js';
+    import {getLangCodeByKey,isSupportUserAgent} from '@/comm-func.js';
     import {
         XInput, XButton, Box, Toast, Loading, TransferDom
     } from 'vux';
@@ -59,8 +62,7 @@
                 showLoading: false,
                 loadingTxt: '',
                 showMoreActSheet: false,
-
-
+                isSupportUserAgent:false,
             }
         },
         components: {
@@ -73,6 +75,9 @@
         },
         directives: {
             TransferDom
+        },
+        created:function(){
+            this.isSupportUserAgent=isSupportUserAgent();
         },
         methods: {
             //
@@ -93,10 +98,10 @@
                     return;
                 }
                 //
-                if (loaginLoc.trim().length == 0) {
-                    this.setToastInner(true, this.$t("loginLangs.LoginLocCanotEmpty"));
-                    return;
-                }
+                // if (loaginLoc.trim().length == 0) {
+                //     this.setToastInner(true, this.$t("loginLangs.LoginLocCanotEmpty"));
+                //     return;
+                // }
                 //验证用户名密码，并且用户所在的位置是否有权限。
                 this.loginInner(loginUser, loginPwd);
             },
@@ -156,11 +161,9 @@
             //
             headerMoreBtnClick() {
                 this.showMoreActSheet = true;
-
             },
             actSheetMenuClick(key) {               
-                this.$i18n.locale =getLangCodeByKey(key);
-               
+                this.$i18n.locale =getLangCodeByKey(key);               
             },
 
         },
@@ -188,6 +191,7 @@
         width: 100%;
         overflow-x: hidden;
         overflow-y: hidden;
+        background-color: #fff;
     }
 
     .login-body {

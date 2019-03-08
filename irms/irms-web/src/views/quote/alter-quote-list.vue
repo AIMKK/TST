@@ -12,140 +12,44 @@
                 <svg style="width:14px;height:14px;fill: #fff;" aria-hidden="true">
                     <use xlink:href="#icon-user"></use>
                 </svg><span style="position:relative; top: -1px; margin-right: 10px;">{{userCode}}</span>
-                <svg style="width: 14px;height:14px;fill: #fff;" aria-hidden="true">
+                <!-- <svg style="width: 14px;height:14px;fill: #fff;" aria-hidden="true">
                     <use xlink:href="#icon-shouye"></use>
-                </svg><span style="position:relative; top: -1px; margin-right: 10px;">{{locationCode}}</span>
+                </svg><span style="position:relative; top: -1px; margin-right: 10px;">{{locationCode}}</span> -->
             </div>
         </div>
-
         <div class="quote-body">
             <div class="quote-body-content">
                 <div class="quote-body-content-item">
-                    <card :header="{title:$t('alterQuoteListLangs.CardHeader')+'QTHK021-2019-000125'}" 
-                          :footer="{title: $t('alterQuoteListLangs.CardFooter'),link:''}">                      
-                        <div slot="content" class="card-padding">                            
-                            <div>
-                                <x-table full-bordered style="background-color:#fff;">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="4" >
-                                                <p class="quote-body-content-itemTitle leaveleftborder">{{$t('alterQuoteListLangs.BaseInfo')}}</p>
-                                            </th>                                           
-                                        </tr>
-                                    </thead>
-                                    <tbody>                                       
-                                        <tr>
-                                            <td>{{$t('alterQuoteListLangs.Location')}}</td>
-                                            <td>HK021</td>
-                                            <td>{{$t('alterQuoteListLangs.SalesMan')}}</td>
-                                            <td>HK05118</td>
-                                        </tr>
-                                        <tr>
-                                            <td>{{$t('alterQuoteListLangs.SKU')}}</td>
-                                            <td>11111021</td>
-                                            <td>{{$t('alterQuoteListLangs.MountNo')}}</td>
-                                            <td>C06113E</td>
-                                        </tr>
-                                        <tr>
-                                            <td>{{$t('alterQuoteListLangs.Vip')}}</td>
-                                            <td colspan="3">tester</td>                                            
-                                        </tr>                                       
-                                        <tr>
-                                            <td colspan="4"> <p class="quote-body-content-itemTitle leaveleftborder">{{$t('alterQuoteListLangs.SkuDescription')}}</p></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4">
-                                                <p style="line-height:1.6; " > 18K/750 白色黄金 钻石镶嵌 颈链金重:24.50克 英寸:18 1粒 梨形 钻石总重量:1.11卡 色泽:G 净度:VS1 4粒 圆形
-                                                    钻石 总重量:0.39卡 证书:(G.I.A.:1229909190 ) 201粒 圆形钻石总重量:7.21卡</p>                                               
-                                            </td>
-                                        </tr> 
-                                        <tr>
-                                            <td colspan="4"> <p class="quote-body-content-itemTitle leaveleftborder">{{$t('alterQuoteListLangs.Cost')}}[HKD]</p></td>
-                                        </tr>
-                                        <tr>
-                                            <td>{{$t('alterQuoteListLangs.LaborCost')}}</td>
-                                            <td>2,034.50</td>
-                                            <td>{{$t('alterQuoteListLangs.MaterialCost')}}</td>
-                                            <td>6,800.52</td>
-                                        </tr> 
-                                        <tr>
-                                            <td>{{$t('alterQuoteListLangs.StoneCost')}}</td>
-                                            <td>79,250.40</td>
-                                            <td>{{$t('alterQuoteListLangs.TotalCost')}}</td>
-                                            <td>88,085.42</td>
-                                        </tr>                                     
-                                        <tr>
-                                            <td colspan="4">
-                                                <div >
-                                                    <x-table full-bordered style="background-color:#fff; margin-top:-1px">
-                                                        <thead>
-                                                            <tr>
-                                                                <th colspan="4"><Group style="padding:0 1px" gutter='0px' >
-                                                                        <cell style="text-align:left" class="quote-body-content-itemTitle ":title="$t('alterQuoteListLangs.StoneInfo')" is-link :border-intent="false"
-                                                                            :arrow-direction="showStoneDetail ? 'down' : 'left'"
-                                                                            @click.native="showStoneDetail = !showStoneDetail">
-                                                                        </cell>
-                                                                    </Group>
-                                                                </th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody v-if="showStoneDetail">
-                                                            <tr>
-                                                                <td colspan="4"><p class="quote-body-content-itemSecndTitle leaveleftborder">钻石明细[1]</p></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>{{$t('alterQuoteListLangs.Lot')}}</td>
-                                                                <td>NA6810-A</td>
-                                                                <td>{{$t('alterQuoteListLangs.StoneSizeCode')}}</td>
-                                                                <td>AA0003825</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>{{$t('alterQuoteListLangs.MainStone')}}</td>
-                                                                <td>Y</td>
-                                                                <td>{{$t('alterQuoteListLangs.Qty')}}</td>
-                                                                <td>1</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>{{$t('alterQuoteListLangs.Weight')}}</td>
-                                                                <td>0.017CT</td>
-                                                                <td>{{$t('alterQuoteListLangs.Cost')}}</td>
-                                                                <td>70.55HKD</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="4"><p class="quote-body-content-itemSecndTitle leaveleftborder">钻石明细[2]</p></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>{{$t('alterQuoteListLangs.Lot')}}</td>
-                                                                <td>NA6810-A</td>
-                                                                <td>{{$t('alterQuoteListLangs.StoneSizeCode')}}</td>
-                                                                <td>AA0003825</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>{{$t('alterQuoteListLangs.MainStone')}}</td>
-                                                                <td>Y</td>
-                                                                <td>{{$t('alterQuoteListLangs.Qty')}}</td>
-                                                                <td>1</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>{{$t('alterQuoteListLangs.Weight')}}</td>
-                                                                <td>0.017CT</td>
-                                                                <td>{{$t('alterQuoteListLangs.Cost')}}</td>
-                                                                <td>70.55HKD</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </x-table>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                            </x-table>
+                    <card :header="{title:$t('alterQuoteListLangs.CardHeader')+'XXXX-2019-XXXXXX'}"
+                        :footer="{title: $t('alterQuoteListLangs.CardFooter')}" @on-click-footer="showQuote=true;">
+                        <div slot="content" class="card-padding">
+                            <QuoteListItem></QuoteListItem>
                         </div>
+                    </card>
                 </div>
-                </card>
             </div>
         </div>
-    </div>
+        <div>
+            <!-- hide-on-blur -->
+            <x-dialog v-model="showQuote" @on-hide="onHide">
+                <div style="padding:15px;">
+                    <div style="margin-bottom:10px;">报价</div>
+                    <div style="margin-bottom:20px;"><input type="number"
+                            style=" width:100% ; padding: 2px 0px; border:#DEDEDE 1px solid ;height:28px; outline:none; font-size:16px;border-radius:4px;">
+                    </div>
 
+                    <x-button style="float:left; width:45%; margin-top:0px;margin-bottom: 15px;"
+                        @click.native="CancelQuote" type="default">取消</x-button>
+                    <x-button style="float:right; width:45%; margin-top:0px;margin-bottom: 15px;"
+                        @click.native="saveQuote" type="primary" :show-loading="showLoading" :disabled="btnDisabled">确定
+                    </x-button>
+
+                </div>
+            </x-dialog>
+        </div>
+        <toast v-model="showToast" type="text" :width="tostWidth" :time="tostShowTime" is-show-mask :text="tostMsg"
+            :position="position">
+        </toast>
 
     </div>
 </template>
@@ -154,8 +58,10 @@
     import apiUrl from '@/service-api-config.js';
     import { getLangCodeByKey } from '@/comm-func.js';
     import {
-        XInput, XButton, Box, Toast, Loading, TransferDom, Card, XTable, Group, CellBox, Cell
+        XInput, XButton, Box, Toast, Loading, TransferDom, Card, XDialog, InlineLoading
     } from 'vux';
+
+    import QuoteListItem from '@/views/quote/quote-list-item.vue';
 
     export default {
         data() {
@@ -172,6 +78,12 @@
                 showMoreActSheet: false,
                 temp: '待报价',
                 showStoneDetail: false,
+                showQuote: false,
+                btnDisabled: false,
+                // stoneInfos:[{ID:1,Lot:'NA6810-A',StoneSizeCode:'AA0003825',MainStone:'Y',Qty:'1',Weight:'0.017CT',Cost:'70.55HKD'},
+                // {ID:2,Lot:'NA6810-B',StoneSizeCode:'AA0003825',MainStone:'Y',Qty:'2',Weight:'0.034CT',Cost:'140.55HKD'},
+                // {ID:3,Lot:'NA6810-C',StoneSizeCode:'AA0003825',MainStone:'Y',Qty:'1',Weight:'0.017CT',Cost:'70.55HKD'}],
+
             }
         },
         created: function () {
@@ -191,11 +103,9 @@
             Toast,
             Loading,
             Card,
-            XTable,
-            Group,
-            CellBox,
-            Cell,
-
+            XDialog,
+            InlineLoading,
+            QuoteListItem,
         },
         directives: {
             TransferDom
@@ -212,6 +122,33 @@
                 this.$router.push({
                     path: '/login2'
                 });
+            },
+            onShow() {
+
+            },
+            onHide() {
+                this.showLoading = false;
+            },
+            CancelQuote() {
+                this.showQuote = false;
+            },
+            saveQuote() {
+                this.showLoading = true;
+
+            },
+            setToastInner(show, msg, width, showTime) {
+                this.showToast = !!show;
+                this.tostMsg = msg;
+                if (width) {
+                    this.tostWidth = width;
+                }
+                if (showTime) {
+                    this.tostShowTime = showTime;
+                }
+            },
+            setLoadingInner(show, txt) {
+                this.showLoading = !!show;
+                this.loadingTxt = txt;
             },
         },
     }
@@ -245,19 +182,22 @@
     .quote-body-content-item {
         margin: 10px;
     }
-    .quote-body-content-itemTitle{
-        background:#FAFAFA;
-       
+
+    .quote-body-content-itemTitle {
+        background: #FAFAFA;
+
     }
-    .leaveborder {
+
+    .showborder {
         margin: 1px;
     }
-    .leaveleftborder {
+
+    .showleftborder {
         margin-left: 1px;
     }
-    .quote-body-content-itemSecndTitle{
-        background:#FCFCFC;
-       
+
+    .quote-body-content-itemSecndTitle {
+        background: #FCFCFC;
+
     }
-    
 </style>

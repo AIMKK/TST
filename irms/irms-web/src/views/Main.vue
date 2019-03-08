@@ -1,13 +1,14 @@
 <template>
 
-    <div class="mainui-container">
+    <div class="mainui-container" >
         <div style="width: 100%; position: absolute; left: 0px; top: 0px; z-index: 100;">
             <x-header :left-options="{showBack: false}" :right-options="{showMore: true}" title="slot:overwrite-title"
                 @on-click-more="headerMoreBtnClick">
                 <div slot="overwrite-left">
                     <svg style="width:20px;height:22px;fill: #ccc;" aria-hidden="true">
                         <use xlink:href="#icon-exit2"></use>
-                    </svg><span style="position:relative; top: -6px; margin-right: 10px;">{{$t('mainLangs.Exit')}}</span>
+                    </svg><span
+                        style="position:relative; top: -6px; margin-right: 10px;">{{$t('mainLangs.Exit')}}</span>
                 </div>
                 <div>iRMS</div>
                 <!-- <x-icon slot="right" type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;"></x-icon> -->
@@ -26,9 +27,9 @@
                 <svg style="width:14px;height:14px;fill: #fff;" aria-hidden="true">
                     <use xlink:href="#icon-user"></use>
                 </svg><span style="position:relative; top: -1px; margin-right: 10px;">{{userCode}}</span>
-                <svg style="width: 14px;height:14px;fill: #fff;" aria-hidden="true">
+                <!-- <svg style="width: 14px;height:14px;fill: #fff;" aria-hidden="true">
                     <use xlink:href="#icon-shouye"></use>
-                </svg><span style="position:relative; top: -1px; margin-right: 10px;">{{locationCode}}</span>
+                </svg><span style="position:relative; top: -1px; margin-right: 10px;">{{locationCode}}</span> -->
             </div>
         </div>
 
@@ -82,6 +83,7 @@
                 locationCode: '',
                 showMoreActSheet: false,
                 menuRoot: {},
+                fixStyle:'',
                 // path:'/alterQuote',
             }
         },
@@ -95,6 +97,7 @@
                 //
                 this.getFunctions(loginInfo.userCode);
             }
+            
         },
         methods: {
             headerMoreBtnClick() {
@@ -115,32 +118,40 @@
             reLogin() {
                 //
                 sessionStorage.removeItem('loginInfo');
+                sessionStorage.removeItem('userMenus');
                 //
                 this.$router.push({
                     path: '/login2'
                 });
             },
             getFunctions(userID) {
-                axios({
-                    url: apiUrl.getFunctionID,
-                    method: 'post',
-                    data: {
-                        userCode: userID,
-                    }
-                }).then((response) => {
-                    if (response.data.code == 200 && response.data.message) {
-                        //
-                        var rootNode = this.organizeFunction(response.data.message);
-                        this.paddingSecondLevlMenuPlaceHold(rootNode, 4);
-                        this.menuRoot = rootNode;
+                var userMenus = JSON.parse(sessionStorage.getItem('userMenus'));
+                if (userMenus) {
+                    this.menuRoot = userMenus;
+                } else {
+                    axios({
+                        url: apiUrl.getFunctionID,
+                        method: 'post',
+                        data: {
+                            userCode: userID,
+                        }
+                    }).then((response) => {
+                        if (response.data.code == 200 && response.data.message) {
+                            //
+                            var rootNode = this.organizeFunction(response.data.message);
+                            this.paddingSecondLevlMenuPlaceHold(rootNode, 4);
+                            //
+                            sessionStorage.setItem('userMenus', JSON.stringify(rootNode));
+                            this.menuRoot = rootNode;
+                        } else {
+                            console.log('hererere')
+                        }
+                    }).catch((error) => {
+                        console.log(error)
 
-                    } else {
-                        console.log('hererere')
-                    }
-                }).catch((error) => {
-                    console.log(error)
+                    });
+                }
 
-                });
             },
             /*
                 createFunctionNode
@@ -314,7 +325,7 @@
                 }
                 //
                 return toArr;
-            },
+            },            
         },
         computed: {
             moreMenus: function () {
