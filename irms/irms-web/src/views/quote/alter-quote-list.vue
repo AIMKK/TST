@@ -19,7 +19,8 @@
         <div class="quote-body">
             <div class="quote-body-content">
                 <div class="quote-body-content-item">
-                    <card :header="{title:$t('alterQuoteListLangs.CardHeader')+'2019-XXXXXX'}"
+                    <card v-for="quoteInfo in listNeedQuote" :key="quoteInfo.QuoteApplyID"
+                        :header="{title:$t('alterQuoteListLangs.CardHeader')+quoteInfo.QuoteApplyID}"
                         :footer="{title: $t('alterQuoteListLangs.CardFooter')}" @on-click-footer="showQuote=true;">
                         <div slot="content" class="card-padding">
                             <QuoteListBaseItem></QuoteListBaseItem>
@@ -28,7 +29,7 @@
                 </div>
             </div>
         </div>
-        <div>           
+        <div>
             <x-dialog v-model="showQuote" @on-hide="onHide">
                 <div style="padding:15px;">
                     <div style="margin-bottom:10px;">报价</div>
@@ -77,10 +78,7 @@
                 showStoneDetail: false,
                 showQuote: false,
                 btnDisabled: false,
-                // stoneInfos:[{ID:1,Lot:'NA6810-A',StoneSizeCode:'AA0003825',MainStone:'Y',Qty:'1',Weight:'0.017CT',Cost:'70.55HKD'},
-                // {ID:2,Lot:'NA6810-B',StoneSizeCode:'AA0003825',MainStone:'Y',Qty:'2',Weight:'0.034CT',Cost:'140.55HKD'},
-                // {ID:3,Lot:'NA6810-C',StoneSizeCode:'AA0003825',MainStone:'Y',Qty:'1',Weight:'0.017CT',Cost:'70.55HKD'}],
-
+                listNeedQuote: [],
             }
         },
         created: function () {
@@ -90,7 +88,8 @@
             } else {
                 this.userCode = loginInfo.userCode;
                 this.locationCode = loginInfo.loginLocation;
-
+                //
+                this.loadApplyInfoNeedQuote(loginInfo.userCode);
             }
         },
         components: {
@@ -118,6 +117,23 @@
                 //
                 this.$router.push({
                     path: '/login2'
+                });
+            },
+            loadApplyInfoNeedQuote(userID) {
+                axios({
+                    url: apiUrl.getApplyInfoNeedQuote,
+                    method: 'post',
+                    data: {
+                        userCode: userID,
+                    }
+                }).then((response) => {
+                    if (response.data.code == 200 && response.data.message) {                      
+                        this.listNeedQuote = response.data.message;
+                    } else {
+                        console.log('hererere')
+                    }
+                }).catch((error) => {
+                    console.log(error)
                 });
             },
             onShow() {

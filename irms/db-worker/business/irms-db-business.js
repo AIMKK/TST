@@ -10,6 +10,7 @@ module.exports = {
     irmsGetProdInfoForQuote,
     irmsUserLogin,
     irmsGetFunctionID,
+    irmsGetApplyInfoNeedQuote,
 };
 var resultMsg = {
     successed: false,
@@ -300,6 +301,29 @@ function irmsGetFunctionID(getFunctionIDParam) {
                 functionList = "";
             }
             return functionList;
+        })
+    });
+};
+
+/*
+*irmsGetApplyInfoNeedQuote
+*/
+function irmsGetApplyInfoNeedQuote(getApplyInfoNeedQuoteParam) {
+    var irmsConn = irmsDB.createDBConnPool();
+    return irmsConn.then(pool => {
+        var command = irmsDB.createGetApplyInfoNeedQuoteCmd(pool);
+        return command(getApplyInfoNeedQuoteParam).then(result => {
+            var resultSet = "";
+            try {
+                if (result && result.recordset) {
+                    if (result.recordset.length > 0) {
+                        resultSet = result.recordset;
+                    }
+                }
+            } catch (error) {
+                resultSet = "";
+            }
+            return resultSet;
         })
     });
 };

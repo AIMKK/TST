@@ -63,4 +63,20 @@ router.post('/getFunctionID', async (ctx) => {
     await mqMiddleRemoteCall (queue, taskQueueOption, instruct,maxWaitMillisecond,ctx);
 });
 
+/*
+*getApplyInfoNeedQuote
+*/
+router.post('/getApplyInfoNeedQuote', async (ctx) => {
+    let user = ctx.request.body;  
+    let userCode = user.userCode;
+    //
+    var instruct = {
+        bussinessKey: 'irmsGetApplyInfoNeedQuote',
+        bussinessParam: { UserCode: userCode}
+    }
+    //
+    await mqMiddleRemoteCall (queue, taskQueueOption, instruct,maxWaitMillisecond,ctx);
+});
+
+
 module.exports = router;

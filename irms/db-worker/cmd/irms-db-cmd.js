@@ -10,6 +10,7 @@ module.exports = {
     createSaveWorkShopOrderMasterCmd,
     createSaveWorkShopOrderDetailCmd,
     createGetFunctionIDCmd,
+    createGetApplyInfoNeedQuoteCmd,
     //test
     createNewVipQuickJoinCmd,
     createGetVIPPointsCmd,
@@ -204,6 +205,28 @@ function createGetFunctionIDCmd(iniReqParam /* [pool or transaction] */) {
     return getFunctionID;
 }
 
+/*
+*createGetApplyInfoNeedQuoteCmd
+*/
+function createGetApplyInfoNeedQuoteCmd(iniReqParam /* [pool or transaction] */) {
+    //GetApplyInfoNeedQuote
+    var getApplyInfoNeedQuote = function (getApplyInfoNeedQuoteParam) {
+        getApplyInfoNeedQuoteParam=getApplyInfoNeedQuoteParam||{};
+        var promise = new Promise(function (resolve, reject) {
+            try {
+                var request = new msDB.Request(iniReqParam);
+                request.input('UserCode', msDB.VarChar(10), getApplyInfoNeedQuoteParam.UserCode);
+                //         
+                resolve(request.execute('SP_ApplyInfoNeedQuoteByUserCode_Get'));
+            } catch (error) {
+                reject(error);
+            }
+        });
+        return promise;
+    };
+
+    return getApplyInfoNeedQuote;
+}
 
 //getprodInfoForQuote
 function creategettestatCmd(iniReqParam /* [pool or transaction] */) {
