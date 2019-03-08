@@ -1,34 +1,23 @@
 <template>
     <div>
-        <x-table full-bordered style="background-color:#fff;">
+        <x-table full-bordered style="background-color:#fff; margin-top:-1px">
             <thead>
                 <tr>
                     <th colspan="4">
-                        <p class="quote-body-content-itemTitle showleftborder">{{$t('alterQuoteListLangs.BaseInfo')}}
-                        </p>
+                        <Group style="padding:0 1px" gutter='0px'>
+                            <cell style="text-align:left" class="quote-body-content-itemTitle "
+                                :title="$t('alterQuoteListLangs.MoreInfo')" is-link :border-intent="false"
+                                :arrow-direction="showDetailInfoForQuote ? 'down' : 'left'"
+                                @click.native="showDetailInfoForQuote = !showDetailInfoForQuote">
+                            </cell>
+                        </Group>
                     </th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>{{$t('alterQuoteListLangs.Location')}}</td>
-                    <td>HK021</td>
-                    <td>{{$t('alterQuoteListLangs.SalesMan')}}</td>
-                    <td>HK05118</td>
-                </tr>
-                <tr>
-                    <td>{{$t('alterQuoteListLangs.SKU')}}</td>
-                    <td>11111021</td>
-                    <td>{{$t('alterQuoteListLangs.MountNo')}}</td>
-                    <td>C06113E</td>
-                </tr>
-                <tr>
-                    <td>{{$t('alterQuoteListLangs.Vip')}}</td>
-                    <td colspan="3">tester</td>
-                </tr>
+            <tbody v-if="showDetailInfoForQuote">                
                 <tr>
                     <td colspan="4">
-                        <p class="quote-body-content-itemTitle showleftborder">
+                        <p class="quote-body-content-itemSecndTitle showleftborder">
                             {{$t('alterQuoteListLangs.SkuDescription')}}</p>
                     </td>
                 </tr>
@@ -41,7 +30,7 @@
                 </tr>
                 <tr>
                     <td colspan="4">
-                        <p class="quote-body-content-itemTitle showleftborder">{{$t('alterQuoteListLangs.Cost')}}[HKD]
+                        <p class="quote-body-content-itemSecndTitle showleftborder">{{$t('alterQuoteListLangs.Cost')}}[HKD]
                         </p>
                     </td>
                 </tr>
@@ -59,7 +48,7 @@
                 </tr>
                 <tr>
                     <td colspan="4">
-                        <QuoteListItemStone></QuoteListItemStone>
+                        <QuoteListItemDtlStone></QuoteListItemDtlStone>
                     </td>
                 </tr>
             </tbody>
@@ -70,14 +59,14 @@
 <script>
     import { getLangCodeByKey } from '@/comm-func.js';
     import {
-        XTable
+        XTable,Group, CellBox, Cell
     } from 'vux';
-    import QuoteListItemStone from '@/views/quote/quote-list-item-stone.vue';
+    import QuoteListItemDtlStone from '@/views/quote/quote-list-itemdtl-stone.vue';
 
     export default {
         data() {
             return {
-                showStoneDetail: false,
+                showDetailInfoForQuote: false,
                 stoneInfos: [{ ID: 1, Lot: 'NA6810-A', StoneSizeCode: 'AA0003825', MainStone: 'Y', Qty: '1', Weight: '0.017CT', Cost: '70.55HKD' },
                 { ID: 2, Lot: 'NA6810-B', StoneSizeCode: 'AA0003825', MainStone: 'Y', Qty: '2', Weight: '0.034CT', Cost: '140.55HKD' },
                 { ID: 3, Lot: 'NA6810-C', StoneSizeCode: 'AA0003825', MainStone: 'Y', Qty: '1', Weight: '0.017CT', Cost: '70.55HKD' }],
@@ -86,7 +75,10 @@
         },
         components: {
             XTable,
-            QuoteListItemStone,
+            Group,
+            CellBox,
+            Cell,
+            QuoteListItemDtlStone,
         },
     }
 </script>
@@ -99,7 +91,12 @@
     .showborder {
         margin: 1px;
     }
+
     .showleftborder {
         margin-left: 1px;
+    }
+    .quote-body-content-itemSecndTitle {
+        background: #FCFCFC;
+
     }
 </style>

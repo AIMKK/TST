@@ -27,6 +27,8 @@ export default {
     CardHeader:'CodeForQuote:',
     CardFooter:'Make Quotation',
     BaseInfo:'Base Info',
+    InfoForQuote:'info for quote',
+    MoreInfo:'More info...',
     Quotation:'Quotation',
     Quote:'Quote',
     Location:'Location',

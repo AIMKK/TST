@@ -19,17 +19,16 @@
         <div class="quote-body">
             <div class="quote-body-content">
                 <div class="quote-body-content-item">
-                    <card :header="{title:$t('alterQuoteListLangs.CardHeader')+'XXXX-2019-XXXXXX'}"
+                    <card :header="{title:$t('alterQuoteListLangs.CardHeader')+'2019-XXXXXX'}"
                         :footer="{title: $t('alterQuoteListLangs.CardFooter')}" @on-click-footer="showQuote=true;">
                         <div slot="content" class="card-padding">
-                            <QuoteListItem></QuoteListItem>
+                            <QuoteListBaseItem></QuoteListBaseItem>
                         </div>
                     </card>
                 </div>
             </div>
         </div>
-        <div>
-            <!-- hide-on-blur -->
+        <div>           
             <x-dialog v-model="showQuote" @on-hide="onHide">
                 <div style="padding:15px;">
                     <div style="margin-bottom:10px;">报价</div>
@@ -49,7 +48,6 @@
         <toast v-model="showToast" type="text" :width="tostWidth" :time="tostShowTime" is-show-mask :text="tostMsg"
             :position="position">
         </toast>
-
     </div>
 </template>
 <script>
@@ -60,7 +58,7 @@
         XInput, XButton, Box, Toast, Loading, TransferDom, Card, XDialog, InlineLoading
     } from 'vux';
 
-    import QuoteListItem from '@/views/quote/quote-list-item.vue';
+    import QuoteListBaseItem from '@/views/quote/quote-list-baseitem.vue';
 
     export default {
         data() {
@@ -104,7 +102,7 @@
             Card,
             XDialog,
             InlineLoading,
-            QuoteListItem,
+            QuoteListBaseItem,
         },
         directives: {
             TransferDom

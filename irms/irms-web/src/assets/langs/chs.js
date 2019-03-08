@@ -23,9 +23,11 @@ export default {
     Exit:'退出',
   },
   alterQuoteListLangs:{
-    CardHeader:'报价申请编号:',
+    CardHeader:'编号:',
     CardFooter:'开始报价',
     BaseInfo:'基本信息',
+    InfoForQuote:'报价资料',
+    MoreInfo:'更多资料',
     Quotation:'报价信息',
     Quote:'报价',
     Location:'店铺',
