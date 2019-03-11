@@ -48,7 +48,7 @@
                 </tr>
                 <tr>
                     <td colspan="4">
-                        <QuoteListItemDtlStone></QuoteListItemDtlStone>
+                        <QuoteCardContentStone></QuoteCardContentStone>
                     </td>
                 </tr>
             </tbody>
@@ -61,16 +61,16 @@
     import {
         XTable,Group, CellBox, Cell
     } from 'vux';
-    import QuoteListItemDtlStone from '@/views/quote/quote-list-itemdtl-stone.vue';
+    import QuoteCardContentStone from '@/views/quote/quote-card-content-stone.vue';
 
     export default {
+        props: ['skuOrMount'],
         data() {
             return {
                 showDetailInfoForQuote: false,
                 stoneInfos: [{ ID: 1, Lot: 'NA6810-A', StoneSizeCode: 'AA0003825', MainStone: 'Y', Qty: '1', Weight: '0.017CT', Cost: '70.55HKD' },
                 { ID: 2, Lot: 'NA6810-B', StoneSizeCode: 'AA0003825', MainStone: 'Y', Qty: '2', Weight: '0.034CT', Cost: '140.55HKD' },
                 { ID: 3, Lot: 'NA6810-C', StoneSizeCode: 'AA0003825', MainStone: 'Y', Qty: '1', Weight: '0.017CT', Cost: '70.55HKD' }],
-
             }
         },
         components: {
@@ -78,7 +78,7 @@
             Group,
             CellBox,
             Cell,
-            QuoteListItemDtlStone,
+            QuoteCardContentStone,
         },
     }
 </script>

@@ -4,7 +4,7 @@ import Login from './views/login/login.vue';
 import Quote from './views/quote/ATQuotePriceSet.vue';
 import Main from './views/main.vue';
 import Login2 from './views/login.vue';
-import AlterQuoteLst from './views/quote/alter-quote-list.vue';
+import QuoteLst from './views/quote/quote-list.vue';
 
 Vue.use(Router)
 
@@ -26,9 +26,9 @@ export default new Router({
       component: Main
     },
     {
-      path: '/alterQuoteLst',
-      name: 'alterQuoteLst',
-      component: AlterQuoteLst
+      path: '/quoteLst',
+      name: 'quoteLst',
+      component: QuoteLst
     },
     {
       path: '/login2',

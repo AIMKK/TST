@@ -1,4 +1,13 @@
 export default {
+  commLangs:{
+    ChngLang:'Change Lang',
+    CHSLang:'<span style="text-align:center;display:block; ">CHS</span>',
+    CHILang:'<span style="text-align:center;display:block; ">CHI</span>',
+    ENGLang:'<span style="text-align:center;display:block; ">ENG</span>',
+    LogOut:'<span style="text-align:center;display:block; color:red;">Logout</span>',
+    Cancel:'Cancel',
+    LoadingMore:'Loading...',
+  },
   moreBtnForCommLangs:{
     ChngLang:'Change Lang',
     CHSLang:'<span style="text-align:center;display:block; ">CHS</span>',

@@ -12,55 +12,25 @@
                 <tbody>
                     <tr>
                         <td>{{$t('alterQuoteListLangs.Location')}}</td>
-                        <td>HK021</td>
+                        <td>{{content.LocationCode}}</td>
                         <td>{{$t('alterQuoteListLangs.SalesMan')}}</td>
-                        <td>HK05118</td>
+                        <td>{{content.SalesMan}}</td>
                     </tr>
                     <tr>
                         <td>{{$t('alterQuoteListLangs.SKU')}}</td>
-                        <td>11111021</td>
+                        <td>{{content.SKUNo}}</td>
                         <td>{{$t('alterQuoteListLangs.MountNo')}}</td>
-                        <td>C06113E</td>
+                        <td>{{content.MountNo}}</td>
                     </tr>
                     <tr>
                         <td>{{$t('alterQuoteListLangs.Vip')}}</td>
-                        <td colspan="3">tester</td>
+                        <td colspan="3">{{content.VipCode}}</td>
                     </tr>
                     <tr>
                         <td colspan="4">
-                            <QuoteListItemDtl></QuoteListItemDtl>
+                            <QuoteCardContentSKU :skuOrMount="content.SKUNo||content.MountNo"></QuoteCardContentSKU>
                         </td>
-                    </tr>
-                    <!-- <tr>
-                        <td colspan="4">
-                            <p style="line-height:1.6; ">18K/750 白色黄金 钻石镶嵌 颈链金重:24.50克 英寸:18 1粒 梨形 钻石总重量:1.11卡 色泽:G 净度:VS1
-                                4粒 圆形
-                                钻石 总重量:0.39卡 证书:(G.I.A.:1229909190 ) 201粒 圆形钻石总重量:7.21卡</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            <p class="quote-body-content-itemTitle showleftborder">{{$t('alterQuoteListLangs.Cost')}}[HKD]
-                            </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>{{$t('alterQuoteListLangs.LaborCost')}}</td>
-                        <td>2,034.50</td>
-                        <td>{{$t('alterQuoteListLangs.MaterialCost')}}</td>
-                        <td>6,800.52</td>
-                    </tr>
-                    <tr>
-                        <td>{{$t('alterQuoteListLangs.StoneCost')}}</td>
-                        <td>79,250.40</td>
-                        <td>{{$t('alterQuoteListLangs.TotalCost')}}</td>
-                        <td>88,085.42</td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            <QuoteListItemDtlStone></QuoteListItemDtlStone>
-                        </td>
-                    </tr> -->
+                    </tr>                   
                 </tbody>
             </x-table>
         </div>
@@ -72,8 +42,9 @@
             XTable
         } from 'vux';
         // import QuoteListItemDtlStone from '@/views/quote/quote-list-itemdtl-stone.vue';
-        import QuoteListItemDtl from '@/views/quote/quote-list-itemdtl.vue';
+        import QuoteCardContentSKU from '@/views/quote/quote-card-content-sku.vue';
         export default {
+            props: ['content'],
             data() {
                 return {
                     showStoneDetail: false,
@@ -86,7 +57,7 @@
             components: {
                 XTable,
                 // QuoteListItemDtlStone,
-                QuoteListItemDtl,
+                QuoteCardContentSKU,
             },
         }
     </script>

@@ -18,14 +18,18 @@
         </div>
         <div class="quote-body">
             <div class="quote-body-content">
-                <div class="quote-body-content-item">
+                <div v-if="listNeedQuote">
                     <card v-for="quoteInfo in listNeedQuote" :key="quoteInfo.QuoteApplyID"
                         :header="{title:$t('alterQuoteListLangs.CardHeader')+quoteInfo.QuoteApplyID}"
-                        :footer="{title: $t('alterQuoteListLangs.CardFooter')}" @on-click-footer="showQuote=true;">
-                        <div slot="content" class="card-padding">
-                            <QuoteListBaseItem></QuoteListBaseItem>
+                        :footer="{title: $t('alterQuoteListLangs.CardFooter')}" @on-click-footer="showQuote=true;" 
+                        class="quote-card">
+                        <div slot="content" class="quote-card-content">
+                            <QuoteCardContent :content="quoteInfo"></QuoteCardContent>
                         </div>
                     </card>
+                </div>
+                <div v-else>
+                    <LoadMore :tip="$t('commLangs.LoadingMore')"></LoadMore>
                 </div>
             </div>
         </div>
@@ -56,10 +60,10 @@
     import apiUrl from '@/service-api-config.js';
     import { getLangCodeByKey } from '@/comm-func.js';
     import {
-        XInput, XButton, Box, Toast, Loading, TransferDom, Card, XDialog, InlineLoading
+        XInput, XButton, Box, Toast, LoadMore, TransferDom, Card, XDialog, InlineLoading
     } from 'vux';
 
-    import QuoteListBaseItem from '@/views/quote/quote-list-baseitem.vue';
+    import QuoteCardContent from '@/views/quote/quote-card-content.vue';
 
     export default {
         data() {
@@ -78,7 +82,7 @@
                 showStoneDetail: false,
                 showQuote: false,
                 btnDisabled: false,
-                listNeedQuote: [],
+                listNeedQuote: null,
             }
         },
         created: function () {
@@ -97,11 +101,11 @@
             XButton,
             Box,
             Toast,
-            Loading,
+            LoadMore,
             Card,
             XDialog,
             InlineLoading,
-            QuoteListBaseItem,
+            QuoteCardContent,
         },
         directives: {
             TransferDom
@@ -127,7 +131,7 @@
                         userCode: userID,
                     }
                 }).then((response) => {
-                    if (response.data.code == 200 && response.data.message) {                      
+                    if (response.data.code == 200 && response.data.message) {
                         this.listNeedQuote = response.data.message;
                     } else {
                         console.log('hererere')
@@ -185,17 +189,23 @@
     }
 
     .quote-body-content {
-        /* padding: 20px 0px; */
-    }
-
-    .card-padding {
-        padding: 15px;
-    }
-
-    .quote-body-content-item {
         margin: 10px;
     }
 
+    .quote-card{
+        padding-top:10px;
+        margin:10px  0px;
+    }
+
+    .quote-card-content {
+        padding: 15px;
+    }
+
+    /* .quote-body-content-item {
+        margin: 10px;
+    } */
+
+   
     .quote-body-content-itemTitle {
         background: #FAFAFA;
 

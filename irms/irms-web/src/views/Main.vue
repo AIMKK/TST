@@ -35,7 +35,7 @@
 
         <div class="mainui-body">
             <div class="mainui-content">
-                <div class="menu-group" v-if="menuRoot.Children">
+                <div class="menu-group" v-if="menuRoot!=null && menuRoot.Children">
                     <group :title="menu.Description" v-for="menu in menuRoot.Children" :key="menu.FunctionID">
                         <grid :cols="4">
                             <grid-item :label="secondMenu.Description" v-for="secondMenu in menu.Children"
@@ -50,6 +50,9 @@
                             </grid-item>
                         </grid>
                     </group>
+                </div>
+                <div v-else>
+                    <LoadMore :tip="$t('commLangs.LoadingMore')"></LoadMore>
                 </div>
                 <!-- <divider class="bottom-diviver">{{$t('mainLangs.BottomLine')}}</divider> -->
             </div>
@@ -66,7 +69,7 @@
     import apiUrl from '@/service-api-config.js';
     import { getLangCodeByKey } from '@/comm-func.js';
     import {
-        Grid, GridItem, Divider, XButton, Badge
+        Grid, GridItem, Divider, XButton, Badge,LoadMore
     } from 'vux';
     export default {
         name: 'Main',
@@ -75,7 +78,8 @@
             GridItem,
             Divider,
             XButton,
-            Badge
+            Badge,
+            LoadMore
         },
         data() {
             return {

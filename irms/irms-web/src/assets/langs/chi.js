@@ -1,4 +1,13 @@
 export default {
+  commLangs:{
+    ChngLang:'切換語言',
+    CHSLang:'<span style="text-align:center;display:block; ">簡體</span>',
+    CHILang:'<span style="text-align:center;display:block; ">繁體</span>',
+    ENGLang:'<span style="text-align:center;display:block; ">英文</span>',
+    LogOut:'<span style="text-align:center;display:block; color:red;">登出</span>',
+    Cancel:'取消',
+    LoadingMore:'正在加載',
+  },
   moreBtnForCommLangs:{
     ChngLang:'切換語言',
     CHSLang:'<span style="text-align:center;display:block; ">簡體</span>',
