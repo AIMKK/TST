@@ -8,69 +8,80 @@
                             <cell style="text-align:left" class="quote-body-content-itemTitle "
                                 :title="$t('alterQuoteListLangs.MoreInfo')" is-link :border-intent="false"
                                 :arrow-direction="showDetailInfoForQuote ? 'down' : 'left'"
-                                @click.native="showDetailInfoForQuote = !showDetailInfoForQuote">
+                                @click.native="switchShowDetailInfoForQuote">
                             </cell>
                         </Group>
                     </th>
                 </tr>
             </thead>
-            <tbody v-if="showDetailInfoForQuote">                
-                <tr>
-                    <td colspan="4">
-                        <p class="quote-body-content-itemSecndTitle showleftborder">
-                            {{$t('alterQuoteListLangs.SkuDescription')}}</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="4">
-                        <p style="line-height:1.6; ">18K/750 白色黄金 钻石镶嵌 颈链金重:24.50克 英寸:18 1粒 梨形 钻石总重量:1.11卡 色泽:G 净度:VS1
-                            4粒 圆形
-                            钻石 总重量:0.39卡 证书:(G.I.A.:1229909190 ) 201粒 圆形钻石总重量:7.21卡</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="4">
-                        <p class="quote-body-content-itemSecndTitle showleftborder">{{$t('alterQuoteListLangs.Cost')}}[HKD]
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{$t('alterQuoteListLangs.LaborCost')}}</td>
-                    <td>2,034.50</td>
-                    <td>{{$t('alterQuoteListLangs.MaterialCost')}}</td>
-                    <td>6,800.52</td>
-                </tr>
-                <tr>
-                    <td>{{$t('alterQuoteListLangs.StoneCost')}}</td>
-                    <td>79,250.40</td>
-                    <td>{{$t('alterQuoteListLangs.TotalCost')}}</td>
-                    <td>88,085.42</td>
-                </tr>
-                <tr>
-                    <td colspan="4">
-                        <QuoteCardContentStone></QuoteCardContentStone>
-                    </td>
-                </tr>
+            <tbody v-if="showDetailInfoForQuote">
+                <template v-if="skuDetailInfo">
+                    <tr>
+                        <td colspan="4">
+                            <p class="quote-body-content-itemSecndTitle showleftborder">
+                                {{$t('alterQuoteListLangs.SkuDescription')}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <p style="line-height:1.6; ">{{skuDetailInfo.ChineseDescription}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <p class="quote-body-content-itemSecndTitle showleftborder">
+                                {{$t('alterQuoteListLangs.Cost')+" ["+skuDetailInfo.Costcurrencycode+"]"}}
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{$t('alterQuoteListLangs.LaborCost')}}</td>
+                        <td>{{skuDetailInfo.LaborCost , "",2 | formatMoney}}</td>
+                        <td>{{$t('alterQuoteListLangs.MaterialCost')}}</td>
+                        <td>{{skuDetailInfo.MatieralCost , "",2 | formatMoney}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{$t('alterQuoteListLangs.StoneCost')}}</td>
+                        <td>{{skuDetailInfo.StoneCost , "",2 | formatMoney}}</td>
+                        <td>{{$t('alterQuoteListLangs.TotalCost')}}</td>
+                        <td>{{skuDetailInfo.UnitCost , "",2 | formatMoney}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <QuoteCardContentStone :stoneInfos="stoneInfos" :CurrencyCode="skuDetailInfo.Costcurrencycode"></QuoteCardContentStone>
+                        </td>
+                    </tr>
+                </template>
+                <template v-else>
+                    <tr>
+                        <td colspan="4">
+                            <LoadMore :tip="$t('commLangs.LoadingMore')"></LoadMore>
+                        </td>
+                    </tr>
+                </template>
             </tbody>
         </x-table>
     </div>
 </template>
 
 <script>
+    import axios from 'axios';
+    import apiUrl from '@/service-api-config.js';
     import { getLangCodeByKey } from '@/comm-func.js';
     import {
-        XTable,Group, CellBox, Cell
+        XTable, Group, CellBox, Cell, LoadMore
     } from 'vux';
     import QuoteCardContentStone from '@/views/quote/quote-card-content-stone.vue';
-
+    import accounting from 'accounting';
+    //
     export default {
         props: ['skuOrMount'],
         data() {
             return {
                 showDetailInfoForQuote: false,
-                stoneInfos: [{ ID: 1, Lot: 'NA6810-A', StoneSizeCode: 'AA0003825', MainStone: 'Y', Qty: '1', Weight: '0.017CT', Cost: '70.55HKD' },
-                { ID: 2, Lot: 'NA6810-B', StoneSizeCode: 'AA0003825', MainStone: 'Y', Qty: '2', Weight: '0.034CT', Cost: '140.55HKD' },
-                { ID: 3, Lot: 'NA6810-C', StoneSizeCode: 'AA0003825', MainStone: 'Y', Qty: '1', Weight: '0.017CT', Cost: '70.55HKD' }],
+                detailInfoForQuote: null,
+                skuDetailInfo:null,
+                stoneInfos:null,
             }
         },
         components: {
@@ -78,7 +89,56 @@
             Group,
             CellBox,
             Cell,
+            LoadMore,
             QuoteCardContentStone,
+        },
+        filters: {
+            formatMoney(money, prefix, precision) {
+                return accounting.formatMoney(money, prefix, precision);
+            },
+            formatNumber(number, precision) {
+                return accounting.formatNumber(number, precision);
+            },
+            formatMainStone(isMainStone) {
+                return isMainStone ? "Y" : "N";
+            }
+        },
+        methods: {
+            switchShowDetailInfoForQuote() {
+                this.showDetailInfoForQuote = !this.showDetailInfoForQuote;
+                if(this.showDetailInfoForQuote){
+                    this.skuDetailInfo=null;
+                    this.stoneInfos=null;
+                    //loaddata
+                    axios({
+                        url: apiUrl.getDetailInfoForQuote,
+                        method: 'post',
+                        data: {
+                            skuno: this.skuOrMount
+                        }
+                    }).then((response) => {                        
+                        console.log(response.data.message);
+                        if (response.data.code == 200 && response.data.message) {
+                            if (response.data.message.length > 1) {
+                                var tempValue=response.data.message[0];
+                                if(tempValue&&tempValue.length>0){
+                                    this.skuDetailInfo=tempValue[0];
+                                }else{
+                                    this.skuDetailInfo={};                                
+                                }
+                                //
+                                this.stoneInfos=response.data.message[1];
+                            }
+                        } else {
+                            this.skuDetailInfo={};
+                            this.stoneInfos=[];                           
+                        }
+
+                    }).catch((error) => {
+                               
+                    });
+                }
+            },
         },
     }
 </script>
@@ -95,6 +155,7 @@
     .showleftborder {
         margin-left: 1px;
     }
+
     .quote-body-content-itemSecndTitle {
         background: #FCFCFC;
 

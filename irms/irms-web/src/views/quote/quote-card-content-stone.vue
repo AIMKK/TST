@@ -15,30 +15,30 @@
                 </tr>
             </thead>
             <tbody v-if="showStoneDetail">
-                <template v-for="stoneInfo in stoneInfos">
+                <template v-for="(stoneInfo,index) in stoneInfos">
                     <tr>
                         <td colspan="4">
                             <p class="quote-body-content-itemSecndTitle showleftborder">
-                                {{$t('alterQuoteListLangs.StoneDetail')+"["+stoneInfo.ID+"]"}}</p>
+                                {{$t('alterQuoteListLangs.StoneDetail')+" ["+(index+1)+"]"}}</p>
                         </td>
                     </tr>
                     <tr>
                         <td>{{$t('alterQuoteListLangs.Lot')}}</td>
                         <td>{{stoneInfo.Lot}}</td>
                         <td>{{$t('alterQuoteListLangs.StoneSizeCode')}}</td>
-                        <td>{{stoneInfo.StoneSizeCode}}</td>
+                        <td>{{stoneInfo.Size}}</td>
                     </tr>
                     <tr>
                         <td>{{$t('alterQuoteListLangs.MainStone')}}</td>
-                        <td>{{stoneInfo.MainStone}}</td>
+                        <td>{{stoneInfo.MainStone | formatMainStone}}</td>
                         <td>{{$t('alterQuoteListLangs.Qty')}}</td>
-                        <td>{{stoneInfo.Qty}}</td>
+                        <td>{{stoneInfo.TotalQty}}</td>
                     </tr>
                     <tr>
                         <td>{{$t('alterQuoteListLangs.Weight')}}</td>
-                        <td>{{stoneInfo.Weight}}</td>
+                        <td>{{stoneInfo.totalWeight,3 |formatNumber}} CT</td>
                         <td>{{$t('alterQuoteListLangs.Cost')}}</td>
-                        <td>{{stoneInfo.Cost}}</td>
+                        <td>{{ stoneInfo.TotalCost, "",2 | formatMoney }} {{CurrencyCode}}</td>
                     </tr>
                 </template>
             </tbody>
@@ -47,19 +47,29 @@
 </template>
 
 <script>
+    import accounting from 'accounting';
     import { getLangCodeByKey } from '@/comm-func.js';
     import {
         XTable, Group, CellBox, Cell
     } from 'vux';
 
     export default {
+        props: ['stoneInfos','CurrencyCode'],
         data() {
             return {
                 showStoneDetail: false,
-                stoneInfos: [{ ID: 1, Lot: 'NA6810-A', StoneSizeCode: 'AA0003825', MainStone: 'Y', Qty: '1', Weight: '0.017CT', Cost: '70.55HKD' },
-                { ID: 2, Lot: 'NA6810-B', StoneSizeCode: 'AA0003825', MainStone: 'Y', Qty: '2', Weight: '0.034CT', Cost: '140.55HKD' },
-                { ID: 3, Lot: 'NA6810-C', StoneSizeCode: 'AA0003825', MainStone: 'Y', Qty: '1', Weight: '0.017CT', Cost: '70.55HKD' }],
-
+               
+            }
+        },
+        filters: {
+            formatMoney(money, prefix, precision) {
+                return accounting.formatMoney(money, prefix, precision);
+            },
+            formatNumber(number, precision) {
+                return accounting.formatNumber(number, precision);
+            },
+            formatMainStone(isMainStone) {
+                return isMainStone ? "Y" : "N";
             }
         },
         components: {

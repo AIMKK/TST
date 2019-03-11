@@ -4,7 +4,7 @@ const APIURL = {
     getFunctionID: LOCALURL + 'irmsAPI/getFunctionID',
     getApplyInfoNeedQuote: LOCALURL + 'irmsAPI/getApplyInfoNeedQuote',
     //
-    quotePrice: LOCALURL + 'quoteAPI/getProductInfoForQuote',
+    getDetailInfoForQuote: LOCALURL + 'quoteAPI/getProductInfoForQuote',
     quoteSave:LOCALURL+'quoteAPI/atQuoteSave',
 }
 
