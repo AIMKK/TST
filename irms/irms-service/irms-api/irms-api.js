@@ -1,24 +1,37 @@
 const Router = require('koa-router');
 const mqMiddle = require('../mq-middle.js');
 // 
-const queue = 'task';
 const taskQueueOption = { durable: false };
-const maxWaitMillisecond=180000;
+const maxWaitMillisecond = 180000;
+
+let queue = 'iRMSDevelopment';
+
+/*
+ * npm i -g cross-env
+   cross-env NODE_ENV=development node index.js
+   
+ */
+if (process.env.NODE_ENV === 'production') {
+    queue = 'iRMSProduction';
+} else {
+    queue = 'iRMSDevelopment';
+}
+
 //
 let router = new Router();
 
 /*
 *mqMiddleRemoteCall
 */
-async function mqMiddleRemoteCall(taskQueueName,taskQueueOption,currInstruct,maxWaitMillisecond,ctx){
-    await mqMiddle.RemoteCall(taskQueueName, taskQueueOption, currInstruct,maxWaitMillisecond).then((data) => {
-        return ctx.body = data;        
-    }).catch(error => {       
+async function mqMiddleRemoteCall(taskQueueName, taskQueueOption, currInstruct, maxWaitMillisecond, ctx) {
+    await mqMiddle.RemoteCall(taskQueueName, taskQueueOption, currInstruct, maxWaitMillisecond).then((data) => {
+        return ctx.body = data;
+    }).catch(error => {
         return ctx.body = {
             code: 500,
             message: error
         };
-    });    
+    });
 }
 
 /*
@@ -34,7 +47,7 @@ router.post('/login', async (ctx) => {
         bussinessKey: 'irmsUserLogin',
         bussinessParam: { UserCode: userCode, Password: password }
     }
-    
+
     // await mqMiddle.RemoteCall(queue, taskQueueOption, instruct,maxWaitMillisecond).then((data) => {
     //     return ctx.body = data;        
     // }).catch(error => {       
@@ -45,37 +58,37 @@ router.post('/login', async (ctx) => {
     // });
 
     //
-    await mqMiddleRemoteCall (queue, taskQueueOption, instruct,maxWaitMillisecond,ctx);
+    await mqMiddleRemoteCall(queue, taskQueueOption, instruct, maxWaitMillisecond, ctx);
 });
 
 /*
 *getFunctionID
 */
 router.post('/getFunctionID', async (ctx) => {
-    let user = ctx.request.body;  
+    let user = ctx.request.body;
     let userCode = user.userCode;
     //
     var instruct = {
         bussinessKey: 'irmsGetFunctionID',
-        bussinessParam: { UserCode: userCode}
+        bussinessParam: { UserCode: userCode }
     }
     //
-    await mqMiddleRemoteCall (queue, taskQueueOption, instruct,maxWaitMillisecond,ctx);
+    await mqMiddleRemoteCall(queue, taskQueueOption, instruct, maxWaitMillisecond, ctx);
 });
 
 /*
 *getApplyInfoNeedQuote
 */
 router.post('/getApplyInfoNeedQuote', async (ctx) => {
-    let user = ctx.request.body;  
+    let user = ctx.request.body;
     let userCode = user.userCode;
     //
     var instruct = {
         bussinessKey: 'irmsGetApplyInfoNeedQuote',
-        bussinessParam: { UserCode: userCode}
+        bussinessParam: { UserCode: userCode }
     }
     //
-    await mqMiddleRemoteCall (queue, taskQueueOption, instruct,maxWaitMillisecond,ctx);
+    await mqMiddleRemoteCall(queue, taskQueueOption, instruct, maxWaitMillisecond, ctx);
 });
 
 /*
@@ -88,21 +101,21 @@ router.post('/getProductInfoForQuote', async (ctx) => {
     var instruct = {
         bussinessKey: 'irmsGetProdInfoForQuote',
         bussinessParam: { SkuNo: skuno }
-    }   
-    await mqMiddleRemoteCall(queue, taskQueueOption, instruct,maxWaitMillisecond,ctx)
+    }
+    await mqMiddleRemoteCall(queue, taskQueueOption, instruct, maxWaitMillisecond, ctx)
 });
 
 //quoteSave
 router.post('/atQuoteSave', async (ctx) => {
     let reqBody = ctx.request.body;
     console.log(reqBody)
-    let workshopOrderMaster = reqBody.workshopOrderMaster;   
-    let  workShopOrderDetail= reqBody.workShopOrderDetail;
+    let workshopOrderMaster = reqBody.workshopOrderMaster;
+    let workShopOrderDetail = reqBody.workShopOrderDetail;
     var instruct = {
         bussinessKey: 'irmsATQuoteSave',
-        bussinessParam: { workshopOrderMaster ,workShopOrderDetail}
-    }   
-    await mqMiddleRemoteCall(queue, taskQueueOption, instruct,maxWaitMillisecond,ctx);
+        bussinessParam: { workshopOrderMaster, workShopOrderDetail }
+    }
+    await mqMiddleRemoteCall(queue, taskQueueOption, instruct, maxWaitMillisecond, ctx);
 });
 
 module.exports = router;

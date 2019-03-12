@@ -1,6 +1,6 @@
 const rabConnOPtions = require('./config/rabitmqConnConfig.js');
 const irmsBusinessSet = require('./business/business-set.js');
-const log4jsConfig=require('./log4js-config.js');
+const log4jsConfig = require('./log4js-config.js');
 const log4js = require('log4js');
 const amqp = require('amqplib');
 //
@@ -9,15 +9,25 @@ log4js.configure(log4jsConfig);
 const filelogger = log4js.getLogger();
 const tiplogger = log4js.getLogger('console');
 //
-const queue = 'task';
+let queue = 'iRMSDevelopment';
+
+/*
+ * npm i -g cross-env
+   cross-env NODE_ENV=development node index.js   
+ */
+if (process.env.NODE_ENV === 'production') {
+    queue = 'iRMSProduction';
+} else {
+    queue = 'iRMSDevelopment';
+}
 //
 (function start() {
     /*
     *sendToReplayQueue
     */
-    function sendToReplayQueue(channel,replyTo,replyCorrelationId,responseCode,replyData){
-         //返回replyData        
-         if (channel && replyTo) {
+    function sendToReplayQueue(channel, replyTo, replyCorrelationId, responseCode, replyData) {
+        //返回replyData        
+        if (channel && replyTo) {
             tiplogger.info('reply back')//目前先打印出来
             var backDataBuff;
             var backData = { code: responseCode, message: '' };
@@ -32,7 +42,7 @@ const queue = 'task';
                 backDataBuff = Buffer.from('');
             }
             channel.sendToQueue(replyTo, backDataBuff, { correlationId: replyCorrelationId });
-        }else{
+        } else {
             tiplogger.info('can not reply to back queue,back queue param error!')//目前先打印出来
         }
     }
@@ -40,18 +50,18 @@ const queue = 'task';
     var connOpen = amqp.connect(rabConnOPtions);
     //还要考虑如果连接断掉了，就要，重新去建立连接，
     connOpen.then((rabconn) => {
-        process.on('exit', ()=>{
-            if(rabconn){
+        process.on('exit', () => {
+            if (rabconn) {
                 rabconn.close.bind(rabconn);
             }
             //
-            log4js.shutdown(()=>{
+            log4js.shutdown(() => {
                 tiplogger.info('shutdown')
             });
         });
         //
         rabconn.on('error', function (err) {
-            tiplogger.error('rabconn error:'+err);          
+            tiplogger.error('rabconn error:' + err);
             //这个地方需要重新连接
             tiplogger.error('restart again');
             //一秒钟以后重启
@@ -61,7 +71,7 @@ const queue = 'task';
         })
         //if there is some resource shortage, e.g., memory
         rabconn.on('blocked', function (reason) {
-            tiplogger.info('blocked:'+reason);
+            tiplogger.info('blocked:' + reason);
         })
         //once the resource shortage has alleviated
         rabconn.on('unblocked', function () {
@@ -91,17 +101,17 @@ const queue = 'task';
                             // tiplogger.info(result);
                             //
                             //返回result
-                            if (msg.properties && msg.properties.replyTo) {                                
-                                sendToReplayQueue(ch,msg.properties.replyTo,msg.properties.correlationId ,'200',result);
+                            if (msg.properties && msg.properties.replyTo) {
+                                sendToReplayQueue(ch, msg.properties.replyTo, msg.properties.correlationId, '200', result);
                             }
                         }).catch(error => {
                             ch.ack(msg);
                             //
-                            tiplogger.error('exec bussiness error:' + error);                            
+                            tiplogger.error('exec bussiness error:' + error);
                             //并且还要向通知队列发送数据，说明 businessPro无法有效的执行，把错误告返回
                             //error 返回过去
                             if (msg.properties && msg.properties.replyTo) {
-                                sendToReplayQueue(ch,msg.properties.replyTo,msg.properties.correlationId ,'500','exec bussiness error');
+                                sendToReplayQueue(ch, msg.properties.replyTo, msg.properties.correlationId, '500', 'exec bussiness error');
                             }
                         });
                     } else { //没有找到businessProc
@@ -110,17 +120,17 @@ const queue = 'task';
                         tiplogger.error('not find bussinessproc error');
                         //
                         if (msg.properties && msg.properties.replyTo) {
-                            sendToReplayQueue(ch,msg.properties.replyTo,msg.properties.correlationId ,'400',`current request can't be served,check request cmd pls!`);
-                        }    
+                            sendToReplayQueue(ch, msg.properties.replyTo, msg.properties.correlationId, '400', `current request can't be served,check request cmd pls!`);
+                        }
                     }
                 } catch (error) {
                     ch.ack(msg);
                     //
-                    tiplogger.error('error when consuming:'+error);
+                    tiplogger.error('error when consuming:' + error);
                     //
                     if (msg.properties && msg.properties.replyTo) {
-                        sendToReplayQueue(ch,msg.properties.replyTo,msg.properties.correlationId ,'500',`error when consuming!`);
-                    }   
+                        sendToReplayQueue(ch, msg.properties.replyTo, msg.properties.correlationId, '500', `error when consuming!`);
+                    }
                 }
             }, { noAck: false });
         }).then(function () {
