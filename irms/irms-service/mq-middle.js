@@ -7,7 +7,13 @@ const log4js = require('log4js');
 //
 log4js.configure(log4jsConfig);
 // 
-const tiplogger = log4js.getLogger('console');
+let tiplogger = log4js.getLogger('console');
+//
+if (process.env.NODE_ENV === 'production') {
+    tiplogger = log4js.getLogger();
+} else {
+    tiplogger = log4js.getLogger('console');
+}
 //
 var currentConn;
 //
@@ -55,7 +61,6 @@ function RemoteCall(taskQueueName, taskQueueOption, sendData, maxWaitMillisecond
     } else {
         return RemoteCallInner();
     }
-
     //
     function RemoteCallInner() {
         if (!currentConn) {

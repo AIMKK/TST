@@ -6,19 +6,23 @@ const amqp = require('amqplib');
 //
 log4js.configure(log4jsConfig);
 // 
-const filelogger = log4js.getLogger();
-const tiplogger = log4js.getLogger('console');
-//
-let queue = 'iRMSDevelopment';
-
 /*
  * npm i -g cross-env
    cross-env NODE_ENV=development node index.js   
  */
+let tiplogger = log4js.getLogger('console');
+//
+let queue = 'iRMSDevelopment';
+//
+let isProductEnv = false;
 if (process.env.NODE_ENV === 'production') {
     queue = 'iRMSProduction';
+    isProductEnv = true;
+    tiplogger = log4js.getLogger();
 } else {
     queue = 'iRMSDevelopment';
+    isProductEnv = false;
+    tiplogger = log4js.getLogger('console');
 }
 //
 (function start() {
@@ -28,7 +32,10 @@ if (process.env.NODE_ENV === 'production') {
     function sendToReplayQueue(channel, replyTo, replyCorrelationId, responseCode, replyData) {
         //返回replyData        
         if (channel && replyTo) {
-            tiplogger.info('reply back')//目前先打印出来
+            if (!isProductEnv) {
+                tiplogger.info('reply back')//目前先打印出来
+            }
+            //
             var backDataBuff;
             var backData = { code: responseCode, message: '' };
             try {
@@ -43,7 +50,7 @@ if (process.env.NODE_ENV === 'production') {
             }
             channel.sendToQueue(replyTo, backDataBuff, { correlationId: replyCorrelationId });
         } else {
-            tiplogger.info('can not reply to back queue,back queue param error!')//目前先打印出来
+            tiplogger.error('can not reply to back queue,back queue param error!')//目前先打印出来
         }
     }
     //
@@ -84,7 +91,9 @@ if (process.env.NODE_ENV === 'production') {
         return ch.assertQueue(queue, { durable: false }).then(() => {
             return ch.consume(queue, (msg) => {
                 try {
-                    tiplogger.info("[irms-dbworker] Received '%s'", msg.content.toString());
+                    if (!isProductEnv) {
+                        tiplogger.info("[irms-dbworker] Received '%s'", msg.content.toString());
+                    }
                     var instructContent = JSON.parse(msg.content.toString());
                     //
                     instructContent = instructContent || {};
@@ -97,7 +106,9 @@ if (process.env.NODE_ENV === 'production') {
                             //db worker ,只是根据key 找到数据，然后 返回，数据，复杂的事情交给business                            
                             ch.ack(msg);
                             //
-                            tiplogger.info("exec bussiness ok");
+                            if (!isProductEnv) {
+                                tiplogger.info("exec bussiness ok");
+                            }
                             // tiplogger.info(result);
                             //
                             //返回result
@@ -136,11 +147,11 @@ if (process.env.NODE_ENV === 'production') {
         }).then(function () {
             tiplogger.info('irms-db-Worker start. To exit press CRTL+C')
         }).catch(error => {
-            tiplogger.error('irms-db-Worker assertQueue error--');
+            tiplogger.error('irms-db-Worker assertQueue error:');
             tiplogger.error(error);
         });
     }).catch(error => {
-        tiplogger.error('irms-db-Worker connect to mq error--');
+        tiplogger.error('irms-db-Worker connect to mq error:');
         tiplogger.error(error);
     });
 })();

@@ -10,7 +10,12 @@ const log4js = require('log4js');
 //
 log4js.configure(log4jsConfig);
 // 
-const tiplogger = log4js.getLogger('console');
+let tiplogger = log4js.getLogger('console');
+if (process.env.NODE_ENV === 'production') {
+    tiplogger = log4js.getLogger(); 
+} else {
+    tiplogger = log4js.getLogger('console'); 
+}
 //
 const app = new Koa();
 app.use(bodyParser()).use(koaCors());

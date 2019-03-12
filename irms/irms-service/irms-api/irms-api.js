@@ -4,17 +4,17 @@ const mqMiddle = require('../mq-middle.js');
 const taskQueueOption = { durable: false };
 const maxWaitMillisecond = 180000;
 
-let queue = 'iRMSDevelopment';
-
 /*
  * npm i -g cross-env
    cross-env NODE_ENV=development node index.js
-   
  */
+//
+let queue = 'iRMSDevelopment';
+//
 if (process.env.NODE_ENV === 'production') {
-    queue = 'iRMSProduction';
+    queue = 'iRMSProduction';    
 } else {
-    queue = 'iRMSDevelopment';
+    queue = 'iRMSDevelopment';    
 }
 
 //
