@@ -3,9 +3,9 @@ const APIURL = {
     login: LOCALURL + 'irmsAPI/login',
     getFunctionID: LOCALURL + 'irmsAPI/getFunctionID',
     getApplyInfoNeedQuote: LOCALURL + 'irmsAPI/getApplyInfoNeedQuote',
+    getProductInfoForQuote: LOCALURL + 'irmsAPI/getProductInfoForQuote',
     //
-    getDetailInfoForQuote: LOCALURL + 'quoteAPI/getProductInfoForQuote',
-    quoteSave:LOCALURL+'quoteAPI/atQuoteSave',
+    quoteSave:LOCALURL+'irmsAPI/atQuoteSave',
 }
 
 export default APIURL

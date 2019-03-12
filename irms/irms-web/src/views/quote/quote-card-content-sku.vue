@@ -111,7 +111,7 @@
                     this.stoneInfos=null;
                     //loaddata
                     axios({
-                        url: apiUrl.getDetailInfoForQuote,
+                        url: apiUrl.getProductInfoForQuote,
                         method: 'post',
                         data: {
                             skuno: this.skuOrMount

@@ -1,8 +1,4 @@
 
-const newVipQuickJoin = require('./new-vip-quick-join.js');
-//
-const irmsATQuoteSave = require('./irms-atquote-business.js');
-
 const {
     irmsGetProdInfoForQuote, irmsGetFunctionID, irmsUserLogin,irmsGetApplyInfoNeedQuote,
 } = require('./irms-db-business.js');
@@ -13,9 +9,8 @@ var bussinessSet = {
     irmsUserLogin,
     irmsGetFunctionID,
     irmsGetApplyInfoNeedQuote,
-    //   
-    newVipQuickJoin,
-    irmsATQuoteSave,
+    //    
+    // irmsATQuoteSave,
 };
 //
 function getBussinessByKey(bussinessKey) {

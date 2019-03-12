@@ -78,5 +78,31 @@ router.post('/getApplyInfoNeedQuote', async (ctx) => {
     await mqMiddleRemoteCall (queue, taskQueueOption, instruct,maxWaitMillisecond,ctx);
 });
 
+/*
+*getProductInfoForQuote
+*/
+router.post('/getProductInfoForQuote', async (ctx) => {
+    let reqBody = ctx.request.body;
+    let skuno = reqBody.skuno;
+    //
+    var instruct = {
+        bussinessKey: 'irmsGetProdInfoForQuote',
+        bussinessParam: { SkuNo: skuno }
+    }   
+    await mqMiddleRemoteCall(queue, taskQueueOption, instruct,maxWaitMillisecond,ctx)
+});
+
+//quoteSave
+router.post('/atQuoteSave', async (ctx) => {
+    let reqBody = ctx.request.body;
+    console.log(reqBody)
+    let workshopOrderMaster = reqBody.workshopOrderMaster;   
+    let  workShopOrderDetail= reqBody.workShopOrderDetail;
+    var instruct = {
+        bussinessKey: 'irmsATQuoteSave',
+        bussinessParam: { workshopOrderMaster ,workShopOrderDetail}
+    }   
+    await mqMiddleRemoteCall(queue, taskQueueOption, instruct,maxWaitMillisecond,ctx);
+});
 
 module.exports = router;
