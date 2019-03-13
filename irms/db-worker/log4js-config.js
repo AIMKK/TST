@@ -5,7 +5,7 @@ module.exports = {
         },
         dateFile: {
             type: 'dateFile',
-            filename: __dirname + '/AppLogs/log',
+            filename:'./AppLogs/log',//__dirname+ 
             alwaysIncludePattern: true,
             maxLogSize: 10 * 1024 * 1024, // = 10Mb
             backups: 5, // keep five backup files
