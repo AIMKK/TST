@@ -11,10 +11,13 @@ const maxWaitMillisecond = 180000;
 //
 let queue = 'iRMSDevelopment';
 //
+let isProductEnv=false;
 if (process.env.NODE_ENV === 'production') {
-    queue = 'iRMSProduction';    
+    queue = 'iRMSProduction';
+    isProductEnv=true;    
 } else {
-    queue = 'iRMSDevelopment';    
+    queue = 'iRMSDevelopment';   
+    isProductEnv=false;     
 }
 
 //
@@ -39,7 +42,9 @@ async function mqMiddleRemoteCall(taskQueueName, taskQueueOption, currInstruct, 
 */
 router.post('/login', async (ctx) => {
     let user = ctx.request.body;
-    console.log(user);
+    if (!isProductEnv) {
+        console.log(user);
+    }   
     let userCode = user.userCode;
     let password = user.password;
     //
