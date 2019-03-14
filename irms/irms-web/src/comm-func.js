@@ -36,10 +36,15 @@ export function isSupportUserAgent() {
     var isAndroid = ua.indexOf('android') != -1;
     var isIos = (ua.indexOf('iphone') != -1) || (ua.indexOf('ipad') != -1);
     var ismobileSide = /Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent);
+ 
     //
     if (!ismobileSide) {
-        return true;
-    }
+        if (process.env.NODE_ENV === 'production') {
+            return false;
+        }else{
+            return true;
+        }        
+    }    
     else if (isWeixin) {
         return true;
     }
