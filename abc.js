@@ -1,5 +1,12 @@
 var q = require('q')
 
+
+var fs = require('fs')
+
+function aaa(){
+    fs.readFile("","utf-8",aa)
+}
+
 function a() {
     var deferred = q.defer();
     setTimeout(() => {

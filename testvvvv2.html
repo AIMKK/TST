@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./vvvue.js"></script>
+</head>
+
+<body>
+    <div id="app" v-bind:title="title">
+        {{ message }}
+
+        <br>
+        <ol>
+
+            <todo-item v-for="(item, index)  in todos" v-bind:todo="item" v-bind:key="item.text">
+
+            </todo-item>
+        </ol>
+        <br>
+        <component-a v-bind:msg="message"></component-a>
+        <br>
+
+    </div>
+    <script>
+        Vue.component('todo-item', {
+            props: ['todo'],
+            template: '<li>{{ todo.text }}</li>'
+        })
+        Vue.component('com2', {
+            template: '<p>com2</p>'
+        })
+        var ComponentA = {
+            props: ['msg'],
+            template: '<div><p>componenta---- {{ msg }}</p><com2></com2></div>'
+        }
+        //  //
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello everyone!',
+                title: 'You loaded this page on ' + new Date().toLocaleString(),
+                seen: true,
+                todos: [
+                    { text: 'Learn JavaScript' },
+                    { text: 'Learn Vue' },
+                    // { text: 'Build something awesome' }
+                ],
+                rawHtml: '<p>test</p>',
+                isActive: true,
+                hasError: false,
+                classObject: {
+                    active: true,
+                    'text-danger': false
+                },
+                activeClass: 'active',
+                errorClass: 'text-danger',
+                counter: 0,
+                checked: false,
+
+            },
+            components: {
+                'component-a': ComponentA,
+            },
+            methods: {
+                reverseMessage: function () {
+                    this.message = this.message.split('').reverse().join('')
+                },
+                onSubmit: function () {
+
+                },
+                say: function (message) {
+                    alert(message)
+                },
+                warn: function (message, event) {
+                    // now we have access to the native event
+                    if (event) event.preventDefault()
+                    alert(message)
+                }
+            },
+            computed: {
+                // a computed getter
+                reversedMessage: function () {
+                    // `this` points to the vm instance
+                    return this.message.split('').reverse().join('')
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
